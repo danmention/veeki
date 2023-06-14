@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "618042020782",
+    "project_id": "veeki-86fa1",
+    "storage_bucket": "veeki-86fa1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618042020782:android:69f54454741008d7fc2e3f",
+        "android_client_info": {
+          "package_name": "co.veeki.veeki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "618042020782-gutvvib5t8a7cmodtajuj0c6e3mdq5ht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAjpVqr_YEA912OtzMRZmjGPsvlRBK6nY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "618042020782-gutvvib5t8a7cmodtajuj0c6e3mdq5ht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

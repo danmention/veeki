@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>618042020782-uckldmff4fiqgctuoq35omep8isaofge.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.618042020782-uckldmff4fiqgctuoq35omep8isaofge</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC40aO2mUvlZlu9YNFn-s61HIwQaEoN90g</string>
+	<key>GCM_SENDER_ID</key>
+	<string>618042020782</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>co.veeki.veeki</string>
+	<key>PROJECT_ID</key>
+	<string>veeki-86fa1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>veeki-86fa1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:618042020782:ios:9911f099d00f3c3cfc2e3f</string>
+</dict>
+</plist>
