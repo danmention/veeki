@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:veeki/models/request/booking_request.dart';
 import 'package:veeki/models/response/booking_response.dart';
+import 'package:veeki/models/response/booknow.dart';
 
 
 import '../request/login_request.dart';
@@ -354,22 +355,16 @@ class APIHelper {
     }
   }
 
-  Future<dynamic> bookappointment(
-    BookingRequest bookingRequest
-
-      ) async {
+  Future<dynamic> bookappointment(BookingRequest bookingRequest) async {
     try {
 
+      var item =    json.encode(bookingRequest);
 
-      var item =    json.encode(
-          bookingRequest);
-      print(item);
 
       final response = await http.post(
         Uri.parse("${global.baseUrl}user/booking/create"),
         headers: await global.getApiHeaders(true),
-        body: json.encode(
-            bookingRequest
+        body: json.encode(bookingRequest
             // {
             //   "user_id" : user_id,
             //   "caregiver_user_id": caregiver_user_id,
@@ -402,6 +397,28 @@ class APIHelper {
   }
 
 
+
+  Future<dynamic> checkOut(BookNow bookNow) async {
+    try {
+
+
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}user/billing/create"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(bookNow),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 ) {
+        recordList = BookNow.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - setbookingcheckout(): " + e.toString());
+    }
+  }
 
   Future<dynamic> changePassword(String user_id, String current_password, String new_password,String confirm_new_password ) async {
     try {

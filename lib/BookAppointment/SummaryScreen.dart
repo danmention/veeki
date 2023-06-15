@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_paystack/flutter_paystack.dart';
+import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'package:veeki/BookAppointment/AppointmentsScreen.dart';
 import 'package:veeki/BookAppointment/ChooseServiceScreen.dart';
 import 'package:veeki/BookAppointment/Payment.dart';
@@ -10,6 +13,7 @@ import 'package:veeki/widgets/text.form.global.dart';
 
 import '../models/businessLayer/base.dart';
 import '../models/request/booking_request.dart';
+import '../models/response/booknow.dart';
 import '../models/response/service_response.dart';
 import '../widgets/BookAppointmentBottomNavBar.dart';
 import '../widgets/Calendar.dart';
@@ -17,6 +21,7 @@ import '../widgets/back.button.global.dart';
 
 import '../widgets/ProgressBar.dart';
 import '../widgets/horizontal.scrollable.buttons.dart';
+import 'bookingConfirmationScreen.dart';
 
 class SummaryScreen extends Base {
   SummaryScreen({Key? key, this.service, this.bookingRequest});
@@ -33,6 +38,7 @@ class _SummaryScreenState extends BaseState {
   BookingRequest? bookingRequest;
   final TextEditingController rewardpointController = TextEditingController();
 
+  final plugin = PaystackPlugin();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,12 +185,14 @@ class _SummaryScreenState extends BaseState {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-          height: 70,
-          child: BookAppointmentBottomNavBar(
-            widget: PaymentScreen(),
-          )
-      ),
+
+
+      // bottomNavigationBar: Container(
+      //     height: 70,
+      //     child: BookAppointmentBottomNavBar(
+      //       widget: PaymentScreen(),
+      //     )
+      // ),
     );
   }
 
@@ -196,26 +204,18 @@ class _SummaryScreenState extends BaseState {
 
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
-        showOnlyLoaderDialog();
+      //  showOnlyLoaderDialog();
 
         await apiHelper!.bookappointment( bookingRequest!  ).then((result) async {
           if (result != null) {
             if (result.resp_code == "00") {
-              hideLoader();
-              int serviceid = result.data.id;
-              print(serviceid);
-
-              hideLoader();
-              showSnackBar(snackBarMessage: 'Service submitted successfully');
+           //   hideLoader();
+             // int serviceid = result.data.id;
+              //print(serviceid);
 
 
-
-              //
-
-
-              //
-
-
+              showSnack(snackBarMessage: 'You have booked successfully');
+              makePayment();
               //   Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);
 
 
@@ -253,10 +253,78 @@ class _SummaryScreenState extends BaseState {
       }
 
     } catch (e) {
-      print("Exception - addserviceScreen.dart - _addsevice():" + e.toString());
+      print("Exception - bookappointmentScreen.dart - _addsevice():" + e.toString());
+    }
+  }
+
+
+  @override
+  void initState() {
+    plugin.initialize(publicKey: " ${global.publicKey}");
+    // TODO: implement initState
+    super.initState();
+  }
+
+
+  String _getReference() {
+    String platform;
+    if (Platform.isIOS) {
+      platform = 'iOS';
+    } else {
+      platform = 'Android';
+    }
+
+    return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
+  }
+
+  Future<void> makePayment() async {
+    //PaymentScreen()
+   // var amt  = _cAmountForPayment.text.replaceAll(",", "");
+    Charge charge = Charge()
+
+    // ..amount = int.parse(projectAmount!)
+      ..amount = bookingRequest!.amount!+00
+      ..reference = _getReference()
+    // or ..accessCode = _getAccessCodeFrmInitialization()
+      ..email = '${global.user.email}';
+    final response = await plugin.checkout(
+        context , method: CheckoutMethod.card, charge: charge);
+
+
+    if (response.status) {
+
+      BookNow _bookNow = new BookNow();
+      _bookNow.amount = bookingRequest!.amount;
+      _bookNow.userId = int.parse("${global.user.id}");
+      _bookNow.transactionReference = _getReference();
+      _bookNow.purpose = service!.title;
+      // Payment was successful
+      print('Payment was successful');
+      await apiHelper!.checkOut(_bookNow).then((result) async {
+        if (result != null) {
+          if (result.status == "1") {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => BookingConfirmationScreen()),
+            );
+          }
+        }
+      });
+
+
+    } else {
+      // Payment failed
+      print('Payment failed');
     }
   }
 }
+
+
+
+
+
+
+
+
 class VoucherCouponsRewards extends StatefulWidget {
   const VoucherCouponsRewards({Key? key,required this.text}) : super(key: key);
  final text;

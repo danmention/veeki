@@ -17,7 +17,7 @@ String appName = 'Veeki';
 String appShareMessage = "I'm inviting you to use $appName, a simple and easy app to find saloon services and products near by your location. Here's my code [CODE] - jusy enter it while registration.";
 String appVersion = '1.0';
 String baseUrl = 'https://api.veeki.co/api/';
-String baseUrlForImage = 'https://demo.in/';
+String  publicKey = 'pk_test_59b09788900a513d57d5b280c1225ee6616a8ce2';
 //Currency currency = Currency();
 
 //String currentLocation;

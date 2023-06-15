@@ -423,7 +423,7 @@ Widget timeslot(){
      bookingRequest.serviceId = service!.id!;
      bookingRequest.caregiverUserId = caregiver_id;
      bookingRequest.userId = global.user.id!;
-     bookingRequest.timeTo = "";
+     bookingRequest.timeTo = "11:53:25";
 
 
      Navigator.of(context).push(

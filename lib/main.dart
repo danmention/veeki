@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,8 +19,17 @@ import 'Profile.dart';
 import 'firebase_options.dart';
 
 
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
 
-
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title/ description
+    description:
+    'This channel is used for important notifications.', // description
+    importance: Importance.high,
+    playSound: true
+);
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -44,12 +54,33 @@ Future<void> _firebaseForegroundHandler(RemoteMessage message)async{
     }
 
 }
+
+
+
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, );
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+
+
   FirebaseMessaging.onMessage.listen(_firebaseForegroundHandler);
+
 
 
 
@@ -62,11 +93,7 @@ void main() async{
   final fcmtoken = await FirebaseMessaging.instance.getToken();
   print("Firebasetoken $fcmtoken");
   final appDocumentDirectory = await getApplicationDocumentsDirectory();
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+
   Hive.init(appDocumentDirectory.path);
   runApp(ProviderScope(child: const MyApp()));
 }
@@ -107,7 +134,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // This widget is the root of your application.
-
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -136,10 +163,135 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     requestPermission();
+
+    initializeNotifications();
+    createNotificationChannel();
+    configureFirebaseMessaging();
     // TODO: implement initState
     super.initState();
-    setupInterractedMessage();
+   // setupInterractedMessage();
   }
+
+
+
+  void initializeNotifications() {
+    var initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    var initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        );
+  }
+
+  void createNotificationChannel() {
+    var androidPlatformChannelSpecifics = AndroidNotificationChannel(
+      'high_priority_channel',
+      'High Priority Notifications',
+      description: 'This channel is used for high priority notifications',
+      importance: Importance.high,
+    );
+
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(androidPlatformChannelSpecifics);
+  }
+
+  void configureFirebaseMessaging() {
+  //  messaging.subscribeToTopic('type');
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      showNotification(message);
+    });
+
+
+
+  }
+
+  void showNotification(RemoteMessage message) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'high_priority_channel',
+      'High Priority Notifications',
+      channelDescription: 'This channel is used for high priority notifications',
+      importance: Importance.high,
+      priority: Priority.high,
+      enableVibration: true, // Optional: Vibrate the device when the notification is shown
+      // Optional: Override channel importance
+
+    );
+
+    var platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0, // Notification ID
+      message.notification?.title ?? '',
+      message.notification?.body ?? '',
+      platformChannelSpecifics,
+    );
+    print("i feel blessed");
+
+    if(message.notification != null){
+      showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    title: Text("kool"),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [Text("lovely ")],
+                      ),
+                    ),
+                  );
+                });
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Notifications())
+            );
+    }
+
+
+    if(message.data['type']=="booking"){
+      print("new guy in the block  boss");
+      // showDialog(
+      //     context: context,
+      //     builder: (_) {
+      //       return AlertDialog(
+      //         title: Text("kool"),
+      //         content: SingleChildScrollView(
+      //           child: Column(
+      //             crossAxisAlignment: CrossAxisAlignment.start,
+      //             children: [Text("lovely ")],
+      //           ),
+      //         ),
+      //       );
+      //     });
+
+
+
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => Notifications())
+      );
+
+
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   Future<void>setupInterractedMessage()async{
@@ -153,14 +305,15 @@ class _MyHomePageState extends State<MyHomePage> {
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenBackground);
   }
 
+
   void _handleMessageOpenBackground(RemoteMessage message) {
     print('message from app is that was in the background');
     _handleMessageOpen(message);
   }
-
+  //
   void _handleMessageOpen(RemoteMessage message) {
         if(message.data['type']=="booking"){
-
+print("og  boss");
           // showDialog(
           //     context: context,
           //     builder: (_) {
@@ -187,8 +340,8 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.pushNamed(context, 'resetpassword');
         }
   }
-
-
+  //
+  //
   void _handleMessageopenTerminated(RemoteMessage message) {
       print('message from app is terminated');
       _handleMessageOpen(message);
