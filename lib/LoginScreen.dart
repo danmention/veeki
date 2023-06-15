@@ -202,11 +202,11 @@ class _LoginScrrenState extends BaseState{
       if (_cEmail.text.isNotEmpty && _cPassword.text.isNotEmpty && EmailValidator.validate(_cEmail.text) ) {
         bool isConnected = await br!.checkConnectivity();
         if (isConnected) {
-          showOnlyLoaderDialog();
+         // showOnlyLoaderDialog();
           await apiHelper!.loginWithEmail(_user).then((result) async {
             if (result != null) {
               if (result.resp_code == "00") {
-                hideLoader();
+
                 global.user = result.recordList.user;
                 global.token = result.recordList.tokenData;
 
@@ -217,8 +217,9 @@ class _LoginScrrenState extends BaseState{
                 box = await Hive.openBox("user");
                 box!.put('email', '${global.user.email}');
                 // global.sp?.setString('email',_cEmail.text );
-
-
+                //
+                // hideLoader();
+                 hideLoader();
 
 
 
@@ -258,7 +259,7 @@ class _LoginScrrenState extends BaseState{
                 if(result.errors[0].message != null){
                   showSnack( snackBarMessage: result.errors[0].message.toString());
                 }else{
-                  showSnack(snackBarMessage: result.message.toString());
+                  showSnack(snackBarMessage: result.resp_message.toString());
                 }
               }
             }
