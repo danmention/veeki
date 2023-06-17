@@ -63,14 +63,24 @@ class _HomePageState extends State<HomePage> {
                                   MaterialPageRoute(builder: (context) => Profile()),
                                 );
                               },
-                              child: CircleAvatar(
+                              child:
+
+                              global.user.profileImage ==null?
+                              CircleAvatar(
                                 backgroundColor: GlobalColors.primaryColor,
                                 radius: 32,
                                 child: CircleAvatar(
                                   radius: 30,
                                   backgroundImage: AssetImage('Images/download.png'),
                                 ),
-                              ),
+                              ):CircleAvatar(
+                                backgroundColor: GlobalColors.primaryColor,
+                                radius: 32,
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: NetworkImage('${global.user.profileImage}'),
+                                ),
+                              ) ,
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0,),

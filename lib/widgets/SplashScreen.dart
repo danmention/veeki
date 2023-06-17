@@ -30,7 +30,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
 
   Widget _buildFullscreenImage(String assetName,) {
     return Image.asset(
-      'Images/$assetName',
+      'assets/$assetName',
       fit: BoxFit.cover,
       height: double.infinity,
       width: double.infinity,
@@ -39,7 +39,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
   }
 
   Widget _buildImage(String assetName, [double width = 350]) {
-    return Image.asset('Images/$assetName', width: width);
+    return Image.asset('assets/$assetName', width: width);
   }
 
   @override
@@ -82,10 +82,10 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       pages: [
 
         PageViewModel(
-          title: "Find Barber Shop Nearby",
+          title: "Find Caregiver Nearby",
           body:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus.",
-          image: _buildFullscreenImage('Barbershop.png'),
+          image: _buildFullscreenImage('1.jpg'),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
             fullScreen: true,
@@ -103,11 +103,11 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           ),
         ),
         PageViewModel(
-          title: "Professional Barber Specialists",
+          title: "Carer Specialists",
           body:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus.",
 
-          image: _buildFullscreenImage('barber.png'),
+          image: _buildFullscreenImage('2.webp'),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
             fullScreen: true,
@@ -125,10 +125,10 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           ),
         ),
         PageViewModel(
-          title: "Get Reward Points & Promotions",
+          title: "Get Reward Points on Massage",
           body:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus.",
-          image: _buildFullscreenImage('barbing.png'),
+          image: _buildFullscreenImage('5.jpg'),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
             fullScreen: true,
@@ -146,10 +146,10 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           ),
         ),
         PageViewModel(
-          title: "Full Screen Page",
+          title: "Nursing Service",
           body:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus.",
-          image: _buildFullscreenImage('barber.png'),
+          image: _buildFullscreenImage('3.jpg'),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
             fullScreen: true,

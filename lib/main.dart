@@ -12,11 +12,13 @@ import 'package:veeki/utils/foreground_notification.dart';
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/utils/route.dart';
 import 'package:veeki/widgets/SplashScreen.dart';
+import 'package:veeki/widgets/notificationDialog.dart';
 import 'HomePage.dart';
 import 'LoginScreen.dart';
 import 'Notifications.dart';
 import 'Profile.dart';
 import 'firebase_options.dart';
+import 'models/response/service_response.dart';
 
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -135,7 +137,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // This widget is the root of your application.
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
+Service service = new Service();
   @override
   Widget build(BuildContext context) {
 
@@ -237,39 +239,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if(message.notification != null){
       showDialog(
-                context: context,
-                builder: (_) {
-                  return AlertDialog(
-                    title: Text("kool"),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [Text("lovely ")],
-                      ),
-                    ),
-                  );
-                });
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => Notifications())
-            );
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => NotificationDialog(rideDetails: service,),
+      );
+            // Navigator.of(context).push(
+            //     MaterialPageRoute(builder: (context) => Notifications())
+            // );
     }
 
 
     if(message.data['type']=="booking"){
       print("new guy in the block  boss");
-      // showDialog(
-      //     context: context,
-      //     builder: (_) {
-      //       return AlertDialog(
-      //         title: Text("kool"),
-      //         content: SingleChildScrollView(
-      //           child: Column(
-      //             crossAxisAlignment: CrossAxisAlignment.start,
-      //             children: [Text("lovely ")],
-      //           ),
-      //         ),
-      //       );
-      //     });
+      showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              title: Text("kool"),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [Text("lovely ")],
+                ),
+              ),
+            );
+          });
 
 
 

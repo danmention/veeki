@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../models/businessLayer/base.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
 
+import '../widgets/ProgressBar.dart';
+
 class BookingConfirmationScreen extends Base {
 
    int? screenId;
@@ -45,6 +47,12 @@ class _BookingConfirmationScreenState extends BaseState {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+
+                SizedBox(
+                    height: 70,
+                    width: double.infinity,
+                    child: ProgressBar(processindex: 3,)
+                ),
                 Padding(
                   padding: EdgeInsets.only(),
                   child: Container(

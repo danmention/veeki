@@ -157,26 +157,34 @@ class _SummaryScreenState extends BaseState {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        bookapointment();
+                        notifyCaregiver();
+                       // bookapointment();
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
-                        height: 40,
-                        width: 80,
+                        height: 50,
+                        width: 120,
                         decoration: BoxDecoration(
                           color: GlobalColors.primaryColor,
                           borderRadius: BorderRadius.circular(10)
                         ),
-                        child: Text(
-                            "Apply",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white
+                        child: Center(
+                          child: Text(
+                              "Book Now",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.white
+                            ),
+                            textAlign: TextAlign.center
                           ),
-                          textAlign: TextAlign.center
                         ),
                       ),
+
+
                     ),
+
+
+                    SizedBox(height: 30,)
                   ],
                 )
               ],
@@ -195,7 +203,19 @@ class _SummaryScreenState extends BaseState {
       // ),
     );
   }
+void notifyCaregiver()async{
 
+
+  await apiHelper!.pushnotification(service!.user!.first.instagram!).then((result) async {
+    if (result != null) {
+      if (result.success == "1") {
+
+        showSnack(snackBarMessage: " hello we are cool ");
+
+      }
+    }
+  });
+}
 
   void bookapointment() async{
     try {
@@ -233,7 +253,7 @@ class _SummaryScreenState extends BaseState {
             }
 
             else {
-              hideLoader();
+            //  hideLoader();
 
 
 
@@ -260,7 +280,10 @@ class _SummaryScreenState extends BaseState {
 
   @override
   void initState() {
-    plugin.initialize(publicKey: " ${global.publicKey}");
+    print(" ${global.publicKey}");
+   // plugin.initialize(publicKey: " ${global.publicKey}");
+    //pk_test_79e849b279e8a938d8238afb2cc38536899caadf
+    plugin.initialize(publicKey: " pk_test_79e849b279e8a938d8238afb2cc38536899caadf");
     // TODO: implement initState
     super.initState();
   }
@@ -280,10 +303,12 @@ class _SummaryScreenState extends BaseState {
   Future<void> makePayment() async {
     //PaymentScreen()
    // var amt  = _cAmountForPayment.text.replaceAll(",", "");
+   //  String  amt  =  bookingRequest!.amount.toString()+"00";
+   //  int paymentamount = int.tryParse(amt) ??00;
     Charge charge = Charge()
 
     // ..amount = int.parse(projectAmount!)
-      ..amount = bookingRequest!.amount!+00
+      ..amount = bookingRequest!.amount! *100
       ..reference = _getReference()
     // or ..accessCode = _getAccessCodeFrmInitialization()
       ..email = '${global.user.email}';
@@ -303,9 +328,17 @@ class _SummaryScreenState extends BaseState {
       await apiHelper!.checkOut(_bookNow).then((result) async {
         if (result != null) {
           if (result.status == "1") {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => BookingConfirmationScreen()),
-            );
+
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        BookingConfirmationScreen()),
+                ModalRoute.withName('/'));
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(builder: (context) => BookingConfirmationScreen()),
+            // )
+
           }
         }
       });

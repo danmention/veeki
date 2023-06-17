@@ -16,6 +16,7 @@ import '../request/signup_request.dart';
 import '../response/UserResponseModel.dart';
 
 import '../response/login_response.dart';
+import '../response/push_response.dart';
 import '../response/registeration_complete_response.dart';
 import '../response/service_response.dart';
 import '../response/signup_response.dart';
@@ -360,7 +361,7 @@ class APIHelper {
 
       var item =    json.encode(bookingRequest);
 
-
+print(item);
       final response = await http.post(
         Uri.parse("${global.baseUrl}user/booking/create"),
         headers: await global.getApiHeaders(true),
@@ -393,6 +394,53 @@ class APIHelper {
       return getAPIResult(response, recordList);
     } catch (e) {
       print("Exception - setbooking(): " + e.toString());
+    }
+  }
+
+
+  Future<dynamic> pushnotification(String token) async {
+    try {
+
+      final Map<String, String> tokenData = {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + global.pushnoticationserverkey
+      };
+      final response = await http.post(
+        Uri.parse("https://fcm.googleapis.com/fcm/send"),
+        headers:tokenData,
+        body: json.encode(
+
+            {
+             "to":token,
+   //           "to":"fYhP-PHRR6Oy4FWkM2XkZV:APA91bFEkBR1tQKzzUfncsU4fgI5luxl2r-EQ0FkIM435NCDGCmspAwu2v4Se6cZjtnF-b1oDHDtzSnzlohoZt9-cxsgK03kLzL0TwC2RTmh1TokgcfYyaRGdNj8OQtJ2UkleOohIR47",
+// "to":"evDpi60RSUmDp5t_vRAzfy:APA91bFQexa8BbiMIVOiGtteqSNcIhHWLC9bXerhOasbUm5cx5bRYHTV8QbYmyjkbxx4iKmTU-sauNFBrj43a4h7EImQAfZgEV_WJJI6OhyEIpLCoUVKolYHeqckn7TE368jQ_Jlz08i",
+              "collapse_key" : "type_a",
+              "notification" : {
+                "body" : "Body of Your Notification",
+                "title": "Title of Your Notification",
+                "sound": "default"
+              },
+              "data" : {
+                "body" : "Body of Your Notification in Data",
+                "type": "booking",
+                "key_1" : "Value for key_1",
+                "key_2" : "Value for key_2",
+                "sound": "default"
+              }
+
+          }
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 ) {
+        recordList = PushNotificationResponse.fromJson(json.decode(response.body)["results"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - sendnoticationservice(): " + e.toString());
     }
   }
 

@@ -310,7 +310,7 @@ class _AppointmentsScreenState extends BaseState{
             ),
             InkWell(
               onTap: (){
-                if(service!.amount == null){
+                if(service?.amount == null){
                   final snackBar = SnackBar(
                     content: const Text('Kindly select a product'),
                     backgroundColor: (Colors.black),
@@ -413,7 +413,25 @@ Widget timeslot(){
        return;
      }
 
+     if (today == null) {
+       showSnack(snackBarMessage:"Choose Date ");
+
+       return;
+     }
+     if( bookingRequest.timeFrom == null){
+       showSnack(snackBarMessage:"Choose a particular time ");
+
+       return;
+     }
+
+     if( bookingRequest.date == null){
+       showSnack(snackBarMessage:"Choose a particular date ");
+
+       return;
+     }
+
      int caregiver_id = int.tryParse(service!.userId!)??0;
+
      bookingRequest.streetAddress = _caddress.text.trim();
      bookingRequest.area = _carea.text.trim();
      bookingRequest.popularLandMark = _clandmark.text.trim();
