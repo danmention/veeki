@@ -8,7 +8,7 @@ import '../main.dart';
 class NotificationHandler {
   static void configureFirebaseMessaging(BuildContext context) {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-print('hello KK');
+print('hello KKhoilla kkkkk');
       // if (message != null ) {
       //   flutterLocalNotificationsPlugin.show(
       //

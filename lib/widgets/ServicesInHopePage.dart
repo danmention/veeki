@@ -3,6 +3,7 @@ import 'package:shimmer/shimmer.dart';
 
 import 'package:veeki/utils/global.colors.dart';
 
+import '../CategorySearchList.dart';
 import '../models/businessLayer/base.dart';
 import '../models/response/category_response.dart';
 import '../models/response/service_response.dart';
@@ -14,7 +15,7 @@ class ServicesInHopePage extends Base {
 
 class _ServicesInHopePageState extends BaseState {
 
-  var list = ['Haircut','Treatment','Shaving','Beard trimming','Kids hair cut','Facials & massages',];
+
   bool _isDataLoaded = false;
   bool _isRecordPending = true;
   List<Category> _categoryList = [];
@@ -43,6 +44,9 @@ class _ServicesInHopePageState extends BaseState {
                 padding: const EdgeInsets.only(left: 10.0,top: 8.0,bottom: 8.0,right: 8.0),
                 child: InkWell(
                   onTap: (){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CategorySearchList(_categoryList[index].id!)),
+                    );
                   },
                   child: Container(
                       alignment: Alignment.center,
@@ -51,7 +55,8 @@ class _ServicesInHopePageState extends BaseState {
                       decoration: BoxDecoration(
                         color: Colors.black,
                         image: DecorationImage(
-                          image: AssetImage("Images/HomepageBannerImage3.png"),
+                         // image: AssetImage("Images/HomepageBannerImage3.png"),
+                          image: NetworkImage(_categoryList[index].faIcon!),
                           fit: BoxFit.cover,
                           opacity:150,
                         ),

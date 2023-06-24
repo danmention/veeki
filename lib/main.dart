@@ -1,3 +1,5 @@
+
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +15,13 @@ import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/utils/route.dart';
 import 'package:veeki/widgets/SplashScreen.dart';
 import 'package:veeki/widgets/notificationDialog.dart';
+import 'AcceptRejectScreen.dart';
 import 'HomePage.dart';
 import 'LoginScreen.dart';
 import 'Notifications.dart';
 import 'Profile.dart';
 import 'firebase_options.dart';
+import 'models/businessLayer/global.dart';
 import 'models/response/service_response.dart';
 
 
@@ -40,6 +44,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 
   print("Handling a background message: ${message.messageId}");
+
+
 }
 
 
@@ -109,7 +115,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      title: 'Veeeki',
+      title: 'Veeki',
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.generateRoute,
 
@@ -164,14 +170,14 @@ Service service = new Service();
 
   @override
   void initState() {
-    requestPermission();
+   // requestPermission();
 
     initializeNotifications();
     createNotificationChannel();
     configureFirebaseMessaging();
     // TODO: implement initState
     super.initState();
-   // setupInterractedMessage();
+    setupInterractedMessage();
   }
 
 
@@ -238,11 +244,21 @@ Service service = new Service();
     print("i feel blessed");
 
     if(message.notification != null){
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => NotificationDialog(rideDetails: service,),
-      );
+      // assetsAudioPlayer.open(Audio("assets/alert.mp3"));
+      // assetsAudioPlayer.play();
+          if(message.notification!.title!.contains("accepted")){
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => AcceptRejectScreen(status: 1)));
+          }else{
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) => NotificationDialog(title:   message.notification?.title ,body:message.notification?.body ),
+            );
+
+
+          }
+
             // Navigator.of(context).push(
             //     MaterialPageRoute(builder: (context) => Notifications())
             // );
@@ -251,27 +267,22 @@ Service service = new Service();
 
     if(message.data['type']=="booking"){
       print("new guy in the block  boss");
+
+
       showDialog(
-          context: context,
-          builder: (_) {
-            return AlertDialog(
-              title: Text("kool"),
-              content: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text("lovely ")],
-                ),
-              ),
-            );
-          });
-
-
-
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => Notifications())
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => NotificationDialog(title: message.notification?.title ,body:message.notification?.body ),
       );
 
+      // Navigator.of(context).push(
+      //     MaterialPageRoute(builder: (context) => Notifications())
+      // );
 
+
+    }else if(message.data['type']=="user"){
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => AcceptRejectScreen(status: 1)));
     }
   }
 
@@ -302,36 +313,33 @@ Service service = new Service();
 
   void _handleMessageOpenBackground(RemoteMessage message) {
     print('message from app is that was in the background');
+
     _handleMessageOpen(message);
   }
   //
   void _handleMessageOpen(RemoteMessage message) {
         if(message.data['type']=="booking"){
-print("og  boss");
-          // showDialog(
-          //     context: context,
-          //     builder: (_) {
-          //       return AlertDialog(
-          //         title: Text("kool"),
-          //         content: SingleChildScrollView(
-          //           child: Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             children: [Text("lovely ")],
-          //           ),
-          //         ),
-          //       );
-          //     });
+print("og  boss${message.data['body']}");
 
 
+            // assetsAudioPlayer.open(Audio("assets/alert.mp3"));
+            //  assetsAudioPlayer.setVolume(0.9);
+            // assetsAudioPlayer.play();
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) => NotificationDialog(body: message.data['body'],title:message.data['title'] ,),
+            );
 
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => Notifications())
-        );
+        // Navigator.of(context).push(
+        //     MaterialPageRoute(builder: (context) => Notifications())
+        // );
 
 
-        }else{
+        }else if(message.data['type']=="user"){
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => AcceptRejectScreen(status: 1)));
 
-          Navigator.pushNamed(context, 'resetpassword');
         }
   }
   //
@@ -341,27 +349,27 @@ print("og  boss");
       _handleMessageOpen(message);
   }
 
-  void requestPermission() async{
-
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      print('User granted provisional permission');
-    } else {
-      print('User declined or has not accepted permission');
-    }
-  }
+  // void requestPermission() async{
+  //
+  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //
+  //   NotificationSettings settings = await messaging.requestPermission(
+  //     alert: true,
+  //     announcement: false,
+  //     badge: true,
+  //     carPlay: false,
+  //     criticalAlert: false,
+  //     provisional: false,
+  //     sound: true,
+  //   );
+  //
+  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  //     print('User granted permission');
+  //   } else if (settings.authorizationStatus ==
+  //       AuthorizationStatus.provisional) {
+  //     print('User granted provisional permission');
+  //   } else {
+  //     print('User declined or has not accepted permission');
+  //   }
+  // }
 }

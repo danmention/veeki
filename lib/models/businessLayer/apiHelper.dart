@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
 
 
@@ -24,6 +25,7 @@ import '../response/state_response.dart';
 import '../response/testimony_response.dart';
 
 import '../response/category_response.dart';
+import '../response/view_my_booking.dart';
 import '../termsAndConditionModel.dart';
 
 import '../userModel.dart';
@@ -83,6 +85,8 @@ class APIHelper {
       print("Exception - getAllCategory " + e.toString());
     }
   }
+
+
   Future<dynamic> updateProfileImage({int? id, File? user_image,}) async {
     try {
       Response response;
@@ -236,6 +240,28 @@ class APIHelper {
     }
   }
 
+  Future<dynamic> getAllMyBooking( String userid) async {
+    try {
+      final response = await http.get(
+        Uri.parse("${global.baseUrl}user/booking/${userid}"),
+        headers: await global.getApiHeaders(true),
+
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = List<MyBooking>.from(json.decode(response.body)["data"].map((x) => MyBooking.fromJson(x)));
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - getallmybooking(): " + e.toString());
+    }
+  }
+
+
+
 
   Future<dynamic> getAllService( int pageNumber, ) async {
     try {
@@ -329,25 +355,16 @@ class APIHelper {
 
 
 
-  Future<dynamic> bookingstatus({int?id, String? status,}) async {
+  Future<dynamic> bookingstatus({  String? id, int? status,}) async {
     try {
-      final response = await http.post(
-        Uri.parse("${global.baseUrl}user/booking/booking-status"),
+      final response = await http.get(
+        Uri.parse("${global.baseUrl}user/booking/booking-status?id=$id&&status=$status"),
         headers: await global.getApiHeaders(true),
-        body: json.encode(
-            {
-              "id" : id,
-              "status": status,
 
-            }
-
-        ),
       );
 
       dynamic recordList;
       if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
-        recordList = CurrentUser.fromJson(json.decode(response.body)["data"]);
-      } else {
         recordList = null;
       }
       return getAPIResult(response, recordList);
@@ -356,31 +373,17 @@ class APIHelper {
     }
   }
 
+
   Future<dynamic> bookappointment(BookingRequest bookingRequest) async {
     try {
 
       var item =    json.encode(bookingRequest);
 
-print(item);
+      print(item);
       final response = await http.post(
         Uri.parse("${global.baseUrl}user/booking/create"),
         headers: await global.getApiHeaders(true),
         body: json.encode(bookingRequest
-            // {
-            //   "user_id" : user_id,
-            //   "caregiver_user_id": caregiver_user_id,
-            //   "service_id" : service_id,
-            //   "number_of_hour" : number_of_hour,
-            //   "amount": amount,
-            //   "date": date,
-            //   "time_from": time_from,
-            //   "time_to": time_to,
-            //   "street_address" : street_address,
-            //   "popular_land_mark" :popular_land_mark,
-            //   "area" :area
-            //
-            //
-            // }
 
         ),
       );
@@ -398,7 +401,52 @@ print(item);
   }
 
 
-  Future<dynamic> pushnotification(String token) async {
+
+
+  Future<dynamic> pushnotificationuser(String token, String amount,String user,) async {
+    try {
+
+      final Map<String, String> tokenData = {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + global.pushnoticationserverkey
+      };
+      final response = await http.post(
+        Uri.parse("https://fcm.googleapis.com/fcm/send"),
+        headers:tokenData,
+        body: json.encode(
+
+            {
+              "to":token,
+              "collapse_key" : "type_a",
+              "notification" : {
+                "body" : amount,
+                "title": user,
+                "sound": "default"
+              },
+              "data" : {
+                "body" : amount,
+                "type": "user",
+                "title" : user,
+                "sound": "default"
+              }
+
+            }
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 ) {
+        recordList = PushNotificationResponse.fromJson(json.decode(response.body)["results"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - sendnoticationservice(): " + e.toString());
+    }
+  }
+
+  Future<dynamic> pushnotification(String token, String amount,String user,) async {
     try {
 
       final Map<String, String> tokenData = {
@@ -412,19 +460,16 @@ print(item);
 
             {
              "to":token,
-   //           "to":"fYhP-PHRR6Oy4FWkM2XkZV:APA91bFEkBR1tQKzzUfncsU4fgI5luxl2r-EQ0FkIM435NCDGCmspAwu2v4Se6cZjtnF-b1oDHDtzSnzlohoZt9-cxsgK03kLzL0TwC2RTmh1TokgcfYyaRGdNj8OQtJ2UkleOohIR47",
-// "to":"evDpi60RSUmDp5t_vRAzfy:APA91bFQexa8BbiMIVOiGtteqSNcIhHWLC9bXerhOasbUm5cx5bRYHTV8QbYmyjkbxx4iKmTU-sauNFBrj43a4h7EImQAfZgEV_WJJI6OhyEIpLCoUVKolYHeqckn7TE368jQ_Jlz08i",
-              "collapse_key" : "type_a",
+             "collapse_key" : "type_a",
               "notification" : {
-                "body" : "Body of Your Notification",
-                "title": "Title of Your Notification",
+                "body" : amount,
+                "title": user,
                 "sound": "default"
               },
               "data" : {
-                "body" : "Body of Your Notification in Data",
+                "body" : amount,
                 "type": "booking",
-                "key_1" : "Value for key_1",
-                "key_2" : "Value for key_2",
+                "title" : user,
                 "sound": "default"
               }
 

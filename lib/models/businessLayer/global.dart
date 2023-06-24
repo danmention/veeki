@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +12,7 @@ import '../userModel.dart';
 
 
 
-
+final assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
 String? appDeviceId;
 String appName = 'Veeki';
 String appShareMessage = "I'm inviting you to use $appName, a simple and easy app to find saloon services and products near by your location. Here's my code [CODE] - jusy enter it while registration.";
@@ -27,13 +28,14 @@ String? currentLocation;
 String? lat;
 String? lng;
 bool isGoogleMap = false;
+
 // MapBoxModel mapBoxModel = new MapBoxModel();
 // GoogleMapModel mapGBoxModel = new GoogleMapModel();
 
 SharedPreferences? sp;
 LoginResponse loginResponse = new LoginResponse();
 CurrentUser user = new CurrentUser();
-
+String? firebaseToken;
 TokenData token = TokenData();
 
 
@@ -45,6 +47,8 @@ Future<Map<String, String>> getApiHeaders(bool authorizationRequired) async {
 
       user = CurrentUser.fromJson(json.decode(sp!.getString("currentUser")??" "));
       TokenData token = TokenData.fromJson(json.decode(sp!.getString("currentToken")??" "));
+      firebaseToken = user.instagram;
+
 
 
 

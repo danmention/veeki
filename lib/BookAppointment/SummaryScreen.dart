@@ -8,15 +8,16 @@ import 'package:veeki/BookAppointment/AppointmentsScreen.dart';
 import 'package:veeki/BookAppointment/ChooseServiceScreen.dart';
 import 'package:veeki/BookAppointment/Payment.dart';
 import 'package:veeki/utils/global.colors.dart';
+import 'package:veeki/widgets/appbar.dart';
 import 'package:veeki/widgets/available.slots.dart';
 import 'package:veeki/widgets/text.form.global.dart';
-
+import '../booking_provider.dart';
 import '../models/businessLayer/base.dart';
 import '../models/request/booking_request.dart';
 import '../models/response/booknow.dart';
 import '../models/response/service_response.dart';
 import '../widgets/BookAppointmentBottomNavBar.dart';
-import '../widgets/Calendar.dart';
+import 'package:veeki/widgets/appbar.dart';
 import '../widgets/back.button.global.dart';
 
 import '../widgets/ProgressBar.dart';
@@ -42,33 +43,36 @@ class _SummaryScreenState extends BaseState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+        // appBar:   AppBar( backgroundColor: Colors.transparent,
+        //   elevation: 0,
+        //   leading: const BackButton(
+        //     color: Colors.black, // <-- SEE HERE
+        //   ),
+        //
+        // ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
             width: double.infinity,
 
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    BackButtonGlobal(
-                      widget: AppointmentsScreen(),
-                    ),
-                    Text(
-                      'Book an appointment',
-                      style: TextStyle(
-                          color: GlobalColors.textColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
+                Stack(
+                  alignment: Alignment.topLeft,
+                  children: <Widget>[
 
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                    )
                   ],
                 ),
                 SizedBox(
-                    height: 70,
+                    height: 60,
                     width: double.infinity,
                     child: ProgressBar(processindex: 2,)
                 ),
@@ -87,8 +91,8 @@ class _SummaryScreenState extends BaseState {
 
                     child: Column(
                       children: [
-                        TableInformation(text1: "Appointment time :",text2: "12:00PM, 03 oct 2023",icon: Icons.access_time,),
-                        TableInformation(text1: "Barbershop :",text2: "Unique Salon",icon: Icons.store,),
+                        //TableInformation(text1: "Appointment time :",text2: "12:00PM, 03 oct 2023",icon: Icons.access_time,),
+                        TableInformation(text1: "Barbershops :",text2: "Unique Salon",icon: Icons.store,),
                         TableInformation(text1: "Service :",text2: service!.title!,icon: Icons.cut_outlined,),
                         TableInformation(text1: "Location :",text2: bookingRequest!.streetAddress!,icon: Icons.location_on_outlined,),
                         TableInformation(text1: "Therapist :",text2: service!.user!.first.fullName!,icon: Icons.person_2_outlined,),
@@ -96,18 +100,18 @@ class _SummaryScreenState extends BaseState {
                   ),
                 ),
                 ),
-                SizedBox(height: 50,),
+                SizedBox(height: 30,),
                 Container(
                   padding: EdgeInsets.only(left: 30,right: 30),
                   child: Row(
                     children: [
-                      VoucherCouponsRewards(text: "Vouchers",),
+                      //VoucherCouponsRewards(text: "Vouchers",),
 
                       SizedBox(width: 3,),
-                      VoucherCouponsRewards(text: "Coupons",),
+                  //    VoucherCouponsRewards(text: "Coupons",),
 
-                      SizedBox(width: 3,),
-                      VoucherCouponsRewards(text: "Rewards",),
+                      // SizedBox(width: 3,),
+                      // VoucherCouponsRewards(text: "Rewards",),
                     ],
                   ),
                 ),
@@ -139,26 +143,27 @@ class _SummaryScreenState extends BaseState {
                 ),
                 SizedBox(height: 30,),
 
-                    Text("Get discount :",
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
-                    ),
+                    // Text("Get discount :",
+                    // style: TextStyle(
+                    //   fontSize: 12,
+                    // ),
+                    // ),
                 SizedBox(height: 10,),
-                TextFormGlobal(
-                    controller: rewardpointController,
-                    text: "reward points",
-                    textInputType: TextInputType.text,
-                    obscure: false
-                ),
-                SizedBox(height: 10,),
+                // TextFormGlobal(
+                //     controller: rewardpointController,
+                //     text: "reward points",
+                //     textInputType: TextInputType.text,
+                //     obscure: false
+                // ),
+                //SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
                       onTap: (){
+
                         notifyCaregiver();
-                       // bookapointment();
+                      // bookapointment();
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -206,16 +211,43 @@ class _SummaryScreenState extends BaseState {
 void notifyCaregiver()async{
 
 
-  await apiHelper!.pushnotification(service!.user!.first.instagram!).then((result) async {
+  //₦${ref.watch(myprovider).initialAmount??"0.00"}
+  await apiHelper!.pushnotification(service!.user!.first.instagram!,
+     // "₦${ref.watch(myprovider).initialAmount??"0.00"}",
+     // "${bookingRequest!.streetAddress!}+${global.user.instagram}",
+      "${global.user.instagram}",
+      "${global.user.fullName}" ).then((result) async {
     if (result != null) {
       if (result.success == "1") {
 
-        showSnack(snackBarMessage: " hello we are cool ");
+        print(' did it get here ');
+
+      //  showSnack(snackBarMessage: " Notice sent");
 
       }
     }
   });
 }
+
+  // void notifyUser()async{
+  //
+  //
+  //   //₦${ref.watch(myprovider).initialAmount??"0.00"}
+  //   await apiHelper!.pushnotification(global.user.instagram!,
+  //       // "₦${ref.watch(myprovider).initialAmount??"0.00"}",
+  //      // "${bookingRequest!.streetAddress!}",
+  //       "${bookingRequest!.streetAddress!}",
+  //       "${service!.user![0].fullName}" ).then((result) async {
+  //     if (result != null) {
+  //       if (result.success == "1") {
+  //         print(' did it get here ');
+  //
+  //         //  showSnack(snackBarMessage: " Notice sent");
+  //
+  //       }
+  //     }
+  //   });
+  // }
 
   void bookapointment() async{
     try {

@@ -357,6 +357,8 @@ class _RecommendedBarbershopInHomePageState extends BaseState {
               }),
         ));
   }
+
+
   @override
   void initState() {
     _init();

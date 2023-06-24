@@ -105,6 +105,8 @@ class _ResetPasswordScreenState extends BaseState {
                 ),
                 const SizedBox(height: 40),
 
+                Text(global.firebaseToken!),
+
                 ButtonGlobal(
                   ontap:(){_changePassword();} ,
                   text: 'Reset Password',

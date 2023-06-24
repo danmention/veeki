@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:veeki/Profile_Edit.dart';
+import 'package:veeki/BookAppointment/ViewBookingScreen.dart';
 
 import '../HomePage.dart';
 import '../LoginScreen.dart';
@@ -27,7 +28,8 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => Profile());
       case "resetpassword":
         return MaterialPageRoute(builder: (_) => ResetPasswordScreen());
-
+      case "viewbooking":
+        return MaterialPageRoute(builder: (_) => ViewBookingScreen());
       default:
         return MaterialPageRoute(builder: (_) => LoginScreen());
     }

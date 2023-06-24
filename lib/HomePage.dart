@@ -7,6 +7,7 @@ import 'package:veeki/Notifications.dart';
 import 'package:veeki/PopularBarbers.dart';
 import 'package:veeki/Products.dart';
 import 'package:veeki/Profile.dart';
+import 'package:veeki/ServiceList.dart';
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/widgets/BottomNavBar.dart';
 import 'package:veeki/widgets/PopularBarbersInHomePage.dart';
@@ -96,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                                       color: Colors.white
                                     ),
                                   ): Text(
-                              "John Doe",
+                              "Hi Buddy",
                               style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
@@ -131,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                                          ),
                                        ),
                                      ],): Text(
-                                        "Liverpool, United Kingdom",
+                                        "Ikeja, Lagos",
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold,
@@ -208,7 +209,13 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Recommeded Services",style: TextStyle(fontWeight: FontWeight.bold,),),
-                            Text("See more",style: TextStyle(color: GlobalColors.primaryColor),)
+                            GestureDetector(
+                                onTap: (){
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => ServiceList()),
+                                  );
+                                },
+                                child: Text("See more",style: TextStyle(color: GlobalColors.primaryColor),))
                           ],
                         ),
                       ),
@@ -237,11 +244,16 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
-                      Container(
-                          margin: EdgeInsets.only(top: 15),
-                          height: 100,
-                          child: PopularBarbersInHomePage()
-                      ),
+                      // Container(
+                      //     margin: EdgeInsets.only(top: 15),
+                      //     height: 100,
+                      //     child: PopularBarbersInHomePage()
+                      // ),
+
+
+
+
+
                       // Padding(
                       //   padding: const EdgeInsets.only(top: 10.0),
                       //   child: Row(

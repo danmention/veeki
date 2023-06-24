@@ -202,7 +202,7 @@ class _LoginScrrenState extends BaseState{
       if (_cEmail.text.isNotEmpty && _cPassword.text.isNotEmpty && EmailValidator.validate(_cEmail.text) ) {
         bool isConnected = await br!.checkConnectivity();
         if (isConnected) {
-         // showOnlyLoaderDialog();
+        // showOnlyLoaderDialog();
           await apiHelper!.loginWithEmail(_user).then((result) async {
             if (result != null) {
               if (result.resp_code == "00") {
@@ -216,10 +216,13 @@ class _LoginScrrenState extends BaseState{
 
                 box = await Hive.openBox("user");
                 box!.put('email', '${global.user.email}');
+
+
+                print("This is the key of the house >>>>>>>>>>>>>>>>>${global.firebaseToken}");
                 // global.sp?.setString('email',_cEmail.text );
                 //
                 // hideLoader();
-                 hideLoader();
+                // hideLoader();
 
 
 
@@ -247,7 +250,7 @@ class _LoginScrrenState extends BaseState{
 
               else if(result.resp_code =="01")
               {
-                hideLoader();
+                //hideLoader();
                 showSnack(snackBarMessage: result.resp_message.toString());
               }
 

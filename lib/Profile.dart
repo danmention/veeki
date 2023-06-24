@@ -60,7 +60,7 @@ class _ProfileState extends BaseState{
                 ),
                 Container(
                   //margin: EdgeInsets.only(bottom: 50),
-                  height: 280,
+                  height: 310,
                   child:Column(
 
                     children: [
@@ -177,6 +177,14 @@ class _ProfileState extends BaseState{
                           fontSize: 20,fontFamily: 'Lato',
                         ),
                       ),
+
+                      Text(
+                        '${global.user.role}',
+                        style: TextStyle(
+
+                          fontSize: 10,fontFamily: 'Lato',
+                        ),
+                      ),
                       Row(
                         children: [
                           Text('Are you available for work ? ',   style: TextStyle(
@@ -211,7 +219,11 @@ class _ProfileState extends BaseState{
                     },
                     child: ProfileButton(text1: "Account Settings", text2: "Name, email, address, contact number", icon: Icons.person)),
                 ProfileButton(text1: "Payment Method", text2: "Add a new payment card", icon: Icons.credit_card_outlined),
-                 ProfileButton(text1: "Booking Management", text2: "Manage your booking system", icon: Icons.cases_outlined),
+                 GestureDetector(
+                     onTap: (){
+                       nextScreen(context, "viewbooking");
+                     },
+                     child: ProfileButton(text1: "Booking Management", text2: "Manage your booking system", icon: Icons.cases_outlined)),
                 // ProfileButton(text1: "Reward points program", text2: "You've 50 reward points", icon: Icons.card_giftcard_outlined),
                // ProfileButton(text1: "Pricing and offers", text2: "Get every week special offers and affor...", icon: Icons.local_offer_outlined),
                 GestureDetector(

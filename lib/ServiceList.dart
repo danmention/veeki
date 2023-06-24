@@ -1,51 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+
 import 'package:veeki/widgets/CardButton.dart';
 
 import 'CategorySearchList.dart';
+import 'Details.dart';
+import 'ServiceSearchList.dart';
 import 'models/businessLayer/base.dart';
 import 'models/response/category_response.dart';
+import 'models/response/service_response.dart';
 
-class CategoryList extends Base{
+class ServiceList extends Base{
   @override
-  _CategoryListState createState() => _CategoryListState();
-  CategoryList ({Key? key,});
+  _ServiceListState createState() => _ServiceListState();
+  ServiceList ({Key? key,});
+
+ // List<Service>? servicelist;
 }
 
-class _CategoryListState extends BaseState {
+class _ServiceListState extends BaseState {
   bool _isDataLoaded = false;
   bool _isRecordPending = true;
-  List<Category> _categoryList = [];
-
+  List<Service> _serviceList = [];
+ // _ServiceListState(this._serviceList);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Popular Categories', style: AppBarTheme.of(context).titleTextStyle),
+        title: Text('Recent Services', style: AppBarTheme.of(context).titleTextStyle),
 
       ),
       body:
       _isDataLoaded
           ?
 
-      _categoryList.length > 0
+      _serviceList.length > 0
           ?
 
 
       ListView.builder(
           shrinkWrap: true,
-          itemCount: _categoryList.length,
+          itemCount: _serviceList.length,
           itemBuilder: (context, index){
             return Padding(
               padding: const EdgeInsets.only(left: 10.0,top: 8.0,bottom: 8.0,right: 8.0),
               child: InkWell(
                 onTap: (){
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => CategorySearchList(_categoryList[index].id!)),
+                    MaterialPageRoute(builder: (context) => Details(service:_serviceList[index])),
                   );
                 },
                 child:
-                Expanded(child: CardButtonCategory(text1: "${ _categoryList[index].title??""}", text2: "${ _categoryList[index].status??""}",  image: "assets/nurse.jpeg")),
+                CardButton(text1: "${ _serviceList[index].title??""}",text2:"${ _serviceList[index].amount??""}/hr",  text3: "${ _serviceList[index].user![0].city??""}",text4: "${ _serviceList[index].user![0].state??""}",  image: "${ _serviceList[index].images![0].images??""}"),
 
                 // CardButton(text1: "${ _categoryList[index].title??""}", text2: "BarberShop (650)", image: "Images/clippers.png"),
 
@@ -159,34 +165,36 @@ class _CategoryListState extends BaseState {
   }
   @override
   void initState() {
-    _init();
+   _init();
     // TODO: implement initState
     super.initState();
   }
 
-  _getAllCategory() async {
+
+int pageNumber = 1;
+  _getAllService() async {
     try {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
         // showOnlyLoaderDialog();
         if (_isRecordPending) {
-          await apiHelper?.getAllCategory().then((result) {
+          await apiHelper?.getAllService(pageNumber).then((result) {
             // hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
-                List<Category> _tList = result.recordList;
+                List<Service> _tList = result.recordList;
 
                 if (_tList.isEmpty) {
                   _isRecordPending = false;
                 }
 
-                _categoryList.addAll(_tList);
+                _serviceList.addAll(_tList);
 
                 setState(() {
                   //  _isMoreDataLoaded = false;
                 });
               } else {
-                _categoryList = [];
+                _serviceList = [];
               }
             }
           });
@@ -197,14 +205,14 @@ class _CategoryListState extends BaseState {
 
       }
     } catch (e) {
-      print("Exception - getcategoryScreen.dart - _getAllCategorylist():" +
+      print("Exception - getserviceScreen.dart - _getAllServicelist():" +
           e.toString());
     }
   }
 
   _init() async {
     try {
-      await  _getAllCategory() ;
+      await  _getAllService() ;
 
       _isDataLoaded = true;
       setState(() {});

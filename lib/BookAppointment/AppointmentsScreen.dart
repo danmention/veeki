@@ -30,48 +30,82 @@ class _AppointmentsScreenState extends BaseState{
  TextEditingController _carea = TextEditingController();
  TextEditingController _chours = TextEditingController();
  BookingRequest bookingRequest = BookingRequest();
+ //BookingRequest?  bookingRequest ;
+ BookingRequest? bookingRequestitem ;
+
+
  var list = ['7:00AM','8:00AM','9:00AM','10:00AM','11:00AM','12:00PM',
    '1:00PM','2:00PM','3:00PM','4:00PM','5:00PM','6:00PM','7:00PM','8:00PM','9:00PM', '10:00PM'];
  _AppointmentsScreenState(this.service);
  Service? service;
+ int? initAmount;
 
-  @override
+
+
+ @override
   Widget build(BuildContext context) {
-    return Scaffold(
+   initAmount = int.tryParse(service!.amount!)??0;
+   ref.watch(myprovider).initamount(initAmount!);
+ // ref.watch(myprovider).addService(service!) ;
+   // bookingRequest =  ref.watch(myprovider).bookingRequestitem;
 
+
+     // initAmount = int.tryParse(service!.amount!)??0;
+     // ref.watch(myprovider).initamount(initAmount!);
+
+    return Scaffold(
+      // appBar: AppBar( backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   leading: const BackButton(
+      //     color: Colors.black, // <-- SEE HERE
+      //   ),
+      //
+      // ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
             width: double.infinity,
 
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    BackButtonGlobal(
-                      widget: Details(),
-                    ),
-                    Text(
-                      'Book an appointment',
-                      style: TextStyle(
-                          color: GlobalColors.textColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
+                Stack(
+                  alignment: Alignment.topLeft,
+                  children: <Widget>[
 
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                    )
                   ],
                 ),
+                // Row(
+                //   children: [
+                //     // BackButtonGlobal(
+                //     //   widget: Details(),
+                //     // ),
+                //     Text(
+                //       'Book an appointment',
+                //       style: TextStyle(
+                //           color: GlobalColors.textColor,
+                //           fontSize: 20,
+                //           fontWeight: FontWeight.bold),
+                //     ),
+                //
+                //   ],
+                // ),
                 SizedBox(
-                  height: 70,
+                  height: 30,
                     width: double.infinity,
                     child: ProgressBar(processindex: 1,)
                 ),
 
 
                 Padding(
-                  padding: const EdgeInsets.only(top: 0.0),
+                  padding: const EdgeInsets.only(top: 10.0),
                   child: SizedBox(
                     height: 123,
                       child:
@@ -136,9 +170,10 @@ class _AppointmentsScreenState extends BaseState{
                         controller: _chours,
                         keyboardType: TextInputType.number,
                         onChanged: (value){
-                          int serviceamt = int.tryParse(service!.amount!)??0;
-                          var amt  =  int.tryParse(value) ?? 0;
-                          var result = serviceamt *amt;
+                        //  int serviceamt = int.tryParse(service!.amount!)??0;
+
+                          int amt  =  int.tryParse(value) ?? 0;
+                          var result = initAmount! *amt;
                           ref.watch(myprovider).calculatedamount(result);
 
                         },
@@ -233,38 +268,38 @@ class _AppointmentsScreenState extends BaseState{
                 // ),
 
                 SizedBox(height: 40,),
-                Container(
-                  height: 20,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Theme(
-                          data: ThemeData(
-                              unselectedWidgetColor: Color(0xff138D1f)),
-                          child: Container(
-                            child: Row(
-                              children: <Widget>[
-                                Checkbox(
-                                  value: true,
-                                  checkColor: Colors.white,
-                                  activeColor: GlobalColors.primaryColor,
-                                  onChanged: (value) {
-                                    value = false;
-                                  },
-
-                                ),
-                                Text(
-                                  'Remind me 30 mins in advance',
-                                  style: TextStyle(
-                                    color: GlobalColors.textColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   height: 20,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: <Widget>[
+                //       Theme(
+                //           data: ThemeData(
+                //               unselectedWidgetColor: Color(0xff138D1f)),
+                //           child: Container(
+                //             child: Row(
+                //               children: <Widget>[
+                //                 Checkbox(
+                //                   value: true,
+                //                   checkColor: Colors.white,
+                //                   activeColor: GlobalColors.primaryColor,
+                //                   onChanged: (value) {
+                //                     value = false;
+                //                   },
+                //
+                //                 ),
+                //                 Text(
+                //                   'Remind me 30 mins in advance',
+                //                   style: TextStyle(
+                //                     color: GlobalColors.textColor,
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //           )),
+                //     ],
+                //   ),
+                // ),
           ],
             ),
 
@@ -305,7 +340,8 @@ class _AppointmentsScreenState extends BaseState{
                 Text("Total cost ",style: TextStyle(color: Colors.white),),
                 ref.watch(myprovider).calculatedCost !=0?
                 Text("₦${ ref.watch(myprovider).calculatedCost}",style: TextStyle(color: GlobalColors.primaryColor,fontWeight: FontWeight.w500, fontSize: 22),):
-                Text("₦${service?.amount??"0.00"}",style: TextStyle(color: GlobalColors.primaryColor,fontWeight: FontWeight.w500, fontSize: 22),),
+                //Text("₦${service?.amount??"0.00"}",style: TextStyle(color: GlobalColors.primaryColor,fontWeight: FontWeight.w500, fontSize: 22),),
+                Text("₦${ref.watch(myprovider).initialAmount??"0.00"}",style: TextStyle(color: GlobalColors.primaryColor,fontWeight: FontWeight.w500, fontSize: 22),),
               ],
             ),
             InkWell(
@@ -432,6 +468,8 @@ Widget timeslot(){
 
      int caregiver_id = int.tryParse(service!.userId!)??0;
 
+
+
      bookingRequest.streetAddress = _caddress.text.trim();
      bookingRequest.area = _carea.text.trim();
      bookingRequest.popularLandMark = _clandmark.text.trim();
@@ -443,19 +481,11 @@ Widget timeslot(){
      bookingRequest.userId = global.user.id!;
      bookingRequest.timeTo = "11:53:25";
 
-
+     ref.watch(myprovider).bookingRequestitem = bookingRequest;
+     print("this is the cool service good ${ref.watch(myprovider).bookedService.user![0].fullName}");
      Navigator.of(context).push(
        MaterialPageRoute(builder: (context) => SummaryScreen(bookingRequest: bookingRequest,service: service,)),
      );
-
-
-
-
-
-
-
-
-
 
 
    } catch (e) {
@@ -465,8 +495,12 @@ Widget timeslot(){
 
  var formatter = new DateFormat('yyyy-MM-dd');
 
+
+
+
  void initState(){
    super.initState();
+
    ref.read(myprovider).calculatedCost =0;
    ChosenTimeSlot = "";
  }

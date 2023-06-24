@@ -2,7 +2,8 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:veeki/BookAppointment/ChooseServiceScreen.dart';
+import 'package:veeki/booking_provider.dart';
+
 import 'package:veeki/models/response/service_response.dart';
 import 'package:veeki/photo_view_page.dart';
 import 'package:veeki/utils/global.colors.dart';
@@ -41,15 +42,22 @@ class _DetailsState extends BaseState{
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
+                  width: 600,
                   height: 170,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image:AssetImage("Images/HomepageBannerImage.png"),
-                    fit: BoxFit.cover,
+                      image:AssetImage("assets/tera.jpg"),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.4),
+                          BlendMode.darken
+                      ),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  child:
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -90,10 +98,10 @@ class _DetailsState extends BaseState{
                                             children: [
                                               Text("${service!.amount}",
                                                 style: TextStyle(
-                                                    fontSize: 13,
+                                                    fontSize: 15,
                                                     color: Colors.white,
                                                   fontFamily: 'Roboto',
-                                                  fontWeight: FontWeight.w700,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),SizedBox(width: 2,),
 
@@ -164,6 +172,8 @@ class _DetailsState extends BaseState{
                     ),
                   ),
                 ),
+
+
                 Container(
                   height: 50,
                   decoration: BoxDecoration(
@@ -289,8 +299,10 @@ getimages()async{
        SizedBox(height: 20,),
        InkWell(
          onTap: (){
+
+           ref.watch(myprovider).addService(service!) ;
            Navigator.of(context).push(
-             MaterialPageRoute(builder: (context) => AppointmentsScreen(service: service,)),
+             MaterialPageRoute(builder: (context) => AppointmentsScreen(service: service??Service(),)),
            );
          },
          child: Container(

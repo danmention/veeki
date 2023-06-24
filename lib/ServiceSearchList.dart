@@ -13,16 +13,16 @@ import 'models/businessLayer/base.dart';
 import 'models/response/category_response.dart';
 import 'models/response/service_response.dart';
 
-class CategorySearchList extends Base{
+class ServiceSearchList extends Base{
   @override
-  _CategorySearchListState createState() => _CategorySearchListState(this.cat_id);
-  CategorySearchList (this.cat_id);
+  _ServiceSearchListState createState() => _ServiceSearchListState(this.cat_id);
+  ServiceSearchList (this.cat_id);
 
   final int cat_id;
 }
 
-class _CategorySearchListState extends BaseState {
-  _CategorySearchListState(this.cat_id);
+class _ServiceSearchListState extends BaseState {
+  _ServiceSearchListState(this.cat_id);
 
   int cat_id;
   bool _isDataLoaded = false;
