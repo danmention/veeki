@@ -44,9 +44,11 @@ class _AppointmentsScreenState extends BaseState{
 
  @override
   Widget build(BuildContext context) {
-   initAmount = int.tryParse(service!.amount!)??0;
-   ref.watch(myprovider).initamount(initAmount!);
- // ref.watch(myprovider).addService(service!) ;
+   // initAmount = int.tryParse(service!.amount!)??0;
+   // ref.watch(myprovider).initamount(initAmount!);
+
+
+   // ref.watch(myprovider).addService(service!) ;
    // bookingRequest =  ref.watch(myprovider).bookingRequestitem;
 
 
@@ -341,7 +343,7 @@ class _AppointmentsScreenState extends BaseState{
                 ref.watch(myprovider).calculatedCost !=0?
                 Text("₦${ ref.watch(myprovider).calculatedCost}",style: TextStyle(color: GlobalColors.primaryColor,fontWeight: FontWeight.w500, fontSize: 22),):
                 //Text("₦${service?.amount??"0.00"}",style: TextStyle(color: GlobalColors.primaryColor,fontWeight: FontWeight.w500, fontSize: 22),),
-                Text("₦${ref.watch(myprovider).initialAmount??"0.00"}",style: TextStyle(color: GlobalColors.primaryColor,fontWeight: FontWeight.w500, fontSize: 22),),
+                Text("₦${service!.amount!??"0.00"}",style: TextStyle(color: GlobalColors.primaryColor,fontWeight: FontWeight.w500, fontSize: 22),),
               ],
             ),
             InkWell(
@@ -483,6 +485,8 @@ Widget timeslot(){
 
      ref.watch(myprovider).bookingRequestitem = bookingRequest;
      print("this is the cool service good ${ref.watch(myprovider).bookedService.user![0].fullName}");
+
+
      Navigator.of(context).push(
        MaterialPageRoute(builder: (context) => SummaryScreen(bookingRequest: bookingRequest,service: service,)),
      );
@@ -496,11 +500,14 @@ Widget timeslot(){
  var formatter = new DateFormat('yyyy-MM-dd');
 
 
-
+init()async{
+  initAmount = int.tryParse(service!.amount!)??0;
+  ref.watch(myprovider).initamount(initAmount!);
+}
 
  void initState(){
    super.initState();
-
+   init();
    ref.read(myprovider).calculatedCost =0;
    ChosenTimeSlot = "";
  }

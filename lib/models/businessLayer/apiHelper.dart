@@ -446,7 +446,7 @@ class APIHelper {
     }
   }
 
-  Future<dynamic> pushnotification(String token, String amount,String user,) async {
+  Future<dynamic> pushnotification(String token, String area,String user,String usertoken) async {
     try {
 
       final Map<String, String> tokenData = {
@@ -462,14 +462,15 @@ class APIHelper {
              "to":token,
              "collapse_key" : "type_a",
               "notification" : {
-                "body" : amount,
+                "body" : area,
                 "title": user,
                 "sound": "default"
               },
               "data" : {
-                "body" : amount,
+                "body" : area,
                 "type": "booking",
                 "title" : user,
+                "usertoken":usertoken,
                 "sound": "default"
               }
 

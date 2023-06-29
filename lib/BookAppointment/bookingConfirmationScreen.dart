@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:veeki/HomePage.dart';
 
 import '../models/businessLayer/base.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
@@ -35,14 +36,19 @@ class _BookingConfirmationScreenState extends BaseState {
                 child: TextButton(
                   onPressed: () {
 
-
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                HomePage()),
+                        ModalRoute.withName('/'));
                   },
                   child: Text("Finish"),
                 ),
               )),
         ),
         body: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 120),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,14 +59,10 @@ class _BookingConfirmationScreenState extends BaseState {
                     width: double.infinity,
                     child: ProgressBar(processindex: 3,)
                 ),
-                Padding(
-                  padding: EdgeInsets.only(),
-                  child: Container(
-                    decoration: BoxDecoration(image: DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/greatekan3.png'))),
-                    width: 200,
-                    height: 200,
-                  ),
-                ),
+            SizedBox(height:50),
+
+            Icon(Icons.check_circle, size: 68,),
+               Text('Thanks for your payment!', style: TextStyle(fontSize: 22, fontFamily: 'Roboto', fontWeight: FontWeight.bold),),
                 Padding(
                   padding: const EdgeInsets.only(top: 25),
                   child: Column(
@@ -69,7 +71,7 @@ class _BookingConfirmationScreenState extends BaseState {
                     children: [
                       Text(
                         'Great' + ' ' + '${global.user.fullName}',
-                        style: Theme.of(context).primaryTextTheme.caption,
+
                       ),
                     ],
                   ),
@@ -77,8 +79,8 @@ class _BookingConfirmationScreenState extends BaseState {
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: screenId == 1
-                      ? Text('Your order has been placed successfully, please pick your items from store ASAP', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle1)
-                      : Text('Your booking has been placed successfully, you will receive a notification/sms about your booking status', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle1),
+                      ? Text('Your order has been placed successfully, please pick your items from store ASAP', textAlign: TextAlign.center, )
+                      : Text('Your booking has been placed successfully, you will receive a notification/sms about your booking status', textAlign: TextAlign.center, ),
                 ),
               ],
             ))));

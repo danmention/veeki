@@ -241,11 +241,11 @@ Service service = new Service();
       message.notification?.body ?? '',
       platformChannelSpecifics,
     );
-    print("i feel blessed");
+
 
     if(message.notification != null){
-      // assetsAudioPlayer.open(Audio("assets/alert.mp3"));
-      // assetsAudioPlayer.play();
+       // assetsAudioPlayer.open(Audio("assets/alert.mp3"));
+       // assetsAudioPlayer.play();
           if(message.notification!.title!.contains("accepted")){
             Navigator.push(context, MaterialPageRoute(
                 builder: (context) => AcceptRejectScreen(status: 1)));
@@ -253,7 +253,7 @@ Service service = new Service();
             showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (BuildContext context) => NotificationDialog(title:   message.notification?.title ,body:message.notification?.body ),
+              builder: (BuildContext context) => NotificationDialog(title:   message.notification?.title ,body:message.notification?.body,  userToken: message.data['usertoken'], ),
             );
 
 
@@ -272,7 +272,7 @@ Service service = new Service();
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => NotificationDialog(title: message.notification?.title ,body:message.notification?.body ),
+        builder: (BuildContext context) => NotificationDialog(title: message.notification?.title ,body:message.notification?.body, userToken: message.data['usertoken'], ),
       );
 
       // Navigator.of(context).push(
@@ -323,8 +323,8 @@ print("og  boss${message.data['body']}");
 
 
             // assetsAudioPlayer.open(Audio("assets/alert.mp3"));
-            //  assetsAudioPlayer.setVolume(0.9);
-            // assetsAudioPlayer.play();
+            // //  assetsAudioPlayer.setVolume(0.9);
+            //  assetsAudioPlayer.play();
             showDialog(
               context: context,
               barrierDismissible: false,

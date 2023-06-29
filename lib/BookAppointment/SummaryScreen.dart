@@ -40,8 +40,14 @@ class _SummaryScreenState extends BaseState {
   final TextEditingController rewardpointController = TextEditingController();
 
   final plugin = PaystackPlugin();
+
+  var publicKey = 'pk_test_59b09788900a513d57d5b280c1225ee6616a8ce2';
+
   @override
   Widget build(BuildContext context) {
+    print("this is the amount d ${ref.watch(myprovider).bookingRequestitem.amount}");
+
+
     return Scaffold(
         // appBar:   AppBar( backgroundColor: Colors.transparent,
         //   elevation: 0,
@@ -79,26 +85,77 @@ class _SummaryScreenState extends BaseState {
                 SizedBox(height: 50,),
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10),
-                  child: Container(
-                    height: 246,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 0,
+                  child: GestureDetector(
+                    onTap: (){
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                           // title: Text(''),
+                            //
+                            content: Container(
+                              height: 250,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                    Text("Service:"),
+                                    Expanded(child: Text(service!.title!)),
+
+                                  ],)
+                                  ,
+                                  Divider(
+                                    height: 100,
+                                    color: Colors.black,
+                                    thickness: 1,
+
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Street Address:"),
+                                      Expanded(child: Text(bookingRequest!.streetAddress!)),
+                                    ],
+                                  ),
+                                  Divider(thickness: 1.0,color: Colors.black,),
+                                  Row(
+                                    children: [
+                                      Text("Therapist:"),
+                                      Expanded(child: Text(service!.user!.first.fullName!)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      height: 246,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 0,
+                        ),
                       ),
+
+
+                      child: Column(
+                        children: [
+                          TableInformation(text1: "Time:",text2: "${bookingRequest!.timeFrom!}, ${bookingRequest!.date!}",icon: Icons.access_time,),
+                          //TableInformation(text1: "Date :",text2: bookingRequest!.date!,icon: Icons.calendar_today,),
+                          GestureDetector(child: TableInformation(text1: "Service :",text2: service!.title!,icon: Icons.cut_outlined,), onTap: (){
+
+
+                          },),
+                          TableInformation(text1: "Location :",text2: bookingRequest!.streetAddress!,icon: Icons.location_on_outlined,),
+                          TableInformation(text1: "Therapist :",text2: service!.user!.first.fullName!,icon: Icons.person_2_outlined,),
+                        ]
                     ),
-
-
-                    child: Column(
-                      children: [
-                        //TableInformation(text1: "Appointment time :",text2: "12:00PM, 03 oct 2023",icon: Icons.access_time,),
-                        TableInformation(text1: "Barbershops :",text2: "Unique Salon",icon: Icons.store,),
-                        TableInformation(text1: "Service :",text2: service!.title!,icon: Icons.cut_outlined,),
-                        TableInformation(text1: "Location :",text2: bookingRequest!.streetAddress!,icon: Icons.location_on_outlined,),
-                        TableInformation(text1: "Therapist :",text2: service!.user!.first.fullName!,icon: Icons.person_2_outlined,),
-                      ]
-                  ),
                 ),
+                  ),
                 ),
                 SizedBox(height: 30,),
                 Container(
@@ -161,9 +218,9 @@ class _SummaryScreenState extends BaseState {
                   children: [
                     GestureDetector(
                       onTap: (){
+                     //  makePayment();
 
-                        notifyCaregiver();
-                      // bookapointment();
+                       bookapointment();
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -214,9 +271,10 @@ void notifyCaregiver()async{
   //₦${ref.watch(myprovider).initialAmount??"0.00"}
   await apiHelper!.pushnotification(service!.user!.first.instagram!,
      // "₦${ref.watch(myprovider).initialAmount??"0.00"}",
-     // "${bookingRequest!.streetAddress!}+${global.user.instagram}",
-      "${global.user.instagram}",
-      "${global.user.fullName}" ).then((result) async {
+    // "${bookingRequest!.streetAddress!}+${global.user.instagram}",
+     "${bookingRequest!.streetAddress!}",
+     // "${global.user.instagram}",
+      "${global.user.fullName}", "${global.user.instagram}" ).then((result) async {
     if (result != null) {
       if (result.success == "1") {
 
@@ -249,6 +307,7 @@ void notifyCaregiver()async{
   //   });
   // }
 
+
   void bookapointment() async{
     try {
 
@@ -258,16 +317,17 @@ void notifyCaregiver()async{
       if (isConnected) {
       //  showOnlyLoaderDialog();
 
-        await apiHelper!.bookappointment( bookingRequest!  ).then((result) async {
+        await apiHelper!.bookappointment(bookingRequest! ).then((result) async {
           if (result != null) {
             if (result.resp_code == "00") {
+              notifyCaregiver();
            //   hideLoader();
              // int serviceid = result.data.id;
               //print(serviceid);
 
 
-              showSnack(snackBarMessage: 'You have booked successfully');
-              makePayment();
+            //  showSnack(snackBarMessage: 'You have booked successfully');
+           //   makePayment();
               //   Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);
 
 
@@ -313,9 +373,7 @@ void notifyCaregiver()async{
   @override
   void initState() {
     print(" ${global.publicKey}");
-   // plugin.initialize(publicKey: " ${global.publicKey}");
-    //pk_test_79e849b279e8a938d8238afb2cc38536899caadf
-    plugin.initialize(publicKey: " pk_test_79e849b279e8a938d8238afb2cc38536899caadf");
+    plugin.initialize(publicKey: publicKey);
     // TODO: implement initState
     super.initState();
   }
@@ -357,23 +415,23 @@ void notifyCaregiver()async{
       _bookNow.purpose = service!.title;
       // Payment was successful
       print('Payment was successful');
-      await apiHelper!.checkOut(_bookNow).then((result) async {
-        if (result != null) {
-          if (result.status == "1") {
-
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        BookingConfirmationScreen()),
-                ModalRoute.withName('/'));
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(builder: (context) => BookingConfirmationScreen()),
-            // )
-
-          }
-        }
-      });
+      // await apiHelper!.checkOut(_bookNow).then((result) async {
+      //   if (result != null) {
+      //     if (result.status == "1") {
+      //
+      //       Navigator.pushAndRemoveUntil(
+      //           context,
+      //           MaterialPageRoute(
+      //               builder: (context) =>
+      //                   BookingConfirmationScreen()),
+      //           ModalRoute.withName('/'));
+      //       // Navigator.of(context).push(
+      //       //   MaterialPageRoute(builder: (context) => BookingConfirmationScreen()),
+      //       // )
+      //
+      //     }
+      //   }
+      // });
 
 
     } else {
@@ -456,48 +514,82 @@ class _TableInformationState extends State<TableInformation> {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey,width: 0)
       ),
       child: Padding(
         padding: const EdgeInsets.all(13),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Table(
+          columnWidths: {
+            0: FlexColumnWidth(2),
+            1: FlexColumnWidth(3),
+            2: FlexColumnWidth(1),
+          },
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            TableRow(
               children: [
-                Icon(widget.icon,color: Colors.grey,size: 15,),
-                SizedBox(width: 10,),
+                Row(children: [
+                  Icon(widget.icon,color: Colors.grey,size: 15,),
+                  SizedBox(width: 10,),
+                  Text(
+                    widget.text1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13
+                    ),
+                  ),
+                ],),
+
                 Text(
-                  widget.text1,
+                  widget.text2,overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 13
-                  ),
+                  ),textAlign: TextAlign.left,
                 ),
+                InkWell(
+                  child: Container(
+                    child: Text(
+                      "view >",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 10,
+                        color: GlobalColors.primaryColor,
+                      ),
+                    ),
+                  ),
+                )
+
               ],
             ),
-            Text(
-             widget.text2,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13
-              ),textAlign: TextAlign.left,
-            ),
-            SizedBox(width: 10,),
-            InkWell(
-              child: Container(
-                child: Text(
-                  "change >",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 10,
-                    color: GlobalColors.primaryColor,
-                  ),
-                ),
-              ),
-            )
+            // TableRow(
+            //   child: Flexible(
+            //     child: Text(
+            //      widget.text2,overflow: TextOverflow.ellipsis,
+            //       style: TextStyle(
+            //           fontWeight: FontWeight.bold,
+            //           fontSize: 13
+            //       ),textAlign: TextAlign.left,
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(width: 10,),
+            // InkWell(
+            //   child: Container(
+            //     child: Text(
+            //       "view >",
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.w400,
+            //         fontSize: 10,
+            //         color: GlobalColors.primaryColor,
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

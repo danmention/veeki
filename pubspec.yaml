@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   hexcolor: ^3.0.1
-  flutter_svg: ^2.0.4
+  flutter_svg: ^1.0.3
   intl: ^0.17.0
   table_calendar: ^3.0.8
   timelines:
@@ -46,7 +46,7 @@ dependencies:
   dropdown_button2: ^2.1.0
   carousel_slider: ^4.0.0
   introduction_screen: ^3.1.8
-  dio: ^5.1.2
+  dio: ^4.0.6
   shared_preferences: ^2.1.1
   http: ^0.13.0
   flutter_riverpod: ^2.3.6
@@ -74,13 +74,14 @@ dependencies:
   scratcher: ^2.1.0
   cached_network_image:
   geocoding: ^2.0.1
-  device_info_plus: ^8.0.0
+
   hive_flutter: ^1.1.0
   hive:
   flutter_paystack: ^1.0.7
   assets_audio_player: ^3.0.6
   latlng: ^0.1.0
   fluttertoast: ^8.0.7
+  flutterwave_standard: 1.0.7
 
   toast: ^0.2.9
 

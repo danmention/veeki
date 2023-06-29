@@ -18,22 +18,25 @@ class NotificationDialog extends Base
   //final Service rideDetails;
   final String?  title;
   final String? body;
+  final String? userToken;
 
 
  // NotificationDialog({required this.rideDetails,this.title,this.body,});
-  NotificationDialog({this.title,this.body,});
+  NotificationDialog({this.title,this.body,this.userToken});
 
   @override
-  _NotificationDialogState createState() => _NotificationDialogState(this.title,this.body);
+  _NotificationDialogState createState() => _NotificationDialogState(this.title,this.body, this.userToken);
 }
 
 class _NotificationDialogState extends BaseState{
 
-  //final Service rideDetails;
+   // String usertoken = '';
+   // String content = '';
   final String?  title;
   final String? body;
+  final String? userToken;
 
-  _NotificationDialogState(this.title,this.body);
+  _NotificationDialogState(this.title,this.body, this.userToken);
 
   @override
   Widget build(BuildContext context)
@@ -42,9 +45,17 @@ class _NotificationDialogState extends BaseState{
   {
 
 
-    assetsAudioPlayer.open(Audio("assets/alert.mp3"));
-     assetsAudioPlayer.setVolume(0.9);
-   // assetsAudioPlayer.play();
+
+// List<String> substrings = body!.split("+");
+// print(substrings); // Output: [This is a, sample text]
+//   content =  substrings[0];
+// usertoken =substrings[1];
+// print(substrings[1]);
+
+
+assetsAudioPlayer.open(Audio("assets/alert.mp3"));
+     assetsAudioPlayer.setVolume(1);
+    assetsAudioPlayer.play();
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       backgroundColor: Colors.transparent,
@@ -93,6 +104,7 @@ class _NotificationDialogState extends BaseState{
                       Expanded(
                           child: Container(child: Text(body!, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 18.0),))
                       ),
+
                     ],
                   ),
 
@@ -186,6 +198,8 @@ class _NotificationDialogState extends BaseState{
   var snackBar = SnackBar(
     content: Text('Yay! A SnackBar!'),
   );
+
+
   displayToastMessage(String message, BuildContext context) {
     Fluttertoast.showToast(msg: message);
 
@@ -197,13 +211,13 @@ class _NotificationDialogState extends BaseState{
     //  Navigator.pop(context);
       //ToastContext.init(context);
 
-
+      assetsAudioPlayer.stop();
     await apiHelper!.bookingstatus( id: "${global.user.id}",status:status).then((result) async {
       Navigator.pop(context);
     if (result != null) {
       if (result.resp_code == "00") {
-        print(" the other key ${body}");
-        notifyUser(body!);
+        print(" the other key ${userToken}");
+        notifyUser(userToken!);
 
         // Navigator.push(context, MaterialPageRoute(
         //     builder: (context) => AcceptRejectScreen(status: status,)));

@@ -29,9 +29,10 @@ class _PopularBarbersInHomePageState extends BaseState{
         height: 200,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: _userList.length>10?15:_userList.length,
+           // itemCount: _userList.length>10?15:_userList.length,
+            itemCount:_userList.length,
             itemBuilder: (context, index){
-              print("${_userList[index].profileImage}");
+
               return Padding(
                 padding: const EdgeInsets.only(left: 20.0,top: 8.0,bottom: 8.0,right: 8.0),
                 child: InkWell(

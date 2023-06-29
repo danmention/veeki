@@ -1,4 +1,5 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:banner_carousel/banner_carousel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ import 'package:veeki/widgets/SearchBar.dart';
 import 'package:veeki/widgets/ServicesInHopePage.dart';
 import 'package:veeki/widgets/CarouselWithIndicator.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
+
+import 'models/businessLayer/global.dart';
 
 
 
@@ -190,6 +193,7 @@ class _HomePageState extends State<HomePage> {
                           Text("Categories",style: TextStyle(fontWeight: FontWeight.bold,),),
                           InkWell(
                               onTap: (){
+                              
                                 Navigator.of(context).push(
                                   MaterialPageRoute(builder: (context) => CategoryList()),
                                 );
@@ -244,40 +248,40 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
-                      // Container(
-                      //     margin: EdgeInsets.only(top: 15),
-                      //     height: 100,
-                      //     child: PopularBarbersInHomePage()
-                      // ),
+                      Container(
+                          margin: EdgeInsets.only(top: 15),
+                          height: 110,
+                          child: PopularBarbersInHomePage()
+                      ),
 
 
 
 
 
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: 10.0),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Text("Products",style: TextStyle(fontWeight: FontWeight.bold,),),
-                      //       InkWell(
-                      //         onTap: (){
-                      //           Navigator.of(context).push(
-                      //               MaterialPageRoute(builder: (context) => Products()),
-                      //           );
-                      //         },
-                      //           child: Text(
-                      //             "See more",style: TextStyle(color: GlobalColors.primaryColor),
-                      //           ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // Container(
-                      //     margin: EdgeInsets.only(top: 15),
-                      //     height: 170,
-                      //     child: ProductsInHomePage()
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Products",style: TextStyle(fontWeight: FontWeight.bold,),),
+                            InkWell(
+                              onTap: (){
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => Products()),
+                                );
+                              },
+                                child: Text(
+                                  "See more",style: TextStyle(color: GlobalColors.primaryColor),
+                                ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(top: 15),
+
+                          child: ProductsInHomePage()
+                      ),
                     ],
                   ),
                 )

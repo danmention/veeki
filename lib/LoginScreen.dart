@@ -1,14 +1,22 @@
 import 'dart:convert';
 
+
+
+
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+
 import 'package:veeki/models/businessLayer/global.dart' as global;
+
 
 import 'package:veeki/ForgotPasswordScreen.dart';
 import 'package:veeki/HomePage.dart';
+import 'package:veeki/models/businessLayer/global.dart';
 import 'package:veeki/utils/constant.dart';
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/widgets/SplashScreen.dart';
@@ -190,10 +198,12 @@ class _LoginScrrenState extends BaseState{
   }
 
 
-
+  final assetsAudioPlayer = AssetsAudioPlayer();
 
   void login() async{
     try {
+
+
       Loginrequest _user = new Loginrequest();
       _user.email = _cEmail.text.trim();
       _user.password = _cPassword.text.trim();

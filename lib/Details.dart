@@ -9,9 +9,11 @@ import 'package:veeki/photo_view_page.dart';
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/widgets/Details.DescriptionandInformation.dart';
 import 'package:veeki/widgets/back.button.global.dart';
+import 'package:veeki/widgets/button.global.dart';
 import 'BookAppointment/AppointmentsScreen.dart';
 import 'HomePage.dart';
 import 'models/businessLayer/base.dart';
+import 'widgets/text.form.global.dart';
 
 class Details extends Base {
   Details ({this.service}) ;
@@ -28,6 +30,11 @@ class _DetailsState extends BaseState{
   final List<String> photos = [];
 
   int activePage = 0;
+  TextEditingController  nameController = TextEditingController() ;
+  TextEditingController  emailController = TextEditingController() ;
+  TextEditingController  descriptionController = TextEditingController() ;
+  TextEditingController  titleController = TextEditingController() ;
+
 
   @override
   Widget build(BuildContext context) {
@@ -335,13 +342,85 @@ getimages()async{
 
   Widget PageThree() {
     return Container(
-      child: Text(' page 3'),
+      child: service!.user![0].workExperience != null?
+
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text('${service!.user![0].workExperience}', style: TextStyle(fontSize: 18),),
+      ):
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text("No result found",  style: TextStyle(fontSize: 18, fontFamily: 'Lato')),
+      ),
     );
   }
 
   Widget PageFour() {
+
     return Container(
-      child: Text(' page 4'),
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Column(
+          children: [
+            TextFormGlobal(
+              controller: nameController,
+              text: 'Name',
+              obscure: false,
+              textInputType: TextInputType.text,
+            ),
+            const SizedBox(height: 20),
+            TextFormGlobal(
+              controller: emailController,
+              text: 'Email',
+              obscure: false,
+              textInputType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 20),
+            TextFormGlobal(
+              controller: titleController,
+              text: 'Title',
+              obscure: false,
+              textInputType: TextInputType.text,
+            ),
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: descriptionController,
+              keyboardType: TextInputType.multiline,
+              maxLines: 4,
+              decoration: InputDecoration(
+                // prefixIcon: prefixIcon == null ? prefixIcon : Icon(prefixIcon,
+                //   color: Color.fromRGBO(105, 108, 121, 1),
+                // ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromRGBO(74, 77, 84, 0.2),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.black12,
+                  ),
+                ),
+                hintText: "Describe your experience   ",
+                hintStyle: TextStyle(
+                  fontSize: 14.0,
+                  color: Color.fromRGBO(105, 108, 121, 0.7),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+            ButtonGlobal(
+              ontap:(){
+                //_signUp();
+              } ,
+              text: 'Review',
+              color: GlobalColors.primaryColor,
+              fontsize: 20,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
