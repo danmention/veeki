@@ -177,7 +177,7 @@ class _SearchPageState extends BaseState {
                                 },
                                 buttonStyleData: ButtonStyleData(
                                   height: 50,
-                                  width: 160,
+                                  width: 180,
                                   padding: const EdgeInsets.only(left: 14, right: 14),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(7),
@@ -275,7 +275,7 @@ class _SearchPageState extends BaseState {
                                 },
                                 buttonStyleData: ButtonStyleData(
                                   height: 50,
-                                  width: 160,
+                                  width: 180,
                                   padding: const EdgeInsets.only(left: 14, right: 14),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(7),
@@ -322,7 +322,7 @@ class _SearchPageState extends BaseState {
                       //  StylishDropdownStateButton(items: _stateList, header: "State"),
                       SizedBox(height: 10,),
                       Container(
-                        width: 350,
+                        width: 390,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             isExpanded: true,
@@ -453,9 +453,9 @@ class _SearchPageState extends BaseState {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
         if (_isRecordPending) {
-          showOnlyLoaderDialog();
+         // showOnlyLoaderDialog();
           await apiHelper?.getAreaList(id!).then((result) {
-            hideLoader();
+           // hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
                 List<Area> _tList = result.recordList;
@@ -544,9 +544,9 @@ class _SearchPageState extends BaseState {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
         if (_isRecordPending) {
-          showOnlyLoaderDialog();
+         // showOnlyLoaderDialog();
           await apiHelper?.getAllState().then((result) {
-            hideLoader();
+          //  hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
                 List<States> _tList = result.recordList;

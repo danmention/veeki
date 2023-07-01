@@ -312,7 +312,11 @@ class _EditProfileState extends BaseState{
         bool isConnected = await br!.checkConnectivity();
         if (isConnected) {
           showOnlyLoaderDialog();
-          await apiHelper?.updateProfile(global.user.id!,mobileController.text.trim(), birthDateInString!,_selectedArea!.localName!,_selectedState!.name!, streetController.text.trim()).then((result) {
+          await apiHelper?.updateProfile(
+              global.user.id!,mobileController.text.trim(),
+              birthDateInString!,_selectedArea!.localName!,
+              _selectedState!.name!, streetController.text.trim()
+          ).then((result) {
             if (result != null) {
               if (result.resp_code == "00") {
                 hideLoader();

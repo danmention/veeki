@@ -39,6 +39,7 @@ class _DetailsState extends BaseState{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //appBar: AppBar(),
       //resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: SafeArea(
@@ -68,15 +69,16 @@ class _DetailsState extends BaseState{
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            BackButtonGlobal(
-                              widget: HomePage(),
-                            ),
-                            Icon(Icons.favorite_outline_outlined,color: Colors.white,size: 25,)
-                          ],
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_back,color: Colors.white,),
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
+                          ),
                         ),
+
                         service != null?
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

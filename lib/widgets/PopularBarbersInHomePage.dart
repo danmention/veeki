@@ -76,7 +76,7 @@ class _PopularBarbersInHomePageState extends BaseState{
         :
     Text(
       "No Record Found" ,
-      style: Theme.of(context).primaryTextTheme.subtitle2,
+      style: TextStyle(fontSize: 18),
     )
 
         : _shimmer();

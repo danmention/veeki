@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:veeki/LoginScreen.dart';
+import 'package:veeki/SignupPageTwoScreen.dart';
 import 'package:veeki/utils/constant.dart';
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/widgets/MyDropDownForm.dart';
@@ -161,7 +162,7 @@ class _SignUpState extends BaseState{
                     ontap:(){
                       _signUp();
                     } ,
-                    text: 'Sign Up',
+                    text: 'Next',
                     color: GlobalColors.primaryColor,
                     fontsize: 20,
                   ),
@@ -219,14 +220,14 @@ class _SignUpState extends BaseState{
       signupRequest.email = emailController.text.trim();
       signupRequest.phone = mobileController.text.trim();
       signupRequest.password = passwordController.text.trim();
-
-      signupRequest.category_id = 1;
-      signupRequest.gender = "Male";
-      signupRequest.user_type = "USER";
-      signupRequest.StreetAddress = "00";
-      signupRequest.state = "lagos";
-      signupRequest.city = "Lagos";
-      signupRequest.DateOfBirth = "24-12-1990";
+      //
+      // signupRequest.category_id = 1;
+      // signupRequest.gender = "Male";
+      // signupRequest.user_type = "USER";
+      // signupRequest.StreetAddress = "00";
+      // signupRequest.state = "lagos";
+      // signupRequest.city = "Lagos";
+      // signupRequest.DateOfBirth = "24-12-1990";
 
 
 
@@ -260,39 +261,10 @@ class _SignUpState extends BaseState{
 
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
-        showOnlyLoaderDialog();
-        await apiHelper?.signUp(signupRequest).then((result) async {
-          if (result != null) {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) =>
+              SignupPageTwoScreen(signupRequest)),);
 
-
-            if (result.resp_code == "00" ) {
-
-              hideLoader();
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => ChooseCategory(user_id:result.recordList.id ,)),
-              // );
-            //  ref.read(myprovider).setuserid(result.recordList.id );
-
-              showSnack( snackBarMessage: " Sign up successful, pls login");
-              nextScreen(context, 'login');
-
-              //  await _sendOTP(_cMobile.text.trim());
-            } else {
-              hideLoader();
-
-
-
-              if(result.errors[0].message != null){
-                showSnack( snackBarMessage: result.errors[0].message.toString());
-              }else{
-                showSnack( snackBarMessage: result.message.toString());
-              }
-            }
-          }
-
-
-        });
       } else {
         showNetworkErrorSnackBar(_scaffoldkey);
       }

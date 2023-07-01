@@ -55,6 +55,7 @@ class _AddServiceScreenState extends BaseState{
   Widget build(BuildContext context) {
     return Scaffold(
       key:_scaffoldkey,
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(

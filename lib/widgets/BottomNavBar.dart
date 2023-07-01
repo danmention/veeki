@@ -4,6 +4,8 @@ import 'package:veeki/AddServiceScreen.dart';
 import 'package:veeki/HomePage.dart';
 import 'package:veeki/Profile.dart';
 import 'package:veeki/utils/global.colors.dart';
+import 'package:veeki/models/businessLayer/global.dart' as global;
+import '../BookAppointment/ViewBookingScreen.dart';
 
 class BottomNavBar extends StatelessWidget{
   BottomNavBar ({Key? key, required this.id}) : super (key:key);
@@ -14,12 +16,19 @@ class BottomNavBar extends StatelessWidget{
     return Scaffold(
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){},
-        child: Icon(Icons.calendar_month_outlined),
-        backgroundColor: GlobalColors.primaryColor,
-        foregroundColor: Colors.white,
-      ),
+
+          floatingActionButton: global.user.role  == "SERVICE_PROVIDER"?  FloatingActionButton(
+          onPressed: (){
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => AddServiceScreen()),
+            );
+          },
+          child: Icon(Icons.calendar_month_outlined),
+          backgroundColor: GlobalColors.primaryColor,
+          foregroundColor: Colors.white,
+        ):SizedBox(),
+
+
       bottomNavigationBar: BottomAppBar(
         height: 70,
         notchMargin: 3.0,
@@ -55,13 +64,16 @@ class BottomNavBar extends StatelessWidget{
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.location_on_outlined,
+                  Icon(Icons.description_outlined,
                     color:id == ""? GlobalColors.primaryColor :Colors.white,
                     size: 30,
                   )
                 ],
               ),
             ),
+          //  global.user.role  == "SERVICE_PROVIDER"?
+
+
             Padding(
               padding: const EdgeInsets.only(left: 20.0,top: 10.0,bottom: 10.0),
               child: Column(
@@ -70,19 +82,19 @@ class BottomNavBar extends StatelessWidget{
                   GestureDetector(
 
 
-                    child: Icon(Icons.favorite_outline_outlined,
+                    child: Icon(Icons.local_post_office_outlined,
                       color:id == ""? GlobalColors.primaryColor :Colors.white,
                       size: 30,
                     ),
                     onTap: (){
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => AddServiceScreen()),
+                        MaterialPageRoute(builder: (context) => ViewBookingScreen()),
                       );
                     },
                   )
                 ],
               ),
-            ),
+            ) ,
             Padding(
               padding: const EdgeInsets.only(right: 0.0,top: 10.0,bottom: 10.0),
               child: Column(

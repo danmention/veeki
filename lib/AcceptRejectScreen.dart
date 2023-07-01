@@ -33,7 +33,7 @@ class _AcceptRejectScreenState extends BaseState{
 
   @override
   Widget build(BuildContext context) {
-
+status = 1;
 
     return Scaffold(
       body: Container(
@@ -48,7 +48,9 @@ class _AcceptRejectScreenState extends BaseState{
           ),
         ),
         child: Center(
-          child: Column(
+          child:
+
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
@@ -66,6 +68,7 @@ class _AcceptRejectScreenState extends BaseState{
                   fontWeight: FontWeight.bold,
                 ),
               ),
+
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {

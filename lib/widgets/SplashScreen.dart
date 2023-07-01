@@ -84,7 +84,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         PageViewModel(
           title: "Find Caregiver Nearby",
           body:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus.",
+          "We help you get access to care givers closest to you",
           image: _buildFullscreenImage('1.jpg'),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
@@ -105,7 +105,8 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         PageViewModel(
           title: "Carer Specialists",
           body:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus.",
+          "Veeki has a vast database of experienced and background-checked caregivers,"
+           ,
 
           image: _buildFullscreenImage('2.webp'),
           decoration: pageDecoration.copyWith(
@@ -125,9 +126,11 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           ),
         ),
         PageViewModel(
-          title: "Get Reward Points on Massage",
+          title: "Real-Time Availability",
           body:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus.",
+
+              " veeki provides real-time availability information, allowing you to"
+              " find caregivers who are ready to provide care at a moment's notice.",
           image: _buildFullscreenImage('5.jpg'),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
@@ -146,9 +149,10 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           ),
         ),
         PageViewModel(
-          title: "Nursing Service",
+          title: "Secure and Reliable Nursing Service",
           body:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus.",
+          "Veeki implements stringent security "
+              "measures to protect your personal information and ensures that all caregivers meet our strict confidentiality guidelines.",
           image: _buildFullscreenImage('3.jpg'),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),

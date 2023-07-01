@@ -1,11 +1,15 @@
 
+import 'dart:io';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,6 +17,7 @@ import 'package:veeki/utils/foreground_notification.dart';
 
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/utils/route.dart';
+import 'package:veeki/widgets/AcceptDialog.dart';
 import 'package:veeki/widgets/SplashScreen.dart';
 import 'package:veeki/widgets/notificationDialog.dart';
 import 'AcceptRejectScreen.dart';
@@ -20,7 +25,9 @@ import 'HomePage.dart';
 import 'LoginScreen.dart';
 import 'Notifications.dart';
 import 'Profile.dart';
+import 'booking_provider.dart';
 import 'firebase_options.dart';
+import 'models/businessLayer/base.dart';
 import 'models/businessLayer/global.dart';
 import 'models/response/service_response.dart';
 
@@ -68,7 +75,8 @@ Future<void> _firebaseForegroundHandler(RemoteMessage message)async{
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-
+// Obtain shared preferences.
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, );
 
@@ -100,6 +108,8 @@ void main() async{
 
   final fcmtoken = await FirebaseMessaging.instance.getToken();
   print("Firebasetoken $fcmtoken");
+  await prefs.setString('sharedfirebasetoken', fcmtoken!);
+
   final appDocumentDirectory = await getApplicationDocumentsDirectory();
 
   Hive.init(appDocumentDirectory.path);
@@ -133,17 +143,21 @@ class MyApp extends StatelessWidget {
 
 
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyHomePage extends Base {
+
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+ _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends BaseState {
   // This widget is the root of your application.
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 Service service = new Service();
+
+
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -175,6 +189,7 @@ Service service = new Service();
     initializeNotifications();
     createNotificationChannel();
     configureFirebaseMessaging();
+
     // TODO: implement initState
     super.initState();
     setupInterractedMessage();
@@ -247,13 +262,38 @@ Service service = new Service();
        // assetsAudioPlayer.open(Audio("assets/alert.mp3"));
        // assetsAudioPlayer.play();
           if(message.notification!.title!.contains("accepted")){
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => AcceptRejectScreen(status: 1)));
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AcceptRejectDialog(
+                  title: 'Request Accepted',
+                  message: '${ref.watch(myprovider).bookedService.user![0].fullName} accepted your  request!, proceed to make payment',
+                  onAccept: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Notifications())
+                    );
+                    //  makePayment();
+                    // Handle accept action
+                    Navigator.pop(context);
+                  },
+                  onReject: () {
+                    // Handle reject action
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            );
+
+          //  showCustomDialog(context);
+            // Navigator.push(context, MaterialPageRoute(
+            //     builder: (context) => AcceptRejectScreen(status: 1)));
+
           }else{
             showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (BuildContext context) => NotificationDialog(title:   message.notification?.title ,body:message.notification?.body,  userToken: message.data['usertoken'], ),
+              builder: (BuildContext context) => NotificationDialog(title:   message.notification?.title
+                ,body:message.notification?.body,  userToken: message.data['usertoken'], ),
             );
 
 
@@ -281,8 +321,30 @@ Service service = new Service();
 
 
     }else if(message.data['type']=="user"){
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) => AcceptRejectScreen(status: 1)));
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AcceptRejectDialog(
+            title: 'Request Accepted',
+            message: '${ref.watch(myprovider).bookedService.user![0].fullName} accepted your  request!, proceed to make payment',
+            onAccept: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => Notifications())
+              );
+            //  makePayment();
+              // Handle accept action
+              Navigator.pop(context);
+            },
+            onReject: () {
+              // Handle reject action
+              Navigator.pop(context);
+            },
+          );
+        },
+      );
+     // showCustomDialog(context);
+      // Navigator.push(context, MaterialPageRoute(
+      //     builder: (context) => AcceptRejectScreen(status: 1)));
     }
   }
 
@@ -337,8 +399,32 @@ print("og  boss${message.data['body']}");
 
 
         }else if(message.data['type']=="user"){
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => AcceptRejectScreen(status: 1)));
+
+
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AcceptRejectDialog(
+                title: 'Request Accepted',
+                message: '${ref.watch(myprovider).bookedService.user![0].fullName} accepted your  request!, proceed to make payment',
+                onAccept: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Notifications())
+                  );
+                  //  makePayment();
+                  // Handle accept action
+                  Navigator.pop(context);
+                },
+                onReject: () {
+                  // Handle reject action
+                  Navigator.pop(context);
+                },
+              );
+            },
+          );
+
+          // Navigator.push(context, MaterialPageRoute(
+          //     builder: (context) => AcceptRejectScreen(status: 1)));
 
         }
   }
@@ -372,4 +458,15 @@ print("og  boss${message.data['body']}");
   //     print('User declined or has not accepted permission');
   //   }
   // }
+
+
+
+
+
+
+
+
+
+
+
 }
