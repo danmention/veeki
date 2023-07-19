@@ -29,8 +29,8 @@ class _PopularBarbersInHomePageState extends BaseState{
         height: 200,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
-           // itemCount: _userList.length>10?15:_userList.length,
-            itemCount:_userList.length,
+            itemCount: _userList.length>10?15:_userList.length,
+           // itemCount:_userList.length,
             itemBuilder: (context, index){
 
               return Padding(
@@ -110,8 +110,14 @@ class _PopularBarbersInHomePageState extends BaseState{
                 setState(() {
                   //  _isMoreDataLoaded = false;
                 });
-              }  else if(result.resp_code == "01"){
-                hideLoader();
+              }else if(result.resp_code =="01" && result.resp_message.toString().contains("Token is Invalid") )
+              {
+                Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+                showSnack(snackBarMessage: result.resp_message.toString());
+              }
+
+              else if(result.resp_code == "01"){
+               // hideLoader();
                 showSnack(snackBarMessage: result.resp_message.toString());
               }
               else {

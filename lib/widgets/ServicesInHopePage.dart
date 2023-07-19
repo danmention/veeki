@@ -143,7 +143,11 @@ class _ServicesInHopePageState extends BaseState {
                 setState(() {
                   //  _isMoreDataLoaded = false;
                 });
-              } else {
+              } else if(result.resp_code =="01" && result.resp_message.toString().contains("Token is Invalid") )
+              {
+                Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+                showSnack(snackBarMessage: result.resp_message.toString());
+              }else {
                 _categoryList = [];
               }
             }

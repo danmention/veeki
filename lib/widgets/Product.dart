@@ -5,12 +5,13 @@ import 'package:veeki/utils/global.colors.dart';
 class Product extends StatelessWidget{
   const Product({Key? key, required this.text1,  this.text2,this.text3,this.text4, required this.image}) : super(key: key);
   final String text1;
-  final String? text2;
+  final int? text2;
   final String? text3;
   final String? text4;
   final String image;
   @override
   Widget build(BuildContext context) {
+    var amount  = text2.toString();
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       width: 250,
@@ -54,7 +55,7 @@ class Product extends StatelessWidget{
                 ),
                 SizedBox(height: 5,),
                 text2 != null? Text(
-                 "₦$text2" , overflow: TextOverflow.ellipsis,
+                 "₦$amount" , overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w400,

@@ -220,6 +220,8 @@ class ServiceItem {
   String? amountRange;
   String? updatedAt;
   String? createdAt;
+  // int? state_id;
+  // int? city_id;
   int? id;
 
   ServiceItem(
@@ -229,6 +231,8 @@ class ServiceItem {
         this.desc,
         this.amount,
         this.amountRange,
+        // this.city_id,
+        // this.state_id,
         this.updatedAt,
         this.createdAt,
         this.id});
@@ -239,6 +243,8 @@ class ServiceItem {
     title = json['title'];
     desc = json['desc'];
     amount = json['amount'];
+    // city_id = json['city_id'];
+    // state_id = json['state_id'];
     amountRange = json['amount_range'];
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
@@ -251,6 +257,8 @@ class ServiceItem {
     data['category_id'] = this.categoryId;
     data['title'] = this.title;
     data['desc'] = this.desc;
+    // data['state_id'] = this.state_id;
+    // data['city_id'] = this.city_id;
     data['amount'] = this.amount;
     data['amount_range'] = this.amountRange;
     data['updated_at'] = this.updatedAt;

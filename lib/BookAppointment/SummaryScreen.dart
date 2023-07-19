@@ -274,7 +274,11 @@ void notifyCaregiver()async{
     // "${bookingRequest!.streetAddress!}+${global.user.instagram}",
      "${bookingRequest!.streetAddress!}",
      // "${global.user.instagram}",
-      "${global.user.fullName}", "${global.user.instagram}" ).then((result) async {
+
+
+    //  "${global.user.fullName}", "${global.user.instagram}" ).then((result) async {
+
+      "${global.user.fullName}", "${global.user.firebase_token}" ).then((result) async {
     if (result != null) {
       if (result.success == "1") {
 

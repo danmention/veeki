@@ -27,63 +27,61 @@ class CardButton extends StatelessWidget{
       height: 80,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        //mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
          // SizedBox(width: 20,),
-
-          image != null?
-          Image.network(image,width: 140,):
           Image.asset("assets/nurse.jpeg",width: 140,)
+          // image != null?
+          // Expanded(child: Image.network(image,width: 140,)):Image.asset("assets/nurse.jpeg",width: 140,)
+         // image == null? Image.asset("assets/nurse.jpeg",width: 140,):Image.network(image,width: 140,)
           ,
           SizedBox(width: 10,),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 200,
-                  child: Text(
-                    text1, overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: GlobalColors.textColor
-                    ),
-                  ),
-                ),
-                SizedBox(height: 5,),
-                Text(
-                 "₦$text2" , overflow: TextOverflow.ellipsis,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 200,
+                child: Text(
+                  text1, overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
                       color: GlobalColors.textColor
                   ),
                 ),
-
-                Row(
-                  children: [
-                    Text(
-                      text3??"" , overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                          color: GlobalColors.textColor
-                      ),
-                    ),Text(','),
-                    Text(
-                      text4??" " , overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                          color: GlobalColors.textColor
-                      ),
-                    ),
-                  ],
+              ),
+              SizedBox(height: 5,),
+              Text(
+               "₦$text2" , overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                    color: GlobalColors.textColor
                 ),
-              ],
-            ),
+              ),
+
+              Row(
+                children: [
+                  Text(
+                    text3??"" , overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        color: GlobalColors.textColor
+                    ),
+                  ),Text(','),
+                  Text(
+                    text4??" " , overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        color: GlobalColors.textColor
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
@@ -117,40 +115,39 @@ class CardButtonCategory extends StatelessWidget{
       height: 80,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        //mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           // SizedBox(width: 20,),
-          Image.asset(image,width: 140,),
+          image == null? Image.asset("assets/nurse.jpeg",width: 100,):Image.network(image,width: 100,),
+         // Image.asset(image,width: 140,),
           SizedBox(width: 10,),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 200,
-                  child: Text(
-                    text1, overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: GlobalColors.textColor
-                    ),
-                  ),
-                ),
-                SizedBox(height: 5,),
-                Text(
-                  "$text2" , overflow: TextOverflow.ellipsis,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 200,
+                child: Text(
+                  text1, overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
                       color: GlobalColors.textColor
                   ),
                 ),
+              ),
+              SizedBox(height: 5,),
+              Text(
+                "$text2" , overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                    color: GlobalColors.textColor
+                ),
+              ),
 
 
-              ],
-            ),
+            ],
           ),
         ],
       ),

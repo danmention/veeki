@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:veeki/main.dart';
 
 
 import 'package:veeki/models/businessLayer/global.dart' as global;
@@ -42,6 +43,7 @@ class _LoginScrrenState extends BaseState{
   Box? box;
   bool _isRemember = false;
   bool _isPasswordVisible = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -149,10 +151,19 @@ class _LoginScrrenState extends BaseState{
                     ),
                   ),
                   const SizedBox(height: 40),
+
+
+
                   ButtonGlobal(
+                    isLoading:isLoading ,
                     ontap:(){
+                      setState(() {
+                        isLoading = true;
+                      });
+
                       login();
                     },
+
                   //  OnBoardingPage(),
                     text: 'Sign In',
                     color: GlobalColors.primaryColor,
@@ -214,6 +225,9 @@ class _LoginScrrenState extends BaseState{
         if (isConnected) {
         // showOnlyLoaderDialog();
           await apiHelper!.loginWithEmail(_user).then((result) async {
+            setState(() {
+              isLoading = false;
+            });
             if (result != null) {
               if (result.resp_code == "00") {
 
@@ -229,19 +243,35 @@ class _LoginScrrenState extends BaseState{
 
 
                 print("This is the key of the house >>>>>>>>>>>>>>>>>${global.firebaseToken}");
+                print("This token check  >>>>>>>>>>>>>>>>>$toke");
+                if(global.user.firebase_token!.isEmpty ){
+                  sendtoken();
+                }
+
                 // global.sp?.setString('email',_cEmail.text );
                 //
                 // hideLoader();
                 // hideLoader();
 
 
-
+// update the userprofile with token the
 
                Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);
 
                 if (_isRemember) {
                   global.sp?.setString('isRememberMeEmail', global.user.email!);
                 }
+
+
+
+
+
+                await apiHelper!.sendfcmtoken(global.user.id!,toke!).then((result) async {
+                  if (result != null) {
+                    if (result.resp_code == "00") {
+
+                    }}
+                });
                 // await getCurrentPosition().then((_) async {
                 //   if (global.lat != null && global.lng != null) {
                 //     hideLoader();
@@ -251,6 +281,8 @@ class _LoginScrrenState extends BaseState{
                 //     showSnack(snackBarMessage: txt_please_enablet_location_permission_to_use_app);
                 //   }
                 // });
+
+
               }
               // else if(result.resp_code =="01" && result.resp_message.contains("please complete registration process"))
               // {
@@ -265,7 +297,7 @@ class _LoginScrrenState extends BaseState{
               }
 
               else {
-                hideLoader();
+               // hideLoader();
 
 
 
@@ -297,6 +329,40 @@ class _LoginScrrenState extends BaseState{
       }
     } catch (e) {
       print("Exception - signInScreen.dart - _loginWithEmail():" + e.toString());
+    }
+  }
+
+  sendtoken() async {
+    try {
+
+        bool isConnected = await br!.checkConnectivity();
+        if (isConnected) {
+
+          await apiHelper?.sendtoken(global.user.id!,  toke!).then((result) {
+            if (result != null) {
+              if (result.resp_code == "00") {
+                setState(() {
+                  isLoading = false;
+                });
+                Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);
+              //  showSnack( snackBarMessage: '${result.resp_description}');
+
+              //  setState(() {});
+              } else {
+               // hideLoader();
+                showSnack( snackBarMessage: '${result.resp_message}');
+              }
+            }
+          });
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          showSnack(snackBarMessage: "No network  connection");
+        }
+
+    } catch (e) {
+      print("Exception - resetPasswordScreen.dart - _changePassword():" + e.toString());
     }
   }
 

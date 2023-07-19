@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:veeki/models/request/booking_request.dart';
+import 'package:veeki/models/response/booking_admin_response.dart';
 import 'package:veeki/models/response/booking_response.dart';
 import 'package:veeki/models/response/booknow.dart';
 
@@ -16,7 +17,9 @@ import '../request/login_request.dart';
 import '../request/signup_request.dart';
 import '../response/UserResponseModel.dart';
 
+import '../response/dispute_response.dart';
 import '../response/login_response.dart';
+import '../response/payment_response.dart';
 import '../response/push_response.dart';
 import '../response/registeration_complete_response.dart';
 import '../response/service_response.dart';
@@ -59,6 +62,47 @@ class APIHelper {
 
 
 
+
+
+
+
+
+
+
+
+
+
+  //
+
+  Future<dynamic> getAllPayment(int pageNumber) async {
+    try {
+      final response = await http.get(
+        Uri.parse("${global.baseUrl}admin/billing/all?page=${pageNumber.toString()}"),
+        headers: await global.getApiHeaders(true),
+
+      );
+
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+
+        recordList = List<PaymentReponse>.from(json.decode(response.body)["data"]["data"].map((x) => PaymentReponse.fromJson(x)));
+
+
+
+      } else {
+        recordList = null;
+      }
+
+      return getAPIResult(response, recordList);
+
+    } catch (e) {
+      print("Exception - getAllPayment " + e.toString());
+    }
+  }
+
+
+
   Future<dynamic> getAllCategory() async {
     try {
       final response = await http.get(
@@ -85,6 +129,41 @@ class APIHelper {
       print("Exception - getAllCategory " + e.toString());
     }
   }
+
+
+  Future<dynamic> addcategory(int? user_id,String? category_name,  File? user_image,) async {
+    try {
+      Response response;
+      var dio = Dio();
+      var formData = FormData.fromMap({
+
+        "user_id": user_id,
+        "category_name": category_name,
+        "sub_category": null,
+        'image': user_image != null ? await MultipartFile.fromFile(user_image.path.toString()) : null,
+      });
+
+      response = await dio.post('${global.baseUrl}category/create',
+          data: formData,
+          options: Options(
+            headers: await global.getApiHeaders(true),
+          ));
+      dynamic recordList;
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        //recordList = CategoryItem.fromJson(response.data['data']);
+        recordList = null;
+        //  recordList.token = response.data["token"];
+      } else {
+        recordList = null;
+      }
+      return getDioResult(response, recordList);
+    } catch (e) {
+      print("Exception - addcategory(): " + e.toString());
+    }
+  }
+
+
+
 
 
   Future<dynamic> updateProfileImage({int? id, File? user_image,}) async {
@@ -114,6 +193,36 @@ class APIHelper {
       print("Exception - submitreport(): " + e.toString());
     }
   }
+
+
+
+  Future<dynamic> deleteCategory( int? id) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}category/delete"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "category_id": id,
+
+            }
+
+        ),
+
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = null;
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - deletemyservices(): " + e.toString());
+    }
+  }
+
 
 
 
@@ -240,6 +349,29 @@ class APIHelper {
     }
   }
 
+  //admin/all-booking
+
+  Future<dynamic> getAllAdminMyBooking() async {
+    try {
+      final response = await http.get(
+        Uri.parse("${global.baseUrl}admin/all-booking"),
+        headers: await global.getApiHeaders(true),
+
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = List<AdminBooking>.from(json.decode(response.body)["data"]["data"].map((x) => AdminBooking.fromJson(x)));
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - getallmyadminbooking(): " + e.toString());
+    }
+  }
+
+
   Future<dynamic> getAllMyBooking( String userid) async {
     try {
       final response = await http.get(
@@ -261,12 +393,99 @@ class APIHelper {
   }
 
 
+  Future<dynamic> editMySerivice( int id, int cat_id,String title, String desc, int amount, ) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}services/edit"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "id": id,
+              "category_id" : cat_id,
+              "title":title,
+              "desc":desc,
+              "amount":amount,
+              "amount_range" : "1000 - 3000"
+
+            }
+
+        ),
+
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = null;
+       // recordList = Service.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - editmyservices(): " + e.toString());
+    }
+  }
+
+  Future<dynamic> deleteMySerivice( String id) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}services/delete"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "id": id,
+
+            }
+
+        ),
+
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = Service.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - deletemyservices(): " + e.toString());
+    }
+  }
+
+  Future<dynamic> getAllMySerivices( String userid) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}services/get-services"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "user_id": userid,
+
+            }
+
+        ),
+
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = List<Service>.from(json.decode(response.body)["data"].map((x) => Service.fromJson(x)));
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - getallmyservices(): " + e.toString());
+    }
+  }
 
 
   Future<dynamic> getAllService( int pageNumber, ) async {
     try {
       final response = await http.get(
-        Uri.parse("${global.baseUrl}services?page=${pageNumber.toString()}"),
+       Uri.parse("${global.baseUrl}services?page=${pageNumber.toString()}"),
+       // Uri.parse("${global.baseUrl}services"),
         headers: await global.getApiHeaders(true),
 
       );
@@ -284,10 +503,102 @@ class APIHelper {
   }
 
 
+  Future<dynamic> sendSOS(int user_id,String name, String message, String lat,
+      String long, String admintoken) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}profile/send/sos"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "user_id": user_id,
+
+              "fullname" : name,
+              "message": message,
+              "current_lat": lat,
+              "current_long": long,
+              "firebase_admin_token" : admintoken
+
+
+            }
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = CurrentUser.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - setAvailability(): " + e.toString());
+    }
+  }
 
 
 
 
+  Future<dynamic> sendtoken(int user_id, String token,  ) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}user/firebase-token"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "user_id": user_id,
+              "firebase_token": token,
+
+
+            }
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = CurrentUser.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - sendToken(): " + e.toString());
+    }
+  }
+
+
+
+
+  Future<dynamic> sendfcmtoken(int user_id, String token,  ) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}profile/edit"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "user_id": user_id,
+              "phone": token,
+
+
+
+            }
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = CurrentUser.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - updateProfile(): " + e.toString());
+    }
+  }
 
 
   Future<dynamic> updateProfile(int user_id, String phone, String dob,
@@ -322,6 +633,42 @@ class APIHelper {
       print("Exception - updateProfile(): " + e.toString());
     }
   }
+
+
+
+
+
+  Future<dynamic> sendDisputes(int user_id,String booking_id, String title, String  desc) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}user/dispute/create"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "user_id": user_id,
+              "title": title,
+              "booking_id": booking_id,
+              "desc": desc,
+
+
+            }
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = Dispute.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - sendDisputes(): " + e.toString());
+    }
+  }
+
+
 
 
   Future<dynamic> setAvailability(int user_id,String active) async {
@@ -492,6 +839,9 @@ class APIHelper {
 
 
 
+
+
+
   Future<dynamic> checkOut(BookNow bookNow) async {
     try {
 
@@ -513,6 +863,9 @@ class APIHelper {
       print("Exception - setbookingcheckout(): " + e.toString());
     }
   }
+
+
+
 
   Future<dynamic> changePassword(String user_id, String current_password, String new_password,String confirm_new_password ) async {
     try {
@@ -699,7 +1052,7 @@ class APIHelper {
 
 
 
-  Future<dynamic> getSearchResult(int category_id, String title,String state,String city) async {
+  Future<dynamic> getSearchResult({int? category_id, String? title,String? state,String? city}) async {
     try {
       final response = await http.post(
         Uri.parse("${global.baseUrl}user/search"),
@@ -730,9 +1083,13 @@ class APIHelper {
 
 
     } catch (e) {
-      print("Exception - getcategoryResult(): " + e.toString());
+      print("Exception - getsearchResult(): " + e.toString());
     }
   }
+
+
+
+
 
   Future<dynamic> getCategoryResult(int category_id) async {
     try {

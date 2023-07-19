@@ -41,7 +41,7 @@ class _NotificationsState extends State<Notifications> {
                       Row(
                         children: [
                           BackButtonGlobal(
-                            widget: LoginScreen(),
+                            widget: HomePage(),
                           ),
                           SizedBox(width: 10,),
                           Text(
@@ -53,12 +53,12 @@ class _NotificationsState extends State<Notifications> {
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(Icons.filter_alt_outlined)
-                        ],
-                      )
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.end,
+                      //   children: [
+                      //     Icon(Icons.filter_alt_outlined)
+                      //   ],
+                      // )
 
                     ],
                   ),
@@ -84,9 +84,9 @@ class _NotificationsState extends State<Notifications> {
 
 
 class Buttons extends StatelessWidget{
-  const Buttons({Key? key, required this.text1, required this.text2}) : super(key: key);
+  const Buttons({Key? key, required this.text1,  this.text2}) : super(key: key);
   final String text1;
-  final String text2;
+  final String? text2;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -122,7 +122,7 @@ class Buttons extends StatelessWidget{
               ),
               SizedBox(height: 5,),
               Text(
-                text2,
+                text2!,
                 style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w400,

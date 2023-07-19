@@ -159,7 +159,8 @@ class BaseState extends ConsumerState<Base> with  WidgetsBindingObserver {
       Placemark place = placemarks[0];
 
       setState(() {
-        global.currentLocation = "${place.name}, ${place.locality} ";
+       global.currentLocation = "${place.name}, ${place.locality} ";
+
       });
     } catch (e) {
       print("Exception -  base.dart - getAddressFromLatLng():" + e.toString());
@@ -169,8 +170,8 @@ class BaseState extends ConsumerState<Base> with  WidgetsBindingObserver {
   getCurrentLocation() async {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((Position position) {
       setState(() {
-        global.lat = position.latitude.toString();
-        global.lng = position.longitude.toString();
+        global.user.currentLat = position.latitude.toString();
+        global.user.currentLong = position.longitude.toString();
         _currentPosition = position;
         getAddressFromLatLng();
       });

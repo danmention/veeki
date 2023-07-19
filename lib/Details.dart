@@ -360,6 +360,8 @@ getimages()async{
   Widget PageFour() {
 
     return Container(
+      width: 400,
+      height: 500,
       child: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Column(
@@ -413,6 +415,7 @@ getimages()async{
 
             const SizedBox(height: 20),
             ButtonGlobal(
+              isLoading: false,
               ontap:(){
                 //_signUp();
               } ,

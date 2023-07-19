@@ -29,12 +29,17 @@ class CurrentUser {
   String? verifyCode;
   String? isVerified;
   String? isFrequent;
+  String? firebase_token;
+  String? about_me;
+  String? referral_code;
   String? createdAt;
   String? updatedAt;
 
   CurrentUser(
       {this.id,
         this.fullName,
+        this.about_me,
+        this.referral_code,
         this.gender,
         this.email,
         this.identity,
@@ -60,12 +65,16 @@ class CurrentUser {
         this.verifyCode,
         this.isVerified,
         this.isFrequent,
+        this.firebase_token,
         this.createdAt,
         this.updatedAt});
 
   CurrentUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     fullName = json['full_name'];
+    firebase_token = json['firebase_token'];
+    about_me = json['about_me'];
+    referral_code = json['referral_code'];
     gender = json['gender'];
     email = json['email'];
     identity = json['identity'];
@@ -99,6 +108,9 @@ class CurrentUser {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['full_name'] = this.fullName;
+    data['firebase_token'] = this.firebase_token;
+    data['about_me'] = this.about_me;
+    data['referral_code'] = this.referral_code;
     data['gender'] = this.gender;
     data['email'] = this.email;
     data['identity'] = this.identity;

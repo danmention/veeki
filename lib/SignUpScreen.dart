@@ -29,6 +29,7 @@ class _SignUpState extends BaseState{
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
+  final TextEditingController referralController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
 
@@ -36,7 +37,7 @@ class _SignUpState extends BaseState{
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   bool _isDataLoaded = false;
   bool _isRecordPending = true;
-
+  bool isLoading = false;
 
 
   bool _isPasswordVisible = true;
@@ -114,6 +115,13 @@ class _SignUpState extends BaseState{
                     ),
                     obscure: _isPasswordVisible,
                   ),
+                  const SizedBox(height: 10),
+                  TextFormGlobal(
+                    controller: referralController,
+                    text: 'Referral Code',
+                    obscure: false,
+                    textInputType: TextInputType.phone,
+                  ),
 
 
 
@@ -159,7 +167,11 @@ class _SignUpState extends BaseState{
                   ),
                   const SizedBox(height: 20),
                   ButtonGlobal(
+                    isLoading:isLoading ,
                     ontap:(){
+                      setState(() {
+                        isLoading = true;
+                      });
                       _signUp();
                     } ,
                     text: 'Next',
@@ -220,6 +232,7 @@ class _SignUpState extends BaseState{
       signupRequest.email = emailController.text.trim();
       signupRequest.phone = mobileController.text.trim();
       signupRequest.password = passwordController.text.trim();
+      signupRequest.referral_code = referralController.text.trim();
       //
       // signupRequest.category_id = 1;
       // signupRequest.gender = "Male";
@@ -261,6 +274,9 @@ class _SignUpState extends BaseState{
 
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
+        setState(() {
+          isLoading = false;
+        });
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) =>
               SignupPageTwoScreen(signupRequest)),);

@@ -21,6 +21,48 @@ const String txt_sigin_to_continue =  "Sign in to continue";
 const String hnt_email =  "demo@example.com";
 
 const String hnt_password =  "Password" ;
+const String about =  "Introducing Veeki:\n\n\n Connecting You with the Perfect Caregiver, Are you in need of a reliable and compassionate caregiver for yourself or a loved one? Look no further! Veeki is a revolutionary mobile app designed to connect users with caregivers in their local area."
+    " Whether you require assistance with elderly care, child care, special needs care, or any other caregiving service,\n\n "
+    "Veeki is here to simplify the process and bring peace of mind to your family.\n\n\n";
+
+const String whychoose = "Why Choose Veeki? Easy-to-Use Interface: Our user-friendly mobile app ensures a hassle-free experience from start to finish. "
+    "With just a few taps, you can access a wide network of qualified caregivers in your vicinity.\n\n\n"
+    "Extensive Caregiver Database: \n\n\n\n\n "
+    "Veeki has a vast database of experienced and background-checked caregivers. Each caregiver undergoes a rigorous screening process "
+    "to ensure that they meet our high standards for professionalism and reliability.\n\n\n\n\n\n"
+    "Customized Care: We understand that every individual has unique care needs. Veeki allows you to specify your requirements, "
+    "including preferred skills, availability,\n\n\n\n\n "
+    "and language preferences, ensuring you find a caregiver who matches your specific needs.\n\n\n"
+
+"Real-Time Availability: Need immediate assistance? Veeki provides real-time availability information, allowing you to find caregivers who are "
+    "ready to provide care at a moment's notice. Whether it's a last-minute emergency or a long-term care arrangement, we've got you covered.\n\n\n"
+
+"Transparent Reviews and Ratings: Making an informed decision is crucial when it comes to selecting a caregiver. \n\n Veeki provides"
+    " transparent reviews and ratings from previous clients, giving you insights into the quality of care provided by each caregiver.\n\n\n"
+
+"Secure and Reliable: Your safety and security are our top priorities. Veeki implements stringent security measures to protect\n\n\n "
+    "your personal information and ensures that all caregivers meet our strict confidentiality guidelines.\n\n\n\n\n";
+
+const String works =
+"How It Works:\n\n\n\n"
+
+"Create a Profile: Open  the Veeki app, create your profile, and provide essential information about your care needs and preferences.\n\n"
+
+"Search and Filter: Browse through our extensive caregiver database and apply search filters based on location, availability, skills, and more.\n\n"
+
+"Read Reviews and Ratings: Gain insights from previous clients' reviews and ratings to make an informed decision.\n\n"
+
+"Connect and Chat: Initiate contact with potential caregivers through our secure messaging platform. Discuss your requirements, ask questions, "
+    "and get to know them better.\n\n"
+
+"Schedule and Confirm: Once you find the perfect caregiver, schedule care sessions that suit your needs. Confirm the booking and rest easy knowing "
+    "that your care needs are in capable hands.\n\n"
+
+"Payment and Feedback: Conveniently handle payments through the app, and after each session, provide feedback to help us"
+    " maintain the highest standards of service.\n\n"
+
+"Download Veeki today and experience the ease of finding the ideal caregiver near you. Let us take care of the details,\n\n"
+    " so you can focus on what truly matters - the well-being and happiness of your loved ones. With Veeki, quality care is just a tap away!" ;
 
 const String lbl_remember_me = "Remember Me";
 

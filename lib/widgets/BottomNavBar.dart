@@ -5,6 +5,7 @@ import 'package:veeki/HomePage.dart';
 import 'package:veeki/Profile.dart';
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
+import '../AboutScreen.dart';
 import '../BookAppointment/ViewBookingScreen.dart';
 
 class BottomNavBar extends StatelessWidget{
@@ -15,7 +16,7 @@ class BottomNavBar extends StatelessWidget{
   Widget build (BuildContext context){
     return Scaffold(
 
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation:global.user.role  == "SERVICE_PROVIDER"? FloatingActionButtonLocation.centerDocked:FloatingActionButtonLocation.endFloat,
 
           floatingActionButton: global.user.role  == "SERVICE_PROVIDER"?  FloatingActionButton(
           onPressed: (){
@@ -23,7 +24,9 @@ class BottomNavBar extends StatelessWidget{
               MaterialPageRoute(builder: (context) => AddServiceScreen()),
             );
           },
-          child: Icon(Icons.calendar_month_outlined),
+
+
+          child: Icon(Icons.add),
           backgroundColor: GlobalColors.primaryColor,
           foregroundColor: Colors.white,
         ):SizedBox(),
@@ -64,9 +67,17 @@ class BottomNavBar extends StatelessWidget{
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.description_outlined,
-                    color:id == ""? GlobalColors.primaryColor :Colors.white,
-                    size: 30,
+                  GestureDetector(
+
+                    child: Icon(Icons.description_outlined,
+                      color:id == ""? GlobalColors.primaryColor :Colors.white,
+                      size: 30,
+                    ),
+                    onTap: (){
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => ViewBookingScreen()),
+                      );
+                    },
                   )
                 ],
               ),
@@ -82,13 +93,13 @@ class BottomNavBar extends StatelessWidget{
                   GestureDetector(
 
 
-                    child: Icon(Icons.local_post_office_outlined,
+                    child: Icon(Icons.info_outline,
                       color:id == ""? GlobalColors.primaryColor :Colors.white,
                       size: 30,
                     ),
                     onTap: (){
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ViewBookingScreen()),
+                        MaterialPageRoute(builder: (context) => AboutScreen()),
                       );
                     },
                   )

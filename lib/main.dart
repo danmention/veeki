@@ -71,12 +71,12 @@ Future<void> _firebaseForegroundHandler(RemoteMessage message)async{
 }
 
 
-
+String? toke;
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 // Obtain shared preferences.
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, );
 
@@ -107,8 +107,10 @@ void main() async{
 
 
   final fcmtoken = await FirebaseMessaging.instance.getToken();
+  toke =  fcmtoken ;
   print("Firebasetoken $fcmtoken");
-  await prefs.setString('sharedfirebasetoken', fcmtoken!);
+  print("tiktok $toke");
+ //' await prefs.setString('sharedfirebasetoken', fcmtoken!);
 
   final appDocumentDirectory = await getApplicationDocumentsDirectory();
 

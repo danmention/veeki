@@ -28,7 +28,7 @@ class _SearchPageState extends BaseState {
   TextEditingController _search = TextEditingController();
 
   String dropdownvalue = 'Item 1';
-
+  bool isLoading = false;
 
 
    List<States> items =[];
@@ -422,8 +422,12 @@ class _SearchPageState extends BaseState {
 
                       const SizedBox(height: 40),
                       ButtonGlobal(
+                        isLoading: isLoading,
                         ontap:(){
-                          // login();
+                          setState(() {
+                            isLoading = true;
+                          });
+                           search();
                         },
                         //  OnBoardingPage(),
                         text: 'Search',
@@ -578,46 +582,46 @@ class _SearchPageState extends BaseState {
     }
   }
 
-  // void search(int? id) async {
-  //
-  //   _areaList.clear();
-  //   setState(() { });
-  //   try {
-  //     bool isConnected = await br!.checkConnectivity();
-  //     if (isConnected) {
-  //       if (_isRecordPending) {
-  //         showOnlyLoaderDialog();
-  //         await apiHelper?.getSearchResult(id!).then((result) {
-  //           hideLoader();
-  //           if (result != null) {
-  //             if (result.resp_code == "00") {
-  //               List<Service> _tList = result.recordList;
-  //
-  //               if (_tList.isEmpty) {
-  //                 _isRecordPending = false;
-  //               }
-  //
-  //               // ref.watch(myprovider).setArea(_tList);
-  //
-  //               _areaList.addAll(_tList);
-  //
-  //               setState(() {
-  //                 //  _isMoreDataLoaded = false;
-  //               });
-  //
-  //               // } else {
-  //               //   _zoneList = [];
-  //             }
-  //           }
-  //         });
-  //       }
-  //     } else {
-  //       showSnack(snackBarMessage: "No Network ");
-  //     }
-  //   } catch (e) {
-  //     print("Exception - stylishdropdownstatebuttonscreen.dart - _getarea():" + e.toString());
-  //   }
-  // }
+  void search() async {
+
+    _areaList.clear();
+    setState(() { });
+    try {
+      bool isConnected = await br!.checkConnectivity();
+      if (isConnected) {
+        if (_isRecordPending) {
+          showOnlyLoaderDialog();
+          await apiHelper?.getSearchResult(state: _selectedState!.name,title: _search.text.trim(), category_id: _selectedCategory?.id,city: selected_area.toString() ).then((result) {
+            hideLoader();
+            if (result != null) {
+              if (result.resp_code == "00") {
+                List<Service> _tList = result.recordList;
+
+                if (_tList.isEmpty) {
+                  _isRecordPending = false;
+                }
+
+                // ref.watch(myprovider).setArea(_tList);
+
+               // _areaList.addAll(_tList);
+
+                setState(() {
+                  //  _isMoreDataLoaded = false;
+                });
+
+                // } else {
+                //   _zoneList = [];
+              }
+            }
+          });
+        }
+      } else {
+        showSnack(snackBarMessage: "No Network ");
+      }
+    } catch (e) {
+      print("Exception - stylishdropdownstatebuttonscreen.dart - _getarea():" + e.toString());
+    }
+  }
 
 
   @override

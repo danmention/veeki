@@ -27,7 +27,7 @@ class DescriptionandInformation extends StatelessWidget{
                         fontWeight: FontWeight.bold
                     ),)
               ),
-      service != null? Padding(
+                   service != null? Padding(
                 padding: const EdgeInsets.only(top: 17,bottom: 17,right:17),
                 child: Text("${service!.desc}",textAlign: TextAlign.left,
                 style: TextStyle(
@@ -86,23 +86,23 @@ class DescriptionandInformation extends StatelessWidget{
               ),
               Column(
                 children: [
-                  Row(
-                    children: [
-                      Icon(Icons.phone,color: Colors.black45,size: 15,),
-                      Text("   +2348076543210",
-                        style: TextStyle(color: Colors.black45
-                        ),),
-                    ],
-                  ),
-                  SizedBox(height: 7,),
-                  Row(
-                    children: [
-                      Icon(Icons.alternate_email_outlined, color: Colors.black45,size: 15,),
-                      Text("   .",
-                        style: TextStyle(color: Colors.black45
-                        ),),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     Icon(Icons.phone,color: Colors.black45,size: 15,),
+                  //     Text("   +2348076543210",
+                  //       style: TextStyle(color: Colors.black45
+                  //       ),),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 7,),
+                  // Row(
+                  //   children: [
+                  //     Icon(Icons.alternate_email_outlined, color: Colors.black45,size: 15,),
+                  //     Text("   .",
+                  //       style: TextStyle(color: Colors.black45
+                  //       ),),
+                  //   ],
+                  // ),
                 ],
               )
             ],

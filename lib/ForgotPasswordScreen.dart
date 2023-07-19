@@ -21,7 +21,7 @@ class ForgotPasswordScreen extends Base {
 }
 
 class _ForgotPasswordPageState extends BaseState {
-
+  bool isLoading = false;
   final TextEditingController _cEmail = TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
@@ -67,7 +67,9 @@ class _ForgotPasswordPageState extends BaseState {
                 const SizedBox(height: 40),
 
                 ButtonGlobal(
-                  ontap: (){
+                  isLoading:isLoading ,
+                  ontap:(){
+
                     _forgotPassword();
                   },
                   text: 'Send',
@@ -86,15 +88,21 @@ class _ForgotPasswordPageState extends BaseState {
   }
 
   _forgotPassword() async {
+
+    setState(() {
+      isLoading = true;
+    });
     try {
       if (_cEmail.text.isNotEmpty) {
         bool isConnected = await br!.checkConnectivity();
         if (isConnected) {
-          showOnlyLoaderDialog();
+          //showOnlyLoaderDialog();
           await apiHelper!.forgotPassword(_cEmail.text.trim()).then((result) {
             if (result != null) {
               if (result.resp_code == "00") {
-                hideLoader();
+                setState(() {
+                  isLoading = false;
+                });
 
 
                 setState(() {});

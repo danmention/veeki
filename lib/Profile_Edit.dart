@@ -263,8 +263,8 @@ class _EditProfileState extends BaseState{
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.only(top: 5),
-                    height: 40,
+
+                    height: 50,
                     width: 150,
                     decoration: BoxDecoration(
                       color: GlobalColors.secondaryColor,
@@ -311,7 +311,7 @@ class _EditProfileState extends BaseState{
     //  if (_selectedState &&  ) {
         bool isConnected = await br!.checkConnectivity();
         if (isConnected) {
-          showOnlyLoaderDialog();
+         // showOnlyLoaderDialog();
           await apiHelper?.updateProfile(
               global.user.id!,mobileController.text.trim(),
               birthDateInString!,_selectedArea!.localName!,
@@ -319,7 +319,7 @@ class _EditProfileState extends BaseState{
           ).then((result) {
             if (result != null) {
               if (result.resp_code == "00") {
-                hideLoader();
+             //   hideLoader();
 
                 showSnack( snackBarMessage: '${result.resp_description}');
 
@@ -407,9 +407,9 @@ class _EditProfileState extends BaseState{
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
         if (_isRecordPending) {
-          showOnlyLoaderDialog();
+         // showOnlyLoaderDialog();
           await apiHelper?.getAllState().then((result) {
-            hideLoader();
+          //  hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
                 List<States> _tList = result.recordList;
@@ -449,9 +449,9 @@ class _EditProfileState extends BaseState{
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
         if (_isRecordPending) {
-          showOnlyLoaderDialog();
+          //showOnlyLoaderDialog();
           await apiHelper?.getAreaList(id!).then((result) {
-            hideLoader();
+          //  hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
                 List<Area> _tList = result.recordList;

@@ -67,9 +67,9 @@ class _CategorySearchListState extends BaseState {
                                 MaterialPageRoute(builder: (context) =>
                                 Details(service:_serviceList[index] )),);
                           },
-                          child:
+                          child:// SizedBox()
 
-                          Expanded(child: CardButton(text1: "${ _serviceList[index].title??""}", text2: "${ _serviceList[index].amount??""}/hr", text3: "${ _serviceList[index].user![0].city??""}",text4: "${ _serviceList[index].user![0].state??""}", image: "assets/nurse.jpeg")),
+                          Expanded(child: CardButton(text1: "${ _serviceList[index].title??""}", text2: "${ _serviceList[index].amount??""}/hr", text3: "${ _serviceList[index].user![0].city??""}",text4: "${ _serviceList[index].user![0].state??""}", image: "${ _serviceList[index].user![0].profileImage??""}")),
 
                         ),
                       );
@@ -78,9 +78,11 @@ class _CategorySearchListState extends BaseState {
               )
 
                   :
-              Text(
-                "NO Category ",
-                style: Theme.of(context).primaryTextTheme.subtitle2,
+              Center(
+                child: Text(
+                  "No result found",
+                  style: TextStyle(fontSize: 22)
+                ),
               )
 
                   : _shimmer()
@@ -108,11 +110,9 @@ class _CategorySearchListState extends BaseState {
     );
   }
 
-
-
   Widget _shimmer() {
     return Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(10),
         child: Shimmer.fromColors(
           baseColor: Colors.grey[300]!,
           highlightColor: Colors.grey[100]!,
@@ -121,15 +121,36 @@ class _CategorySearchListState extends BaseState {
               itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                  width: 110,
+                  width: 60,
                   height: 50,
-                  child: Card(
+                  child: Container(
                     margin: EdgeInsets.only(left: 5, right: 5),
                   ),
                 );
               }),
         ));
   }
+
+  // Widget _shimmer() {
+  //   return Padding(
+  //       padding: const EdgeInsets.all(10),
+  //       child: Shimmer.fromColors(
+  //         baseColor: Colors.grey[300]!,
+  //         highlightColor: Colors.grey[100]!,
+  //         child: ListView.builder(
+  //             scrollDirection: Axis.vertical,
+  //             itemCount: 5,
+  //             itemBuilder: (BuildContext context, int index) {
+  //               return SizedBox(
+  //                 width: 90,
+  //                 height: 50,
+  //                 child: Card(
+  //                   margin: EdgeInsets.only(left: 5, right: 5),
+  //                 ),
+  //               );
+  //             }),
+  //       ));
+  // }
   @override
   void initState() {
     _init();

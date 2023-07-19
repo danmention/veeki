@@ -41,6 +41,7 @@ class SignupPageTwoScreenState extends BaseState{
   States? _selectedState;
   String ? _selectedStateName;
   Area? _selectedArea;
+  bool isLoading = false;
   var gender = [
     "Male",
     "Female",
@@ -208,7 +209,11 @@ class SignupPageTwoScreenState extends BaseState{
                ),
                SizedBox(height: 40,),
                ButtonGlobal(
+                 isLoading:isLoading ,
                  ontap:(){
+                   setState(() {
+                     isLoading = true;
+                   });
                    _signUp();
                  } ,
                  text: 'Sign Up',
@@ -431,7 +436,9 @@ class SignupPageTwoScreenState extends BaseState{
 
 
             if (result.resp_code == "00" ) {
-
+              setState(() {
+                isLoading = false;
+              });
              // hideLoader();
               // Navigator.push(
               //   context,

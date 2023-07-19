@@ -10,8 +10,10 @@ class SignupRequest {
   int? category_id;
   String? DateOfBirth;
  String? user_type;
+ String? referral_code;
   SignupRequest(
       {this.fullname,
+        this.referral_code,
         this.password,
         this.gender,
         this.phone,
@@ -26,6 +28,7 @@ class SignupRequest {
       });
 
   SignupRequest.fromJson(Map<String, dynamic> json) {
+    referral_code = json['referral_code'];
     fullname = json['fullname'];
     password = json['password'];
     gender = json['gender'];
@@ -41,6 +44,7 @@ class SignupRequest {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['referral_code'] = this.referral_code;
     data['fullname'] = this.fullname;
     data['password'] = this.password;
     data['gender'] = this.gender;

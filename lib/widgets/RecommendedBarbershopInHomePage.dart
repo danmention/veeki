@@ -242,7 +242,10 @@ class _RecommendedBarbershopInHomePageState extends BaseState {
                             width: 180,
                             child: Padding(
                               padding: EdgeInsets.only(left: 7),
-                              child: Row(
+                              child:
+
+                              _serviceList[index].user!.first.city !=null?
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
@@ -257,24 +260,26 @@ class _RecommendedBarbershopInHomePageState extends BaseState {
 
                                     Row(
                                       children: [
-                                        Text(
-                                          '${_serviceList[index].user!.first.city}',
+                                          Text(
+                                          _serviceList[index].user!.first.city! ,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(fontSize: 11),
                                           maxLines: 1,
                                         ),  Text(
                                           ','
-                                        ),  Text(
+                                        ),
+
+                                        _serviceList[index].user!.first.state !=null ? Text(
                                           '${_serviceList[index].user!.first.state}',
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(fontSize: 11),
                                           maxLines: 1,
-                                        ),
+                                        ):Text(''),
                                       ],
                                     ),
                                   ),
                                 ],
-                              ),
+                              ):SizedBox(),
                             ),
                           ),
 
@@ -387,7 +392,12 @@ class _RecommendedBarbershopInHomePageState extends BaseState {
                 setState(() {
                   //  _isMoreDataLoaded = false;
                 });
-              } else {
+              } else if(result.resp_code =="01" && result.resp_message.toString().contains("Token is Invalid") )
+              {
+                Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+                print(result.resp_message);
+               // showSnack(snackBarMessage: result.resp_message.toString());
+              }else {
                 _serviceList = [];
               }
             }

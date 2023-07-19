@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:veeki/Profile_Edit.dart';
 import 'package:veeki/BookAppointment/ViewBookingScreen.dart';
+import 'package:veeki/admin/AddDisputesScreen.dart';
+import 'package:veeki/admin/AddcategoryScreen.dart';
+import 'package:veeki/admin/ViewBookingAdminScreen.dart';
+import 'package:veeki/sendSOS.dart';
 
 import '../HomePage.dart';
 import '../LoginScreen.dart';
 import '../Profile.dart';
 import '../ResetPasswordScreen.dart';
+import '../ViewServiceDetailScreen.dart';
+import '../admin/ViewCategoryScreen.dart';
+import '../admin/ViewPaymentScreen.dart';
+import '../widgets/ViewMyServiceScreen.dart';
 
 
 
@@ -26,6 +34,29 @@ class RouteGenerator{
 
       case "profile":
         return MaterialPageRoute(builder: (_) => Profile());
+
+      case "viewservice":
+        return MaterialPageRoute(builder: (_) => ViewServiceScreen());
+
+      case "viewdetailservice":
+        return MaterialPageRoute(builder: (_) => ViewServiceDetailScreen());
+
+      case "addcategory":
+        return MaterialPageRoute(builder: (_) => AddCategoryScreen());
+
+      case "viewcategory":
+        return MaterialPageRoute(builder: (_) => ViewCategoryScreen());
+
+      case "viewadminbooking":
+        return MaterialPageRoute(builder: (_) => ViewBookingAdminScreen());
+
+      case "viewpayment":
+        return MaterialPageRoute(builder: (_) => ViewPaymentScreen());
+
+      case "sendsos":
+        return MaterialPageRoute(builder: (_) => sendSOS());
+      case "addDisputes":
+        return MaterialPageRoute(builder: (_) => AddDisputesScreen());
       case "resetpassword":
         return MaterialPageRoute(builder: (_) => ResetPasswordScreen());
       case "viewbooking":

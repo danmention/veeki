@@ -11,6 +11,7 @@ class AddServiceRequest {
   int? categoryId;
 
 
+
   AddServiceRequest(
       {
 
@@ -21,6 +22,7 @@ class AddServiceRequest {
         this.amountrange,
         this.categoryId,
         this.userId,
+
 
 
 
@@ -38,6 +40,8 @@ class AddServiceRequest {
     data['amount'] = this.amount;
     data['amount_range'] = this.amountrange;
     data['image'] = this.image;
+    // data['state_id'] = this.state_id;
+    // data['city_id'] = this.city_id;
 
 
     return data;

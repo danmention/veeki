@@ -32,7 +32,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController _search = TextEditingController();
   int _current = 0;
-  var list = ['Captain Salon','Breaking Barbershop','Something Salon','Something Salon','Something Salon','Something Salon',];
+ // var list = ['Captain Salon','Breaking Barbershop','Something Salon','Something Salon','Something Salon','Something Salon',];
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                                 radius: 32,
                                 child: CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: AssetImage('Images/download.png'),
+                                  backgroundImage: AssetImage('assets/pic.png'),
                                 ),
                               ):CircleAvatar(
                                 backgroundColor: GlobalColors.primaryColor,

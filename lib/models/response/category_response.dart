@@ -57,3 +57,48 @@ class Category {
 
 
 
+class CategoryItem {
+  String? title;
+  String? parentId;
+  String? faIcon;
+  String? createdBy;
+  String? url;
+  String? updatedAt;
+  String? createdAt;
+  int? id;
+
+  CategoryItem(
+      {this.title,
+        this.parentId,
+        this.faIcon,
+        this.createdBy,
+        this.url,
+        this.updatedAt,
+        this.createdAt,
+        this.id});
+
+  CategoryItem.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    parentId = json['parent_id'];
+    faIcon = json['fa_icon'];
+    createdBy = json['created_by'];
+    url = json['url'];
+    updatedAt = json['updated_at'];
+    createdAt = json['created_at'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['title'] = this.title;
+    data['parent_id'] = this.parentId;
+    data['fa_icon'] = this.faIcon;
+    data['created_by'] = this.createdBy;
+    data['url'] = this.url;
+    data['updated_at'] = this.updatedAt;
+    data['created_at'] = this.createdAt;
+    data['id'] = this.id;
+    return data;
+  }
+}
+

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:veeki/HomePage.dart';
@@ -15,6 +16,7 @@ import 'package:veeki/widgets/back.button.global.dart';
 import 'LoginScreen.dart';
 import 'models/businessLayer/base.dart';
 import 'models/userModel.dart';
+import 'utils/constant.dart';
 
 class Profile extends Base {
   @override
@@ -37,30 +39,31 @@ class _ProfileState extends BaseState{
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       key: _scaffoldKey,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 10,
-                        child: BackButtonGlobal(
-                          widget: HomePage(),
-                        )
-                    ),
-                  ],
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back,color: Colors.black,),
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
                 Container(
                   //margin: EdgeInsets.only(bottom: 50),
-                  height: 310,
+                  height: 370,
                   child:Column(
 
                     children: [
@@ -203,12 +206,39 @@ class _ProfileState extends BaseState{
                         ],
                       ),
 
-                      // Text("Fahim Ekan",
-                      //   style: TextStyle(
-                      //     fontWeight: FontWeight.bold,
-                      //     fontSize: 20,
-                      //   ),
-                      // ),
+                      Text("Referral Code",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all( color: Theme.of(context).primaryColor,)
+                        ),
+                        width: 200,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(global.user.referral_code!,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              GestureDetector(
+                                  onTap: (){
+                                    Clipboard.setData(ClipboardData(text: global.user.referral_code!)).then((_){
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Referral code copied to clipboard")));
+                                    });
+                                  },
+                                  child: Icon(Icons.copy_all_rounded))
+                            ],
+                          ),
+                        ),
+                      ),
                       SizedBox(height: 10,),
                     ],
                   ),
@@ -218,20 +248,123 @@ class _ProfileState extends BaseState{
                       nextScreen(context, 'editprofile');
                     },
                     child: ProfileButton(text1: "Account Settings", text2: "Name, email, address, contact number", icon: Icons.person)),
-                ProfileButton(text1: "Payment Method", text2: "Add a new payment card", icon: Icons.credit_card_outlined),
-                 GestureDetector(
-                     onTap: (){
-                       nextScreen(context, "viewbooking");
-                     },
-                     child: ProfileButton(text1: "Booking Management", text2: "Manage your booking system", icon: Icons.cases_outlined)),
-                // ProfileButton(text1: "Reward points program", text2: "You've 50 reward points", icon: Icons.card_giftcard_outlined),
-               // ProfileButton(text1: "Pricing and offers", text2: "Get every week special offers and affor...", icon: Icons.local_offer_outlined),
+                // ProfileButton(text1: "Payment Method", text2:
+                // "Add a new payment card", icon: Icons.credit_card_outlined),
+
+
+                global.user.role =="USER" ?
+
+                    Row(children: [
+                      GestureDetector(
+                          onTap: (){
+                            nextScreen(context, "viewbooking");
+                          },
+                          child: ProfileButton(text1: "Booking Management",
+                              text2: "Manage your booking system", icon: Icons.cases_outlined)),
+
+                      ProfileButton(text1: "Send Disputes", text2: "Do you have any disputes",
+                        icon: Icons.add_to_home_screen_sharp,
+                        ontap: (){
+                          nextScreen(context, "addDisputes");
+                        },
+                      ),
+
+                      // ProfileButton(text1: "SOS", text2: " For ",
+                      //   icon: Icons.add_to_home_screen_sharp,
+                      //   ontap: (){
+                      //     nextScreen(context, "addDisputes");
+                      //   },
+                      // ),
+
+                    ],)
+
+
+
+
+
+
+               : SizedBox(),
+
+                 //ProfileButton(text1: "Reward points program", text2: "You've 50 reward points", icon: Icons.card_giftcard_outlined),
+              //  ProfileButton(text1: "Pricing and offers", text2: "Get every week special offers and affor...", icon: Icons.local_offer_outlined),
+
+
+
+                global.user.role  == "SERVICE_PROVIDER" || global.user.isAdmin == "1"?
+
+                GestureDetector(
+                    onTap: (){
+
+                      nextScreen(context,"viewservice");
+                    },
+                    child: ProfileButton(text1: "Manage Services", text2:
+                    "Edit and delete your services", icon: Icons.local_offer_outlined)):SizedBox(),
+
                 GestureDetector(
                     onTap: (){
                       nextScreen(context, "resetpassword");
                     },
-                    child: ProfileButton(text1: "Change Password", text2: "Get a new password", icon: Icons.local_offer_outlined)),
-                ProfileButton(text1: "Terms and services", text2: "See our terms and services", icon: Icons.design_services_outlined),
+                    child: ProfileButton(text1: "Change Password", text2: "Get a new password", icon: Icons.key)),
+
+
+
+                ProfileButton(text1: "Terms and services", text2: "See our terms and services"
+                    , icon: Icons.design_services_outlined),
+
+
+
+
+                global.user.isAdmin == "1"?
+
+                    Column(children: [
+                      ProfileButton(text1: "Add Category", text2: "Add latest category...",
+                          ontap: (){
+                              nextScreen(context, 'addcategory');
+                          },
+                          icon: Icons.addchart),
+
+                      ProfileButton(text1: "View Category", text2: "view and delete  category...",
+                          ontap: (){
+                              nextScreen(context, 'viewcategory');
+                          },
+                          icon: Icons.book),
+
+                         ProfileButton(text1: "View  Booking", text2: "view  latest booking...",
+                          ontap: (){
+                           nextScreen(context, "viewadminbooking");
+                          },
+                          icon: Icons.adjust_outlined),
+                      ProfileButton(text1: "View Dispute", text2: "Do you have any issue with the service",
+                          ontap: (){
+
+                          },
+                          icon: Icons.addchart),
+
+                      ProfileButton(text1: "View Payment", text2: "Add latest payment...",
+                          ontap: (){
+                                nextScreen(context, 'viewpayment');
+                          },
+                          icon: Icons.credit_card_outlined),
+
+                      ProfileButton(text1: "Manage Added Services", text2: "Approve added service...",
+                          ontap: (){
+
+                          },
+                          icon: Icons.addchart),
+
+                      ProfileButton(text1: "Manage Users", text2: "Approve user account..",
+                          ontap: (){
+
+                          },
+                          icon: Icons.person),
+
+                    ],):SizedBox(),
+
+
+
+
+
+
 
                 GestureDetector(
                   onTap: ()async{
@@ -242,8 +375,8 @@ class _ProfileState extends BaseState{
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.only(top: 5),
-                    height: 40,
+
+                    height: 50,
                     width: 150,
                     decoration: BoxDecoration(
                       color: GlobalColors.secondaryColor,
@@ -270,6 +403,20 @@ class _ProfileState extends BaseState{
                     ),
                   ),
                 ),
+SizedBox(height: 5,),
+                ElevatedButton(
+                  onPressed: () {
+                    nextScreen(context, 'sendsos');
+                  }
+                   ,
+                  child: Text('SOS'),
+                  style: ElevatedButton.styleFrom(
+                    shape: CircleBorder(),
+                    padding: EdgeInsets.all(24),
+                  ),
+                )
+
+
 
               ],
             ),
@@ -294,6 +441,7 @@ class _ProfileState extends BaseState{
     super.initState();
 
     if (global.user.id == null) {
+
       Future.delayed(Duration.zero, () {
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -408,6 +556,7 @@ class _ProfileState extends BaseState{
 
               print(_user!.profileImage);
               showSnack(snackBarMessage: 'Image uploaded successfully ');
+              nextScreen(context, 'home');
 
               // global.user = _user!;
 
@@ -533,6 +682,8 @@ class _ProfileState extends BaseState{
       ),
     );
   }
+
+
 
 
 

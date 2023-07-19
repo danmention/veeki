@@ -108,6 +108,8 @@ status = 1;
     // TODO: implement initState
     super.initState();
   }
+
+
   String _getReference() {
     String platform;
     if (Platform.isIOS) {

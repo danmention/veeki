@@ -4,6 +4,7 @@ import 'package:veeki/HomePage.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'package:veeki/LoginScreen.dart';
 import 'package:veeki/utils/global.colors.dart';
+import 'package:veeki/widgets/BottomNavBar.dart';
 import 'package:veeki/widgets/button.global.dart';
 import 'package:veeki/widgets/text.form.global.dart';
 
@@ -28,11 +29,15 @@ class _ResetPasswordScreenState extends BaseState {
   bool _isPasswordVisiblecurrent = true;
   bool _isPasswordVisibleconfirm = true;
    String? email;
-
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key:_scaffoldKey ,
+      bottomNavigationBar: Container(
+          height: 110,
+          child: BottomNavBar(id: "booking",)
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
@@ -105,10 +110,15 @@ class _ResetPasswordScreenState extends BaseState {
                 ),
                 const SizedBox(height: 40),
 
-                Text(global.firebaseToken!),
+               // Text(global.firebaseToken!),
 
                 ButtonGlobal(
-                  ontap:(){_changePassword();} ,
+                  isLoading:isLoading ,
+                  ontap:(){
+                    setState(() {
+                      isLoading = true;
+                    });
+                    _changePassword();} ,
                   text: 'Reset Password',
                   color: GlobalColors.primaryColor,
                   fontsize: 20,
@@ -134,7 +144,9 @@ class _ResetPasswordScreenState extends BaseState {
           await apiHelper?.changePassword("${global.user.id}", currentpasswordController.text.trim(), passwordController.text.trim(), confirmpasswordController.text.trim()).then((result) {
             if (result != null) {
               if (result.resp_code == "00") {
-                hideLoader();
+                setState(() {
+                  isLoading = false;
+                });
 
                 showSnack( snackBarMessage: '${result.resp_description}');
 

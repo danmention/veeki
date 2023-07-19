@@ -40,6 +40,7 @@ class _AddServiceScreenState extends BaseState{
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   AddServiceRequest _addServiceRequest = new AddServiceRequest();
   Box? box;
+  bool isLoading = false;
   File? _tImage;
   File? _tImage1;
   File? _tImage2;
@@ -55,7 +56,7 @@ class _AddServiceScreenState extends BaseState{
   Widget build(BuildContext context) {
     return Scaffold(
       key:_scaffoldkey,
-      appBar: AppBar(),
+      appBar: AppBar(title: Text('Add Service'),),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
@@ -68,13 +69,13 @@ class _AddServiceScreenState extends BaseState{
                 children: [
 
                   const SizedBox(height: 55),
-                  Text(
-                    'Add Service',
-                    style: TextStyle(
-                        color: GlobalColors.textColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  // Text(
+                  //   'Add Service',
+                  //   style: TextStyle(
+                  //       color: GlobalColors.textColor,
+                  //       fontSize: 25,
+                  //       fontWeight: FontWeight.bold),
+                  // ),
                   const SizedBox(height: 10),
                   Text(
                     'Add in to continue',
@@ -260,6 +261,7 @@ class _AddServiceScreenState extends BaseState{
 
                   const SizedBox(height: 40),
                   ButtonGlobal(
+                    isLoading:isLoading ,
                     ontap:(){
                       addservice();
                     },
@@ -529,14 +531,18 @@ class _AddServiceScreenState extends BaseState{
 
         bool isConnected = await br!.checkConnectivity();
         if (isConnected) {
-          showOnlyLoaderDialog();
+          setState(() {
+            isLoading = true;
+          });
           await apiHelper!.addService(id:global.user.id!,user_image:_tImage,
           title: _ctitle.text.trim(), desc: _cdescription.text.trim(),amount: _camount.text.trim(),
             cat_id: _selectedCategory!.id,amountrange: ''
           ).then((result) async {
             if (result != null) {
               if (result.resp_code == "00") {
-               // hideLoader();
+                setState(() {
+                  isLoading = false;
+                });
              int serviceid = result.data.id;
                 print(serviceid);
               if(_tImage1 != null ||_tImage2  != null ||_tImage3 != null  ||_tImage1 != null ){
