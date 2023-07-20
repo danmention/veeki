@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-
+import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'package:veeki/widgets/CardButton.dart';
 
 import 'CategorySearchList.dart';
@@ -22,6 +22,8 @@ class _ServiceListState extends BaseState {
   bool _isDataLoaded = false;
   bool _isRecordPending = true;
   List<Service> _serviceList = [];
+  bool isLoading = false;
+  TextEditingController messageTextCntr = TextEditingController();
  // _ServiceListState(this._serviceList);
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,16 @@ class _ServiceListState extends BaseState {
                   );
                 },
                 child:
-                CardButton(text1: "${ _serviceList[index].title??""}",text2:"${ _serviceList[index].amount??""}/hr",  text3: "${ _serviceList[index].user![0].city??""}",text4: "${ _serviceList[index].user![0].state??""}",  image: "${ _serviceList[index].images![0].images??""}"),
+                CardButton(text1: "${ _serviceList[index].title??""}",text2:"${ _serviceList[index].amount??""}/hr",
+                    text3: "${ _serviceList[index].user![0].city??""}",text4: "${ _serviceList[index].user![0].state??""}",
+                    image: "${ _serviceList[index].images![0].images??""}", block: (){
+
+
+                    dialog(_serviceList[index].user![0].id,_serviceList[index].id, false, "Block");
+                  },delete: (){
+                    dialog(_serviceList[index].user![0].id, _serviceList[index].id, true, "Delete");
+                  },
+                ),
 
                 // CardButton(text1: "${ _categoryList[index].title??""}", text2: "BarberShop (650)", image: "Images/clippers.png"),
 
@@ -62,8 +73,8 @@ class _ServiceListState extends BaseState {
 
           :
       Text(
-        "NO Category ",
-        style: Theme.of(context).primaryTextTheme.subtitle2,
+        "No result found ",
+
       )
 
           : _shimmer()
@@ -220,4 +231,71 @@ int pageNumber = 1;
       print("Exception - initcategory.dart - _initFinal():" + e.toString());
     }
   }
+
+  void dialog(int? userid,int? id, bool bool, String activity) {
+    setState(() {
+      isLoading = true;
+    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('$activity Post'),
+            content:  TextField(
+              controller:messageTextCntr ,
+              decoration: InputDecoration(hintText: "Enter reason for blocking"),
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  //  _dismissDialog();
+                   // block(id,  bool);
+                  },
+                  child: Text('Close')),
+              TextButton(
+                onPressed: () {
+
+                  block( userid, id,  bool);
+                  Navigator.of(context).pop();
+                 // _dismissDialog();
+                },
+                child: Text('Ok'),
+              )
+            ],
+          );
+        });
+
+
+  }
+
+
+  block(int? userid,int? id, bool bool)async{
+    try {
+
+      await apiHelper!.blockservice(userid!,messageTextCntr.text.trim(), id!, bool).then((result) {
+    if (result != null) {
+    if (result.resp_code == "00") {
+
+setState(() { });
+
+      showSnack( snackBarMessage: '${result.resp_description}');
+hideLoader();
+
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    showSnack( snackBarMessage: '${result.resp_message}');
+    }
+    }
+    });
+
+
+    } catch (e) {
+    print("Exception - blockScreen.dart - _block():" + e.toString());
+    }
+  }
+
+
 }

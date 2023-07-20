@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-
+import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'package:veeki/Details.dart';
 import 'package:veeki/utils/global.colors.dart';
 

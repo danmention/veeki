@@ -10,6 +10,7 @@ import '../HomePage.dart';
 import '../LoginScreen.dart';
 import '../Profile.dart';
 import '../ResetPasswordScreen.dart';
+import '../ServiceList.dart';
 import '../ViewServiceDetailScreen.dart';
 import '../admin/ViewCategoryScreen.dart';
 import '../admin/ViewPaymentScreen.dart';
@@ -37,7 +38,8 @@ class RouteGenerator{
 
       case "viewservice":
         return MaterialPageRoute(builder: (_) => ViewServiceScreen());
-
+      case "viewallservice":
+        return MaterialPageRoute(builder: (_) => ServiceList());
       case "viewdetailservice":
         return MaterialPageRoute(builder: (_) => ViewServiceDetailScreen());
 

@@ -190,7 +190,7 @@ class _ProfileState extends BaseState{
                       ),
                       Row(
                         children: [
-                          Text('Are you available for work ? ',   style: TextStyle(
+                          Text('Available for work ? ',   style: TextStyle(
 
                             fontSize: 15,fontFamily: 'Roboto',
                           ),),
@@ -206,13 +206,13 @@ class _ProfileState extends BaseState{
                         ],
                       ),
 
-                      Text("Referral Code",
+                      global.user.isAdmin == "1"?     SizedBox(height: 1,): Text("Referral Code",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
                       ),
-                      Container(
+                      global.user.isAdmin == "1"?   SizedBox(height: 1,):     Container(
                         decoration: BoxDecoration(
                           border: Border.all( color: Theme.of(context).primaryColor,)
                         ),
@@ -238,8 +238,9 @@ class _ProfileState extends BaseState{
                             ],
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10,),
+                      )
+                        ,
+                      global.user.isAdmin == "1"?   SizedBox(height: 1,):   SizedBox(height: 10,),
                     ],
                   ),
                 ),
@@ -290,7 +291,7 @@ class _ProfileState extends BaseState{
 
 
 
-                global.user.role  == "SERVICE_PROVIDER" || global.user.isAdmin == "1"?
+                global.user.role  == "SERVICE_PROVIDER" ?
 
                 GestureDetector(
                     onTap: (){
@@ -299,6 +300,15 @@ class _ProfileState extends BaseState{
                     },
                     child: ProfileButton(text1: "Manage Services", text2:
                     "Edit and delete your services", icon: Icons.local_offer_outlined)):SizedBox(),
+                global.user.isAdmin == "1"?
+                GestureDetector(
+                    onTap: (){
+
+                      nextScreen(context,"viewallservice");
+                    },
+                    child: ProfileButton(text1: "View all Services", text2:
+                    "Edit and delete your services", icon: Icons.local_offer_outlined)):SizedBox(),
+
 
                 GestureDetector(
                     onTap: (){

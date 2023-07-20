@@ -314,6 +314,9 @@ class _LoginScrrenState extends BaseState{
         else {
 
           showSnack(snackBarMessage:" No network connection" );
+          setState(() {
+            isLoading = false;
+          });
         }
       } else if (_cEmail.text.isEmpty) {
         //showSnackBar(key: _scaffoldKey, snackBarMessage: txt_please_enter_your_email);

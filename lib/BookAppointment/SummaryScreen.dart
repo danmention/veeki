@@ -269,7 +269,7 @@ void notifyCaregiver()async{
 
 
   //₦${ref.watch(myprovider).initialAmount??"0.00"}
-  await apiHelper!.pushnotification(service!.user!.first.instagram!,
+  await apiHelper!.pushnotification(service!.user!.first.firebase_token!,
      // "₦${ref.watch(myprovider).initialAmount??"0.00"}",
     // "${bookingRequest!.streetAddress!}+${global.user.instagram}",
      "${bookingRequest!.streetAddress!}",

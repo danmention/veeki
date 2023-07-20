@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-
+import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'package:veeki/utils/global.colors.dart';
 
 class CardButton extends StatelessWidget{
-  const CardButton({Key? key, required this.text1, required this.text2,this.text3,this.text4, required this.image}) : super(key: key);
+  const CardButton({Key? key, required this.text1,this.block, this.delete, required this.text2,this.text3,this.text4, required this.image}) : super(key: key);
   final String text1;
   final String text2;
   final String? text3;
   final String? text4;
+  final Function()? block;
+  final Function()? delete;
+
   final String image;
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class CardButton extends StatelessWidget{
           )
         ],
       ),
-      height: 80,
+      height: 120,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -81,6 +84,11 @@ class CardButton extends StatelessWidget{
                   ),
                 ],
               ),
+
+              global.user.isAdmin == "1"?   Row(children: [
+                TextButton(onPressed: delete, child: Text('Delete')),
+                TextButton(onPressed: block, child: Text('Block'))
+              ],):SizedBox()
             ],
           ),
         ],

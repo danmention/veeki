@@ -3,6 +3,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:banner_carousel/banner_carousel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:veeki/BookAppointment/ViewBookingScreen.dart';
 import 'package:veeki/CategoryList.dart';
 import 'package:veeki/Notifications.dart';
 import 'package:veeki/PopularBarbers.dart';
@@ -156,7 +157,8 @@ class _HomePageState extends State<HomePage> {
                                 InkWell(
                                   onTap: (){
                                     Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) => Notifications()),
+                                     // MaterialPageRoute(builder: (context) => Notifications()),
+                                      MaterialPageRoute(builder: (context) => ViewBookingScreen()),
                                     );
                                   },
                                     child: Icon(Icons.notifications_none_outlined,color: Colors.white,

@@ -157,9 +157,10 @@ class BaseState extends ConsumerState<Base> with  WidgetsBindingObserver {
       List<Placemark> placemarks = await placemarkFromCoordinates(_currentPosition!.latitude, _currentPosition!.longitude);
 
       Placemark place = placemarks[0];
+print("${place.street}, ${place.locality} ");
 
       setState(() {
-       global.currentLocation = "${place.name}, ${place.locality} ";
+       global.currentLocation = "${place.street}, ${place.locality} ";
 
       });
     } catch (e) {
@@ -170,8 +171,8 @@ class BaseState extends ConsumerState<Base> with  WidgetsBindingObserver {
   getCurrentLocation() async {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((Position position) {
       setState(() {
-        global.user.currentLat = position.latitude.toString();
-        global.user.currentLong = position.longitude.toString();
+        global.lat = position.latitude.toString();
+        global.lng = position.longitude.toString();
         _currentPosition = position;
         getAddressFromLatLng();
       });

@@ -7,6 +7,8 @@ import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
 import '../AboutScreen.dart';
 import '../BookAppointment/ViewBookingScreen.dart';
+import '../Notifications.dart';
+import '../TransactionHistoryScreen.dart';
 
 class BottomNavBar extends StatelessWidget{
   BottomNavBar ({Key? key, required this.id}) : super (key:key);
@@ -75,7 +77,7 @@ class BottomNavBar extends StatelessWidget{
                     ),
                     onTap: (){
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ViewBookingScreen()),
+                        MaterialPageRoute(builder: (context) => TransactionHistoryScreen()),
                       );
                     },
                   )

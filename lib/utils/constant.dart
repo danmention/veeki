@@ -96,7 +96,7 @@ const String txt_i_agree_to_the = "I agree to the ";
 
 const String txt_term_of_services = "Terms of Services";
 const String btn_sign_up = "Sign Up";
-
+const lbl_my_orders =  "My Orders";
 const String txt_you_already_have_account= "You already have an account?";
 const String lbl_sign_in = "Sign in";
 
@@ -107,3 +107,16 @@ const String txt_please_enter_your_password= "Please enter your password";
 const String txt_please_reEnter_your_password = "Please re-enter your password";
 
 const String  txt_password_do_not_match = "Passwords do not match";
+const String  lbl_items =  "Items";
+
+const String txt_no_order_yet=  "No orders yet!";
+
+
+const String  lbl_cancelled =  "Cancelled";
+const String  lbl_accepted =  "Accepted";
+
+const String  lbl_pending=  "Pending";
+
+const String lbl_completed =  "Completed";
+
+const String  lbl_order_detail =  "Order Details";

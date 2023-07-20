@@ -125,15 +125,18 @@ child: Padding(
     await getCurrentPosition().then((_) async {
 
       if (global.lat != null && global.lng != null) {
+      //if (global.currentLocation != null) {
         setState(() {
           isLoading = false;
         });
-        String messageandaddress = message.text.trim() + global.currentLocation!;
+        String messageandaddress = message.text.trim() + " /n/n Current Address: ${global.currentLocation!} /n/n Sender Phone:${global.user.phone!}";
+//String admintoken  =  global.user.isAdmin ==
+
 
           await apiHelper?.sendSOS(global.user.id!,global.user.fullName!,messageandaddress ,global.lat!,global.lng!,'' ).then((result) {
             if (result != null) {
               if (result.resp_code == "00") {
-
+//add send notification to admin later
                 nextScreen(context, 'home');
 
 
@@ -143,8 +146,13 @@ child: Padding(
           });
 
       } else {
-        hideLoader();
-        showSnackBar(key: _scaffoldKeyg, snackBarMessage: txt_please_enablet_location_permission_to_use_app);
+
+        setState(() {
+          isLoading = false;
+        });
+        //hideLoader();
+        showSnack( snackBarMessage:txt_please_enablet_location_permission_to_use_app);
+        //showSnackBar(key: _scaffoldKeyg, snackBarMessage: txt_please_enablet_location_permission_to_use_app);
       }
     });
 

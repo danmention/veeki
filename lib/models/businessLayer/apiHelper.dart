@@ -17,6 +17,7 @@ import '../request/login_request.dart';
 import '../request/signup_request.dart';
 import '../response/UserResponseModel.dart';
 
+import '../response/billing_response.dart';
 import '../response/dispute_response.dart';
 import '../response/login_response.dart';
 import '../response/payment_response.dart';
@@ -481,6 +482,29 @@ class APIHelper {
   }
 
 
+
+  Future<dynamic> getMyTransaction( int pageNumber,int userid ) async {
+    try {
+      final response = await http.get(
+        Uri.parse("${global.baseUrl}user/billing/${userid}?page=${pageNumber.toString()}"),
+        // Uri.parse("${global.baseUrl}services"),
+        headers: await global.getApiHeaders(true),
+
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = List<Billing>.from(json.decode(response.body)["data"]["data"].map((x) => Billing.fromJson(x)));
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - getmytransaction(): " + e.toString());
+    }
+  }
+
+
   Future<dynamic> getAllService( int pageNumber, ) async {
     try {
       final response = await http.get(
@@ -499,6 +523,41 @@ class APIHelper {
       return getAPIResult(response, recordList);
     } catch (e) {
       print("Exception - getallService(): " + e.toString());
+    }
+  }
+
+
+  Future<dynamic> blockservice(int user_id,String reason, int service_id, bool action,) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}admin/service/block"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+
+              {
+                "user_id" : user_id,
+                "service_id" : service_id,
+                "reason" : reason,
+                "action" : action // true means delete, false means just block
+              }
+
+
+
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+
+        recordList = Service.fromJson(json.decode(response.body)["data"]);
+
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - setAvailability(): " + e.toString());
     }
   }
 
