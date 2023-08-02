@@ -33,15 +33,22 @@ class _ServicesInHopePageState extends BaseState {
       _categoryList.length > 0
           ?
       Container(
-        height: 100,
+        //height: 100,
+        padding: EdgeInsets.all(12.0),
         child:
 
-        ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _categoryList.length,
+        GridView.builder(
+            // scrollDirection: Axis.horizontal,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                // crossAxisSpacing: 2.0,
+                // mainAxisSpacing: 2.0
+            ),
+
+            itemCount: _categoryList.length<=6?_categoryList.length:6,
             itemBuilder: (context, index){
               return Padding(
-                padding: const EdgeInsets.only(left: 10.0,top: 8.0,bottom: 8.0,right: 8.0),
+                padding: const EdgeInsets.only(left: 8.0,top: 8.0,bottom: 8.0,right: 8.0),
                 child: InkWell(
                   onTap: (){
                     Navigator.of(context).push(
@@ -50,8 +57,8 @@ class _ServicesInHopePageState extends BaseState {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      height: 30,
-                      width:  150,
+                      height:5,
+                      width: 40,
                       decoration: BoxDecoration(
                         color: Colors.black,
                         image: DecorationImage(

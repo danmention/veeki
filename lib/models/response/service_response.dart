@@ -87,6 +87,8 @@ class Service {
   String? amount;
   String? amountRange;
   String? desc;
+  String? state;
+  String? area;
   String? createdAt;
   String? updatedAt;
   List<CurrentUser>? user;
@@ -100,6 +102,8 @@ class Service {
         this.amount,
         this.amountRange,
         this.desc,
+        this.state,
+        this.area,
         this.createdAt,
         this.updatedAt,
         this.user,
@@ -108,6 +112,8 @@ class Service {
   Service.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
+    state = json['state'];
+    area = json['area'];
     categoryId = json['category_id'];
     title = json['title'];
     amount = json['amount'];
@@ -136,6 +142,8 @@ class Service {
     data['category_id'] = this.categoryId;
     data['title'] = this.title;
     data['amount'] = this.amount;
+    data['state'] = this.state;
+    data['area'] = this.area;
     data['amount_range'] = this.amountRange;
     data['desc'] = this.desc;
     data['created_at'] = this.createdAt;

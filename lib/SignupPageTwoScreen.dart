@@ -74,17 +74,7 @@ class SignupPageTwoScreenState extends BaseState{
 
 
 
-               MyDropdownFormField<Category>(
-                 items: _categoryList,
-                 displayText: (category) => category.title!,
-                 onSelected: (category) {
-                   setState(() {
-                     _selectedCategory = category;
-                   });
-                 },
-                 labelText: 'Category',
-               ),
-               const SizedBox(height: 15),
+
                Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                  children: [
@@ -103,17 +93,21 @@ class SignupPageTwoScreenState extends BaseState{
                        labelText: 'Select Usertype',
                      ),
                    ),
-                   // SizedBox(width: 10,),
+                    SizedBox(width: 10,),
 
+
+
+
+                   const SizedBox(height: 15),
 
                    Container(
                      width:150,
                      child: MyDropdownFormField<String>(
                        items: gender,
                        displayText: (area) => area,
-                       onSelected: (area) {
+                       onSelected: (gen) {
                          setState(() {
-                           _selectedGender = area;
+                           _selectedGender = gen;
                          });
                        },
                        labelText: 'Select Gender',
@@ -121,6 +115,18 @@ class SignupPageTwoScreenState extends BaseState{
                    ),
 
                  ],),
+
+               _selectedUserType !="USER"?
+                 MyDropdownFormField<Category>(
+                   items: _categoryList,
+                   displayText: (category) => category.title!,
+                   onSelected: (category) {
+                     setState(() {
+                       _selectedCategory = category;
+                     });
+                   },
+                   labelText: 'Category',
+                 ):SizedBox(height: 15),
                const SizedBox(height: 15),
 
 
@@ -137,7 +143,7 @@ class SignupPageTwoScreenState extends BaseState{
                  labelText: 'State',
                ),
                const SizedBox(height: 15),
-               MyDropdownFormField<Area>(
+               _areaList.length>0?MyDropdownFormField<Area>(
                  items: _areaList,
                  displayText: (area) => area.localName!,
                  onSelected: (area) {
@@ -146,7 +152,7 @@ class SignupPageTwoScreenState extends BaseState{
                    });
                  },
                  labelText: 'Area',
-               ),
+               ):SizedBox(),
                const SizedBox(height: 15),
                TextFormGlobal(
                  controller: streetController,
@@ -214,11 +220,11 @@ class SignupPageTwoScreenState extends BaseState{
                    setState(() {
                      isLoading = true;
                    });
-                   _signUp();
+                   _signUp2();
                  } ,
-                 text: 'Sign Up',
+                 text: 'Complete Registration',
                  color: GlobalColors.primaryColor,
-                 fontsize: 20,
+                 fontsize: 15,
                ),
 
 
@@ -387,19 +393,16 @@ class SignupPageTwoScreenState extends BaseState{
 
 
 
-  _signUp() async {
+  _signUp2() async {
     try {
 
+      setState(() {
+        isLoading = false;
+      });
 
 
 
 
-      signupRequest.category_id = _selectedCategory!.id;
-      signupRequest.gender = _selectedGender;
-      signupRequest.user_type = _selectedUserType;
-      signupRequest.StreetAddress = streetController.text.trim();
-      signupRequest.state = _selectedState!.name;
-      signupRequest.city = _selectedArea!.localName;
 
 
 
@@ -408,37 +411,72 @@ class SignupPageTwoScreenState extends BaseState{
         showSnack( snackBarMessage: "Enter street address");
         return;
 
-      }else  if (signupRequest.DateOfBirth == null) {
+      }
+    //
+    //
+    else  if (signupRequest.DateOfBirth == null) {
         showSnack( snackBarMessage: "Enter Date of birth");
         return;
 
       }
-      else  if (signupRequest.gender == null) {
+      else  if (_selectedGender == null) {
         showSnack( snackBarMessage: "Enter gender");
         return;
 
-      }else  if (signupRequest.user_type == null) {
+      }
+
+      else  if (_selectedUserType == null ) {
         showSnack( snackBarMessage: "Enter user type");
         return;
 
-      }else  if (signupRequest.state == null) {
+      }
+      //
+      else  if (_selectedState?.name ==null) {
         showSnack( snackBarMessage: "Enter state");
         return;
 
       }
+
+      else  if (_selectedArea?.localName== null) {
+        showSnack( snackBarMessage: "Select area");
+        return;
+
+      }
+
+      else if(_selectedUserType == "SERVICE_PROVIDER" && _selectedCategory?.id == null ){
+
+          showSnack( snackBarMessage: "Select Category");
+          return;
+        }
+
+
+
+
+
+
+
+     signupRequest.category_id = _selectedCategory?.id != null?_selectedCategory?.id:0;
+      signupRequest.gender = _selectedGender;
+      signupRequest.user_type = _selectedUserType;
+      signupRequest.StreetAddress = streetController.text.trim();
+
+      signupRequest.state = _selectedState?.name;
+      signupRequest.city = _selectedArea?.localName;
 
 
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
        // showOnlyLoaderDialog();
         await apiHelper?.signUp(signupRequest).then((result) async {
+
+          setState(() {
+            isLoading = false;
+          });
           if (result != null) {
 
 
             if (result.resp_code == "00" ) {
-              setState(() {
-                isLoading = false;
-              });
+
              // hideLoader();
               // Navigator.push(
               //   context,
@@ -450,8 +488,13 @@ class SignupPageTwoScreenState extends BaseState{
               nextScreen(context, 'login');
 
               //  await _sendOTP(_cMobile.text.trim());
-            } else {
-              hideLoader();
+            } else if (result.resp_code == "01" ) {
+              showSnack( snackBarMessage: result.resp_message.toString());
+            }
+
+
+            else {
+             // hideLoader();
 
 
 

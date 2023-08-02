@@ -36,6 +36,7 @@ class _EditProfileState extends BaseState{
   String? _selectedUserType;
   Category? _selectedCategory;
   States? _selectedState;
+
   String ? _selectedStateName;
   Area? _selectedArea;
   var gender = [
@@ -176,7 +177,8 @@ class _EditProfileState extends BaseState{
                     labelText: 'State',
                   ),
                   const SizedBox(height: 15),
-                  MyDropdownFormField<Area>(
+                  _areaList.length >0?
+                  MyDropdownFormFieldArea<Area>(
                     items: _areaList,
                     displayText: (area) => area.localName!,
                     onSelected: (area) {
@@ -185,7 +187,7 @@ class _EditProfileState extends BaseState{
                       });
                     },
                     labelText: 'Area',
-                  ),
+                  ):SizedBox(),
                   const SizedBox(height: 15),
                   TextFormGlobal(
                     controller: streetController,
@@ -449,7 +451,7 @@ class _EditProfileState extends BaseState{
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
         if (_isRecordPending) {
-          //showOnlyLoaderDialog();
+         // showOnlyLoaderDialog();
           await apiHelper?.getAreaList(id!).then((result) {
           //  hideLoader();
             if (result != null) {

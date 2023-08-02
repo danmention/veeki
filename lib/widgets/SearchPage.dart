@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:veeki/SearchResultScreen.dart';
 import 'package:veeki/widgets/StylishDropdownAreaButton.dart';
 import 'package:veeki/widgets/StylishDropdownCategoryButton.dart';
 import 'package:dropdown_button2/src/dropdown_button2.dart';
@@ -10,6 +12,7 @@ import '../models/response/service_response.dart';
 import '../models/response/state_response.dart';
 import '../utils/global.colors.dart';
 import 'BottomNavBar.dart';
+import 'MyDropDownForm.dart';
 import 'Profile.Buttons.dart';
 import 'StylishDropdownStateButton.dart';
 import 'back.button.global.dart';
@@ -29,16 +32,19 @@ class _SearchPageState extends BaseState {
 
   String dropdownvalue = 'Item 1';
   bool isLoading = false;
-
+  List<Service> _serviceList = [];
 
    List<States> items =[];
   // String header;
   bool _isDataLoaded = false;
+  bool _isAreaDataLoaded = false;
   bool _isRecordPending = true;
   States? selectedStateValue;
   Area? selectedAreavalue;
+  Area noselectedAreavalue = Area(localName: 'Choose Area');
   //String? selectedValue;
   List<Area> _areaList = [];
+
   int? selected_area;
 
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
@@ -76,43 +82,43 @@ class _SearchPageState extends BaseState {
                     SizedBox(width: 30,)
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Container(
-                    height: 45,
-
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
-
-                        boxShadow:[
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 7,
-                          ),
-                        ]
-
-                    ),
-                      child: TextFormField(
-                        controller: _search,
-                        keyboardType: TextInputType.text,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search_outlined,color: GlobalColors.primaryColor,),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: 1,color: GlobalColors.primaryColor),
-                          ),
-                          hintText: "Search...",
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.all(10),
-                          hintStyle:const TextStyle(
-                            height: 1,
-                          ),
-                        ),
-                      ),
-
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 20.0),
+                //   child: Container(
+                //     height: 45,
+                //
+                //     decoration: BoxDecoration(
+                //         color: Colors.white,
+                //         borderRadius: BorderRadius.circular(6),
+                //
+                //         boxShadow:[
+                //           BoxShadow(
+                //             color: Colors.black.withOpacity(0.1),
+                //             blurRadius: 7,
+                //           ),
+                //         ]
+                //
+                //     ),
+                //       child: TextFormField(
+                //         controller: _search,
+                //         keyboardType: TextInputType.text,
+                //         obscureText: false,
+                //         decoration: InputDecoration(
+                //           prefixIcon: Icon(Icons.search_outlined,color: GlobalColors.primaryColor,),
+                //           focusedBorder: OutlineInputBorder(
+                //             borderSide: BorderSide(width: 1,color: GlobalColors.primaryColor),
+                //           ),
+                //           hintText: "Search...",
+                //           border: InputBorder.none,
+                //           contentPadding: const EdgeInsets.all(10),
+                //           hintStyle:const TextStyle(
+                //             height: 1,
+                //           ),
+                //         ),
+                //       ),
+                //
+                //   ),
+                // ),
 
                 Padding(
                   padding: const EdgeInsets.only(top: 18),
@@ -122,201 +128,351 @@ class _SearchPageState extends BaseState {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
 
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                isExpanded: true,
-                                hint: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.list,
-                                      size: 16,
-                                      color: Colors.black87,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "Select state ",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black87,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                items: _stateList
-                                    .map((item) => DropdownMenuItem<States>(
-                                  value: item,
-                                  child: Text(
-                                    item.name!,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                                    .toList(),
-                                value: selectedStateValue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedStateValue = value;
-
-
-                                    getArea(value?.id);
-
-
-                                  });
-                                },
-                                buttonStyleData: ButtonStyleData(
-                                  height: 50,
-                                  width: 180,
-                                  padding: const EdgeInsets.only(left: 14, right: 14),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7),
-                                    border: Border.all(
-                                      color: Colors.deepOrange,
-                                    ),
-                                    color: Colors.white,
-                                  ),
-                                  elevation: 2,
-                                ),
-                                iconStyleData: const IconStyleData(
-                                  icon: Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                  ),
-                                  iconSize: 14,
-                                  iconEnabledColor: Colors.black87,
-                                  iconDisabledColor: Colors.grey,
-                                ),
-                                // dropdownStyleData: DropdownStyleData(
-                                //   maxHeight: 200,
-                                //   width: 160,
-                                //   padding: null,
-                                //   decoration: BoxDecoration(
-                                //     borderRadius: BorderRadius.circular(14),
-                                //     color: Colors.white,
-                                //   ),
-                                //   elevation: 8,
-                                //   offset: const Offset(0, 0),
-                                //   scrollbarTheme: ScrollbarThemeData(
-                                //     radius: const Radius.circular(30),
-                                //     thickness: MaterialStateProperty.all<double>(6),
-                                //     thumbVisibility: MaterialStateProperty.all<bool>(true),
-                                //   ),
-                                // ),
-                                // menuItemStyleData: const MenuItemStyleData(
-                                //   height: 40,
-                                //   padding: EdgeInsets.only(left: 14, right: 14),
-                                // ),
-                              ),
+                          Expanded(
+                            child: MyDropdownFormField<States>(
+                              items: _stateList,
+                              displayText: (state) => state.name!,
+                              onSelected: (state) {
+                                setState(() {
+                                  _selectedState = state;
+                                 // selectedStateValue  = state;
+                                  getSearchArea(state.id);
+                                });
+                              },
+                              labelText: 'State',
                             ),
-                          ),
+                          ), const SizedBox(width: 10),
+                          // Container(
+                          //
+                          //   child:
+                          //
+                          //   DropdownButtonHideUnderline(
+                          //     child: DropdownButton2(
+                          //       isExpanded: true,
+                          //       hint: Row(
+                          //         children: [
+                          //           Icon(
+                          //             Icons.list,
+                          //             size: 16,
+                          //             color: Colors.black87,
+                          //           ),
+                          //           SizedBox(
+                          //             width: 4,
+                          //           ),
+                          //           Expanded(
+                          //             child: Text(
+                          //               "Select state ",
+                          //               style: TextStyle(
+                          //                 fontSize: 14,
+                          //                 fontWeight: FontWeight.bold,
+                          //                 color: Colors.black87,
+                          //               ),
+                          //               overflow: TextOverflow.ellipsis,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //       items: _stateList
+                          //           .map((item) => DropdownMenuItem<States>(
+                          //         value: item,
+                          //         child: Text(
+                          //           item.name!,
+                          //           style: const TextStyle(
+                          //             fontSize: 14,
+                          //             fontWeight: FontWeight.bold,
+                          //             color: Colors.black87,
+                          //           ),
+                          //           overflow: TextOverflow.ellipsis,
+                          //         ),
+                          //       ))
+                          //           .toList(),
+                          //       value: selectedStateValue,
+                          //       onChanged: (value) {
+                          //         setState(() {
+                          //           selectedStateValue = value;
+                          //
+                          //
+                          //           getArea(value?.id);
+                          //
+                          //
+                          //         });
+                          //       },
+                          //       buttonStyleData: ButtonStyleData(
+                          //         height: 50,
+                          //         width: 180,
+                          //         padding: const EdgeInsets.only(left: 14, right: 14),
+                          //         decoration: BoxDecoration(
+                          //           borderRadius: BorderRadius.circular(7),
+                          //           border: Border.all(
+                          //             color: Colors.deepOrange,
+                          //           ),
+                          //           color: Colors.white,
+                          //         ),
+                          //         elevation: 2,
+                          //       ),
+                          //       iconStyleData: const IconStyleData(
+                          //         icon: Icon(
+                          //           Icons.arrow_forward_ios_outlined,
+                          //         ),
+                          //         iconSize: 14,
+                          //         iconEnabledColor: Colors.black87,
+                          //         iconDisabledColor: Colors.grey,
+                          //       ),
+                          //       // dropdownStyleData: DropdownStyleData(
+                          //       //   maxHeight: 200,
+                          //       //   width: 160,
+                          //       //   padding: null,
+                          //       //   decoration: BoxDecoration(
+                          //       //     borderRadius: BorderRadius.circular(14),
+                          //       //     color: Colors.white,
+                          //       //   ),
+                          //       //   elevation: 8,
+                          //       //   offset: const Offset(0, 0),
+                          //       //   scrollbarTheme: ScrollbarThemeData(
+                          //       //     radius: const Radius.circular(30),
+                          //       //     thickness: MaterialStateProperty.all<double>(6),
+                          //       //     thumbVisibility: MaterialStateProperty.all<bool>(true),
+                          //       //   ),
+                          //       // ),
+                          //       // menuItemStyleData: const MenuItemStyleData(
+                          //       //   height: 40,
+                          //       //   padding: EdgeInsets.only(left: 14, right: 14),
+                          //       // ),
+                          //     ),
+                          //   ),
+                          // ),
+                        //  _areaList.length>0?
 
-                          Container(
 
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                isExpanded: true,
-                                hint: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.list,
-                                      size: 16,
-                                      color: Colors.black87,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        " Select Area",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black87,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                items: _areaList
-                                    .map((item) => DropdownMenuItem<Area>(
-                                  value: item,
-                                  child: Text(
-                                    item.localName!,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                                    .toList(),
-                                value: selectedAreavalue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedAreavalue = value;
-
-
-
-
-
-                                  });
-                                },
-                                buttonStyleData: ButtonStyleData(
-                                  height: 50,
-                                  width: 180,
-                                  padding: const EdgeInsets.only(left: 14, right: 14),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7),
-                                    border: Border.all(
-                                      color: Colors.deepOrange,
-                                    ),
-                                    color: Colors.white,
-                                  ),
-                                  elevation: 2,
-                                ),
-                                iconStyleData: const IconStyleData(
-                                  icon: Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                  ),
-                                  iconSize: 14,
-                                  iconEnabledColor: Colors.black87,
-                                  iconDisabledColor: Colors.grey,
-                                ),
-                                // dropdownStyleData: DropdownStyleData(
-                                //   maxHeight: 200,
-                                //   width: 160,
-                                //   padding: null,
-                                //   decoration: BoxDecoration(
-                                //     borderRadius: BorderRadius.circular(14),
-                                //     color: Colors.white,
-                                //   ),
-                                //   elevation: 8,
-                                //   offset: const Offset(0, 0),
-                                //   scrollbarTheme: ScrollbarThemeData(
-                                //     radius: const Radius.circular(40),
-                                //     thickness: MaterialStateProperty.all<double>(6),
-                                //     thumbVisibility: MaterialStateProperty.all<bool>(true),
-                                //   ),
-                                // ),
-                                // menuItemStyleData: const MenuItemStyleData(
-                                //   height: 40,
-                                //   padding: EdgeInsets.only(left: 14, right: 14),
-                                // ),
-                              ),
+                          _areaList.length >0?
+                          Expanded(
+                           // width: 250,
+                            child: MyDropdownFormFieldArea<Area>(
+                              items: _areaList,
+                              displayText: (area) => area.localName!,
+                              onSelected: (area) {
+                                setState(() {
+                                  _selectedArea = area;
+                                });
+                              },
+                              labelText: 'Area',
                             ),
-                          ),
+                          ):
+                          Container(
+                            width: 200,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Select Area'),
+                                Icon(Icons.arrow_drop_down_outlined)
+                              ],
+                            ),
+                          )
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   children: [SpinKitThreeBounce(
+                          //   color: Colors.orange,
+                          //   size: 16.0,
+                          // )],
+                          // ),
+                          // Container(
+                          //
+                          //   child: DropdownButtonHideUnderline(
+                          //     child: DropdownButton2(
+                          //       isExpanded: true,
+                          //       hint: Row(
+                          //         children: [
+                          //           Icon(
+                          //             Icons.list,
+                          //             size: 16,
+                          //             color: Colors.black87,
+                          //           ),
+                          //           SizedBox(
+                          //             width: 4,
+                          //           ),
+                          //
+                          //           Expanded(
+                          //             child: Text(
+                          //               " Select Area",
+                          //               style: TextStyle(
+                          //                 fontSize: 14,
+                          //                 fontWeight: FontWeight.bold,
+                          //                 color: Colors.black87,
+                          //               ),
+                          //               overflow: TextOverflow.ellipsis,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //       items: _areaList
+                          //           .map((item) => DropdownMenuItem<Area>(
+                          //         value: item,
+                          //         child: Text(
+                          //           item.localName??"",
+                          //           style: const TextStyle(
+                          //             fontSize: 14,
+                          //             fontWeight: FontWeight.bold,
+                          //             color: Colors.black87,
+                          //           ),
+                          //           overflow: TextOverflow.ellipsis,
+                          //         ),
+                          //       ))
+                          //           .toList(),
+                          //       value: selectedAreavalue,
+                          //       onChanged: (value) {
+                          //         setState(() {
+                          //           selectedAreavalue = value;
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //         });
+                          //       },
+                          //       buttonStyleData: ButtonStyleData(
+                          //         height: 50,
+                          //         width: 180,
+                          //         padding: const EdgeInsets.only(left: 14, right: 14),
+                          //         decoration: BoxDecoration(
+                          //           borderRadius: BorderRadius.circular(7),
+                          //           border: Border.all(
+                          //             color: Colors.deepOrange,
+                          //           ),
+                          //           color: Colors.white,
+                          //         ),
+                          //         elevation: 2,
+                          //       ),
+                          //       iconStyleData: const IconStyleData(
+                          //         icon: Icon(
+                          //           Icons.arrow_forward_ios_outlined,
+                          //         ),
+                          //         iconSize: 14,
+                          //         iconEnabledColor: Colors.black87,
+                          //         iconDisabledColor: Colors.grey,
+                          //       ),
+                          //       // dropdownStyleData: DropdownStyleData(
+                          //       //   maxHeight: 200,
+                          //       //   width: 160,
+                          //       //   padding: null,
+                          //       //   decoration: BoxDecoration(
+                          //       //     borderRadius: BorderRadius.circular(14),
+                          //       //     color: Colors.white,
+                          //       //   ),
+                          //       //   elevation: 8,
+                          //       //   offset: const Offset(0, 0),
+                          //       //   scrollbarTheme: ScrollbarThemeData(
+                          //       //     radius: const Radius.circular(40),
+                          //       //     thickness: MaterialStateProperty.all<double>(6),
+                          //       //     thumbVisibility: MaterialStateProperty.all<bool>(true),
+                          //       //   ),
+                          //       // ),
+                          //       // menuItemStyleData: const MenuItemStyleData(
+                          //       //   height: 40,
+                          //       //   padding: EdgeInsets.only(left: 14, right: 14),
+                          //       // ),
+                          //     ),
+                          //   ),
+                          // ):Container()
+                              //:
+ //SizedBox()
+//                           Container(
+//
+//                             child: DropdownButtonHideUnderline(
+//                               child: DropdownButton2(
+//                                 isExpanded: true,
+//                                 hint: Row(
+//                                   children: [
+//                                     Icon(
+//                                       Icons.list,
+//                                       size: 16,
+//                                       color: Colors.black87,
+//                                     ),
+//                                     SizedBox(
+//                                       width: 4,
+//                                     ),
+//                                     Expanded(
+//                                       child: Text(
+//                                         " Select Area",
+//                                         style: TextStyle(
+//                                           fontSize: 14,
+//                                           fontWeight: FontWeight.bold,
+//                                           color: Colors.black87,
+//                                         ),
+//                                         overflow: TextOverflow.ellipsis,
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 items: _noAreaList
+//                                     .map((item) => DropdownMenuItem<Area>(
+//                                   value: item,
+//                                   child: Text(
+//                                     ' Choose Area',
+//                                     style: const TextStyle(
+//                                       fontSize: 14,
+//                                       fontWeight: FontWeight.bold,
+//                                       color: Colors.black87,
+//                                     ),
+//                                     overflow: TextOverflow.ellipsis,
+//                                   ),
+//                                 ))
+//                                     .toList(),
+//                                 value: noselectedAreavalue,
+//                                 onChanged: (value) {
+//                                   setState(() {
+//                                     noselectedAreavalue = value!;
+//
+//
+//
+//
+//
+//                                   });
+//                                 },
+//                                 buttonStyleData: ButtonStyleData(
+//                                   height: 50,
+//                                   width: 180,
+//                                   padding: const EdgeInsets.only(left: 14, right: 14),
+//                                   decoration: BoxDecoration(
+//                                     borderRadius: BorderRadius.circular(7),
+//                                     border: Border.all(
+//                                       color: Colors.deepOrange,
+//                                     ),
+//                                     color: Colors.white,
+//                                   ),
+//                                   elevation: 2,
+//                                 ),
+//                                 iconStyleData: const IconStyleData(
+//                                   icon: Icon(
+//                                     Icons.arrow_forward_ios_outlined,
+//                                   ),
+//                                   iconSize: 14,
+//                                   iconEnabledColor: Colors.black87,
+//                                   iconDisabledColor: Colors.grey,
+//                                 ),
+//                                 // dropdownStyleData: DropdownStyleData(
+//                                 //   maxHeight: 200,
+//                                 //   width: 160,
+//                                 //   padding: null,
+//                                 //   decoration: BoxDecoration(
+//                                 //     borderRadius: BorderRadius.circular(14),
+//                                 //     color: Colors.white,
+//                                 //   ),
+//                                 //   elevation: 8,
+//                                 //   offset: const Offset(0, 0),
+//                                 //   scrollbarTheme: ScrollbarThemeData(
+//                                 //     radius: const Radius.circular(40),
+//                                 //     thickness: MaterialStateProperty.all<double>(6),
+//                                 //     thumbVisibility: MaterialStateProperty.all<bool>(true),
+//                                 //   ),
+//                                 // ),
+//                                 // menuItemStyleData: const MenuItemStyleData(
+//                                 //   height: 40,
+//                                 //   padding: EdgeInsets.only(left: 14, right: 14),
+//                                 // ),
+//                               ),
+//                             ),
+//                           ),
                         ],
                       ),
                       //  StylishDropdownStateButton(items: _stateList, header: "State"),
@@ -449,7 +605,7 @@ class _SearchPageState extends BaseState {
     );
   }
 
-  void getArea(int? id) async {
+  void getSearchArea(int? id) async {
 
     _areaList.clear();
     setState(() { });
@@ -457,9 +613,9 @@ class _SearchPageState extends BaseState {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
         if (_isRecordPending) {
-         // showOnlyLoaderDialog();
+      //    showOnlyLoaderDialog();
           await apiHelper?.getAreaList(id!).then((result) {
-           // hideLoader();
+         //   hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
                 List<Area> _tList = result.recordList;
@@ -471,7 +627,7 @@ class _SearchPageState extends BaseState {
                 // ref.watch(myprovider).setArea(_tList);
 
                 _areaList.addAll(_tList);
-
+                _isAreaDataLoaded = true;
                 setState(() {
                   //  _isMoreDataLoaded = false;
                 });
@@ -584,15 +740,29 @@ class _SearchPageState extends BaseState {
 
   void search() async {
 
-    _areaList.clear();
-    setState(() { });
+    setState(() {
+      isLoading = false;
+    });
+    if(  _selectedState!.id == null){
+      showSnack(snackBarMessage: "Choose a state");
+      return;
+    };
+    if(  _selectedArea!.id == null){
+      showSnack(snackBarMessage: "Choose an area");
+      return;
+    };
+
+
     try {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
         if (_isRecordPending) {
-          showOnlyLoaderDialog();
-          await apiHelper?.getSearchResult(state: _selectedState!.name,title: _search.text.trim(), category_id: _selectedCategory?.id,city: selected_area.toString() ).then((result) {
-            hideLoader();
+         // showOnlyLoaderDialog();
+          await apiHelper?.getSearchResult(state: _selectedState!.id,
+              title: _search.text.trim(),
+              category_id: selectedCategoryvalue?.id,
+              city: _selectedArea!.id ).then((result) {
+         //   hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
                 List<Service> _tList = result.recordList;
@@ -601,7 +771,15 @@ class _SearchPageState extends BaseState {
                   _isRecordPending = false;
                 }
 
+                _serviceList.addAll(_tList);
+                _isDataLoaded = true;
                 // ref.watch(myprovider).setArea(_tList);
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) =>
+                  //BarberShopDescriptionScreen(_barberShopList[index].vendor_id, a: widget.analytics, o: widget.observer)),
+                  SearchResultScreen(_serviceList)),
+                );
 
                // _areaList.addAll(_tList);
 

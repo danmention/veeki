@@ -28,8 +28,8 @@ class Area {
   int? id;
   String? stateId;
   String? localName;
-  Null? createdAt;
-  Null? updatedAt;
+  String? createdAt;
+  String? updatedAt;
 
   Area({this.id, this.stateId, this.localName, this.createdAt, this.updatedAt});
 

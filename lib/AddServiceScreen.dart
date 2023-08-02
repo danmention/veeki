@@ -20,6 +20,7 @@ import 'models/businessLayer/base.dart';
 import 'models/request/addservice_request.dart';
 import 'models/request/login_request.dart';
 import 'models/response/category_response.dart';
+import 'models/response/state_response.dart';
 
 class AddServiceScreen extends Base {
 
@@ -52,6 +53,14 @@ class _AddServiceScreenState extends BaseState{
   List<Category> _categoryList = [];
   List<File> images = [];
 
+
+  List<States> _stateList = [];
+  List<Area> _areaList = [];
+  int? selected_area;
+  States? _selectedState;
+  String ? _selectedStateName;
+  Area? _selectedArea;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,10 +87,10 @@ class _AddServiceScreenState extends BaseState{
                   // ),
                   const SizedBox(height: 10),
                   Text(
-                    'Add in to continue',
+                    'Add service to continue',
                     style: TextStyle(
                         color: GlobalColors.textColor,
-                        fontSize: 13,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 40),
@@ -228,7 +237,30 @@ class _AddServiceScreenState extends BaseState{
                     ],
                   ),
 
-
+                  const SizedBox(height: 15),
+                  MyDropdownFormField<States>(
+                    items: _stateList,
+                    displayText: (state) => state.name!,
+                    onSelected: (state) {
+                      setState(() {
+                        _selectedState = state;
+                        _selectedStateName  = state.name;
+                        getArea(state.id);
+                      });
+                    },
+                    labelText: 'State',
+                  ),
+                  const SizedBox(height: 15),
+                  _areaList.length>0? MyDropdownFormField<Area>(
+                    items: _areaList,
+                    displayText: (area) => area.localName!,
+                    onSelected: (area) {
+                      setState(() {
+                        _selectedArea = area;
+                      });
+                    },
+                    labelText: 'Area',
+                  ):SizedBox(),
                   const SizedBox(height: 20),
                   Text('Project Description'),
 
@@ -488,10 +520,93 @@ class _AddServiceScreenState extends BaseState{
           e.toString());
     }
   }
+  _getState() async {
+    _stateList.clear();
+    // _areaList.clear();
+    setState(() { });
+    try {
+      bool isConnected = await br!.checkConnectivity();
+      if (isConnected) {
+        if (_isRecordPending) {
+          // showOnlyLoaderDialog();
+          await apiHelper?.getAllState().then((result) {
+            //  hideLoader();
+            if (result != null) {
+              if (result.resp_code == "00") {
+                List<States> _tList = result.recordList;
 
+                //  print(_tList[0].name);
+
+                // ref.watch(myprovider).setZone(_tList);
+
+                if (_tList.isEmpty) {
+                  _isRecordPending = false;
+                }
+
+
+                _stateList.addAll(_tList);
+                print(" goit here");
+                setState(() { });
+
+                // } else {
+                //   _zoneList = [];
+              }
+            }
+          });
+        }
+      } else {
+        showNetworkErrorSnackBar(_scaffoldkey);
+      }
+    } catch (e) {
+      print("Exception - signupscreen.dart - _getstate():" + e.toString());
+    }
+  }
+
+  void getArea(int? id) async {
+
+    _areaList.clear();
+    setState(() { });
+   // _areaList.add(Area(id: 1));
+
+    try {
+      bool isConnected = await br!.checkConnectivity();
+      if (isConnected) {
+        if (_isRecordPending) {
+          //showOnlyLoaderDialog();
+          await apiHelper?.getAreaList(id!).then((result) {
+            //  hideLoader();
+            if (result != null) {
+              if (result.resp_code == "00") {
+                List<Area> _tList = result.recordList;
+
+                if (_tList.isEmpty) {
+                  _isRecordPending = false;
+                }
+
+                // ref.watch(myprovider).setArea(_tList);
+
+                _areaList.addAll(_tList);
+
+                setState(() {
+                  //  _isMoreDataLoaded = false;
+                });
+
+                // } else {
+                //   _zoneList = [];
+              }
+            }
+          });
+        }
+      } else {
+        showNetworkErrorSnackBar(_scaffoldkey);
+      }
+    } catch (e) {
+      print("Exception - signupscreen.dart - _getarea():" + e.toString());
+    }
+  }
   _init() async {
     try {
-
+      await  _getState();
       await  _getAllCategory() ;
 
 
@@ -514,19 +629,37 @@ class _AddServiceScreenState extends BaseState{
       if (_selectedCategory?.id == null) {
         showSnack(snackBarMessage:" please choose a category" );
         return;
-      } else if (_ctitle.text.isEmpty && _cdescription.text.isEmpty && _camount.text.isEmpty ) {
+      } else if (_ctitle.text.isEmpty ||  _camount.text.isEmpty|| _cdescription.text.isEmpty
+          ) {
         showSnack(snackBarMessage:"Enter all fields ");
 
         return;
       }
-      else if (_tImage==null ||_tImage3==null ||_tImage1==null|| _tImage2==null||_tImage4==null ) {
-        showSnack(snackBarMessage:"Choose at least one image ");
+      // else if (_tImage ==null ||_tImage3==null ||_tImage1==null||
+      //     _tImage2==null||_tImage4==null ) {
+      //
+      //
+      //   showSnack(snackBarMessage:"Choose one more image ");
+      //
+      //   return;
+      // }
+      else if (_tImage == null ) {
+
+
+        showSnack(snackBarMessage:"Choose an image ");
 
         return;
       }
+      else if (_selectedState == null ) {
+        showSnack(snackBarMessage:"Select an state ");
 
+        return;
+      }
+      else if (_selectedArea == null ) {
+        showSnack(snackBarMessage:"Select an area ");
 
-
+        return;
+      }
 
 
         bool isConnected = await br!.checkConnectivity();
@@ -534,8 +667,12 @@ class _AddServiceScreenState extends BaseState{
           setState(() {
             isLoading = true;
           });
+
+
           await apiHelper!.addService(id:global.user.id!,user_image:_tImage,
-          title: _ctitle.text.trim(), desc: _cdescription.text.trim(),amount: _camount.text.trim(),
+          title: _ctitle.text.trim(), desc: _cdescription.text.trim(),amount:
+              _camount.text.trim(),state_id: _selectedState!.id,
+              area_id: _selectedArea!.id,
             cat_id: _selectedCategory!.id,amountrange: ''
           ).then((result) async {
             if (result != null) {
@@ -608,8 +745,9 @@ class _AddServiceScreenState extends BaseState{
 
       bool isConnected = await br!.checkConnectivity();
         if (isConnected) {
-          showOnlyLoaderDialog();
-          await apiHelper!.addServiceImages(userid:global.user.id!,user_image:images, serviceid: serviceid
+          //showOnlyLoaderDialog();
+          await apiHelper!.addServiceImages(userid:global.user.id!,user_image:images,
+              serviceid: serviceid
           ).then((result) async {
             if (result != null) {
               if (result.resp_code == "00") {
@@ -619,7 +757,7 @@ class _AddServiceScreenState extends BaseState{
                 showSnackBar(snackBarMessage: result.resp_message.toString());
 
 
-                hideLoader();
+                //hideLoader();
 
 
                 Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);

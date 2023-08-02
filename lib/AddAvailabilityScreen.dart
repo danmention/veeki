@@ -34,7 +34,7 @@ class _AddServiceScreenState extends BaseState{
   final TextEditingController _ctitle = TextEditingController();
   final TextEditingController _cdescription = TextEditingController();
   final TextEditingController _camount = TextEditingController();
-
+  bool isLoading = false;
   GlobalKey<ScaffoldState> _scaffoldkey  = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   AddServiceRequest _addServiceRequest = new AddServiceRequest();
@@ -152,11 +152,15 @@ class _AddServiceScreenState extends BaseState{
 
                   const SizedBox(height: 40),
                   ButtonGlobal(
+                    isLoading:isLoading ,
                     ontap:(){
+                      setState(() {
+                        isLoading = true;
+                      });
                       addservice();
                     },
                   //  OnBoardingPage(),
-                    text: 'Add Availability',
+                    text: 'Add Service',
                     color: GlobalColors.primaryColor,
                     fontsize: 15,
                   ),
@@ -426,9 +430,16 @@ class _AddServiceScreenState extends BaseState{
           title: _ctitle.text.trim(), desc: _cdescription.text.trim(),amount: _camount.text.trim(),
             cat_id: _selectedCategory!.id,amountrange: ''
           ).then((result) async {
+
+
             if (result != null) {
               if (result.resp_code == "00") {
                // hideLoader();
+
+
+                setState(() {
+                  isLoading = false;
+                });
              int serviceid = result.data.id;
                 print(serviceid);
               if(_tImage1 != null ||_tImage2  != null ||_tImage3 != null  ||_tImage1 != null ){

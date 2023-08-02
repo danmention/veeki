@@ -2,9 +2,11 @@ import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:banner_carousel/banner_carousel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:veeki/BookAppointment/ViewBookingScreen.dart';
 import 'package:veeki/CategoryList.dart';
+import 'package:veeki/MyServiceListScreen.dart';
 import 'package:veeki/Notifications.dart';
 import 'package:veeki/PopularBarbers.dart';
 import 'package:veeki/Products.dart';
@@ -20,7 +22,10 @@ import 'package:veeki/widgets/ServicesInHopePage.dart';
 import 'package:veeki/widgets/CarouselWithIndicator.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
 
+import 'AddAvailabilityScreen.dart';
+import 'TransactionHistoryScreen.dart';
 import 'models/businessLayer/global.dart';
+import 'widgets/ViewMyServiceScreen.dart';
 
 
 
@@ -181,10 +186,12 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
+                global.user.role  == "USER" ?
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: SearchBarForm(),
-                ),
+                ):SizedBox(height: 0,),
+                global.user.role  == "USER" ?
                 Container(
                   padding: const EdgeInsets.all(15),
                   child: Column(
@@ -192,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Categories",style: TextStyle(fontWeight: FontWeight.bold,),),
+                          Text("Recommended Categories",style: TextStyle(fontWeight: FontWeight.bold,),),
                           InkWell(
                               onTap: (){
                               
@@ -205,10 +212,11 @@ class _HomePageState extends State<HomePage> {
                           )
                         ],
                       ),
+                      global.user.role  != "SERVICE_PROVIDER" ?
                       Container(
-                        height: 55,
+                        height: 300,
                           child: ServicesInHopePage()
-                      ),
+                      ): SizedBox(height: 1,),
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: Row(
@@ -268,12 +276,12 @@ class _HomePageState extends State<HomePage> {
                             Text("Products",style: TextStyle(fontWeight: FontWeight.bold,),),
                             InkWell(
                               onTap: (){
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (context) => Products()),
-                                );
+                                // Navigator.of(context).push(
+                                //     MaterialPageRoute(builder: (context) => Products()),
+                                // );
                               },
                                 child: Text(
-                                  "See more",style: TextStyle(color: GlobalColors.primaryColor),
+                                  " ",style: TextStyle(color: GlobalColors.primaryColor),
                                 ),
                             ),
                           ],
@@ -286,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                )
+                ):serviceProvider()
               ],
             ),
           ),
@@ -300,7 +308,77 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+Widget serviceProvider(){
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 18),
+      child: Column(
 
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+        Row(children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddServiceScreen()));
+
+              },
+              child: Container(
+                height: 100,
+                width: 200,
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                   // border: Border.all(width: 5, color: Colors.red),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  color: Colors.red
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add, color: Colors.white,size: 25,),
+                    Text('Add a service', style: TextStyle(color: Colors.white, fontSize: 17),),
+                  ],
+                )
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: (){
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>TransactionHistoryScreen()));
+
+
+              },
+              child: Container(
+                  height: 100,
+                  width: 200,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      color: Colors.green
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.book, color: Colors.white,size: 25,),
+                      Text('Transaction History', style: TextStyle(color: Colors.white, fontSize: 17),),
+                    ],
+                  )
+              ),
+            ),
+          ),
+        ],),
+        SizedBox(height: 10,),
+        Text(" My Services", style: TextStyle(color: Colors.black38,  fontSize: 14, fontWeight: FontWeight.bold),),
+        Container(
+          height: 300,
+          child:
+          MyServiceListScreen()
+          ,),
+        SizedBox(height: 30,),
+
+      ],),
+    );
+}
 
 
 }

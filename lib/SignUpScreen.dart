@@ -176,7 +176,7 @@ class _SignUpState extends BaseState{
                     } ,
                     text: 'Next',
                     color: GlobalColors.primaryColor,
-                    fontsize: 20,
+                    fontsize: 16,
                   ),
                   const SizedBox(height: 60),
 
@@ -225,7 +225,9 @@ class _SignUpState extends BaseState{
   _signUp() async {
     try {
 
-
+      setState(() {
+        isLoading = false;
+      });
 
 
       signupRequest.fullname = nameController.text.trim();
@@ -274,9 +276,7 @@ class _SignUpState extends BaseState{
 
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
-        setState(() {
-          isLoading = false;
-        });
+
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) =>
               SignupPageTwoScreen(signupRequest)),);

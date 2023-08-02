@@ -38,131 +38,6 @@ class _RecommendedBarbershopInHomePageState extends BaseState {
 
       _serviceList.length > 0
           ?
-//        Padding(
-//          padding: const EdgeInsets.only(left: 10.0,top: 0.0,bottom: 0.0,right: 8.0),
-//          child: Container(
-//           height: 100,
-//           child: ListView.builder(
-//
-//               scrollDirection: Axis.horizontal,
-//               itemCount: _serviceList.length,
-//               itemBuilder: (context, index){
-//                 print("hello fellow Noigria");
-//                 print(_serviceList[index].images![0].images!);
-//                 return InkWell(
-//                   onTap: (){
-//                     Navigator.of(context).push(
-//                         MaterialPageRoute(builder: (context) => Details())
-//                     );
-//                   },
-//                   child: Container(
-//                     margin: EdgeInsets.symmetric(horizontal: 6),
-//                    padding: EdgeInsets.all(6),
-//
-//                    // alignment: Alignment.center,
-//                     height: 220,
-//                     width:  150,
-//                     decoration: BoxDecoration(
-//                       color: Colors.white,
-//                       borderRadius: BorderRadius.circular(6),
-//                       boxShadow: [
-//                         BoxShadow(
-//                             color: Colors.black.withOpacity(0.2),
-//                             blurRadius: 5,
-//                             //blurStyle: BlurStyle.inner
-//                         )
-//                       ],
-//                     ),
-//                     child:
-//                     Column(
-//                       children: [
-//
-//
-//
-//                         FittedBox(
-//                           child: ClipRRect(
-//                             borderRadius: BorderRadius.circular(50),
-//                             child:
-//                      //  _serviceList[index].images![0].images!.isEmpty?
-//                         //    Image.asset("Images/HomepageBannerImage.png",):
-//                               Image.network(_serviceList[index].images![0].images!, width: 50,)
-//                            // NetworkImage(_serviceList[index].images![0].images!)
-//                   //  Image.asset("Images/HomepageBannerImage.png",)
-//                           ),
-//                         ),
-//                         SizedBox(height:8,),
-//                         Row(
-//                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                           children: [
-//                             Expanded(
-//                               child: Text(
-//                                 _serviceList[index].title!,overflow: TextOverflow.ellipsis,
-//                                 style: TextStyle(
-//                                   color:  Colors.black87,
-//                                   fontWeight: FontWeight.w600,
-//                                   fontSize: 11,
-//                                 ),
-//                               ),
-//                             ),
-//                             Row(
-//                               children: [
-//                                 Text(
-//                                   "4.7",
-//                                   style: TextStyle(
-//                                     color:  Colors.black87,
-//                                     fontWeight: FontWeight.w600,
-//                                     fontSize: 10,
-//                                   ),
-//                                 ),
-//                                 Icon(Icons.star,color: Colors.yellow,size: 11,)
-//                               ],
-//                             ),
-//
-//                           ],
-//                         ),
-//                         Row(
-//                           children: [
-//                             Icon(Icons.location_on_outlined,size: 12,),
-//                             // ignore: avoid_function_literals_in_foreach_calls
-//                             // // Text(" St Luke's Guarden, Liverpool",)
-//                             Row(
-//                               children: [
-//                                 Text(_serviceList[index].user!.first.city??"",
-//                                   overflow: TextOverflow.ellipsis,
-//
-//                                   style: TextStyle(
-//                                     color:  Colors.black87,
-//                                     fontSize: 9.5,
-//                                   ),
-//                                 ),
-// SizedBox(width: 7,),
-//                                 Text(_serviceList[index].user!.first.state??"",
-//
-//                                   overflow: TextOverflow.ellipsis,
-//                                   style: TextStyle(
-//                                     color:  Colors.black87,
-//                                     fontSize: 9.5,
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                           ],
-//                         )
-//                       ],
-//                     ),
-//                   ),
-//                 );
-//               }
-//           ),
-//       ),
-//        )
-
-
-
-
-
-
-
 
 
       Padding(
@@ -244,7 +119,7 @@ class _RecommendedBarbershopInHomePageState extends BaseState {
                               padding: EdgeInsets.only(left: 7),
                               child:
 
-                              _serviceList[index].user!.first.city !=null?
+                              _serviceList[index].area !=null?
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,7 +136,7 @@ class _RecommendedBarbershopInHomePageState extends BaseState {
                                     Row(
                                       children: [
                                           Text(
-                                          _serviceList[index].user!.first.city! ,
+                                          _serviceList[index].area! ,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(fontSize: 11),
                                           maxLines: 1,
@@ -269,8 +144,9 @@ class _RecommendedBarbershopInHomePageState extends BaseState {
                                           ','
                                         ),
 
-                                        _serviceList[index].user!.first.state !=null ? Text(
-                                          '${_serviceList[index].user!.first.state}',
+                                        _serviceList[index].state !=null ?
+                                        Text(
+                                          '${_serviceList[index].state}',
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(fontSize: 11),
                                           maxLines: 1,

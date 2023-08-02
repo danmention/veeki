@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:veeki/GetReferralScreen.dart';
 import 'package:veeki/Profile_Edit.dart';
 import 'package:veeki/BookAppointment/ViewBookingScreen.dart';
 import 'package:veeki/admin/AddDisputesScreen.dart';
 import 'package:veeki/admin/AddcategoryScreen.dart';
+import 'package:veeki/admin/SetDiscountScreen.dart';
 import 'package:veeki/admin/ViewBookingAdminScreen.dart';
 import 'package:veeki/sendSOS.dart';
 
@@ -57,6 +59,12 @@ class RouteGenerator{
 
       case "sendsos":
         return MaterialPageRoute(builder: (_) => sendSOS());
+      case "setdiscount":
+        return MaterialPageRoute(builder: (_) => SetDiscountScreen());
+
+      case "getallreferral":
+        return MaterialPageRoute(builder: (_) => GetReferralScreen());
+
       case "addDisputes":
         return MaterialPageRoute(builder: (_) => AddDisputesScreen());
       case "resetpassword":

@@ -294,7 +294,12 @@ print("${place.street}, ${place.locality} ");
   }
 
 
-
+  // showLoading(Color color) {
+  //   return SpinKitThreeBounce(
+  //     color: color,
+  //     size: 16.0,
+  //   );
+  // }
 
 
 

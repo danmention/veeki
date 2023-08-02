@@ -165,7 +165,7 @@ class _SummaryScreenState extends BaseState {
                       //VoucherCouponsRewards(text: "Vouchers",),
 
                       SizedBox(width: 3,),
-                  //    VoucherCouponsRewards(text: "Coupons",),
+                    //  VoucherCouponsRewards(text: "Referral Code",),
 
                       // SizedBox(width: 3,),
                       // VoucherCouponsRewards(text: "Rewards",),
@@ -206,13 +206,19 @@ class _SummaryScreenState extends BaseState {
                     // ),
                     // ),
                 SizedBox(height: 10,),
-                // TextFormGlobal(
-                //     controller: rewardpointController,
-                //     text: "reward points",
-                //     textInputType: TextInputType.text,
-                //     obscure: false
-                // ),
-                //SizedBox(height: 10,),
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: 250,
+                    child: TextFormGlobal(
+                        controller: rewardpointController,
+                        text: "Enter Referral Code",
+                        textInputType: TextInputType.text,
+                        obscure: false
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -315,7 +321,7 @@ void notifyCaregiver()async{
   void bookapointment() async{
     try {
 
-
+      bookingRequest!.referral_code = rewardpointController.text;
 
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
@@ -330,8 +336,8 @@ void notifyCaregiver()async{
               //print(serviceid);
 
 
-            //  showSnack(snackBarMessage: 'You have booked successfully');
-           //   makePayment();
+              showSnack(snackBarMessage: 'You have booked successfully');
+             makePayment();
               //   Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);
 
 
@@ -344,7 +350,7 @@ void notifyCaregiver()async{
 
             else if(result.resp_code =="01")
             {
-              hideLoader();
+             // hideLoader();
               showSnack(snackBarMessage: result.resp_message.toString());
             }
 

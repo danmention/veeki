@@ -2,32 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:veeki/models/response/billing_response.dart';
+import 'package:veeki/models/response/referral_fee_response.dart';
 import 'package:veeki/utils/constant.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'models/businessLayer/base.dart';
 import 'models/response/booking_response.dart';
 
-class TransactionHistoryScreen extends Base{
-   TransactionHistoryScreen({Key? key}) ;
+class GetReferralScreen extends Base{
+  GetReferralScreen({Key? key}) ;
 
   @override
-  _TransactionHistoryScreenState createState() => _TransactionHistoryScreenState();
+  _GetReferralScreenScreenState createState() => _GetReferralScreenScreenState();
 }
 
-class _TransactionHistoryScreenState extends BaseState{
+class _GetReferralScreenScreenState extends BaseState{
   GlobalKey<ScaffoldState>? _scaffoldKey;
-  List<Billing> _productOrderHistoryList = [];
+  List<ReferralFee> _productOrderHistoryList = [];
   bool _isRecordPending = true;
   bool _isDataLoaded = false;
   bool _isMoreDataLoaded = false;
   ScrollController _scrollController = ScrollController();
-  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return sc(Scaffold(
         appBar: AppBar(
           title: RichText(
-            text: TextSpan(text:lbl_my_orders,
+            text: TextSpan(text:'Referral',
                 style:
             Theme.of(context).appBarTheme.titleTextStyle, children: [
              ]),
@@ -56,7 +57,7 @@ class _TransactionHistoryScreenState extends BaseState{
                 child: Card(
                     margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
                     child: ListTile(
-                      title: Text('${_productOrderHistoryList[index].transactionReference}', ),
+                      title: Text('${_productOrderHistoryList[index].id}', ),
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: Row(
@@ -93,7 +94,7 @@ class _TransactionHistoryScreenState extends BaseState{
                               padding: EdgeInsets.all(4),
                               child: Center(
                                 child: Text(
-                                  "${_productOrderHistoryList[index].name}",
+                                  "${_productOrderHistoryList[index].type}",
 
                                 ),
                               ),
@@ -137,14 +138,13 @@ class _TransactionHistoryScreenState extends BaseState{
                                   child: Center(
                                     child: Text(
 
-                                      _productOrderHistoryList[index].status == 3
-                                          ? lbl_cancelled
-                                          : _productOrderHistoryList[index].status == 1
-
-                                          ? lbl_accepted
+                                      _productOrderHistoryList[index].status == 1
+                                          ? "Active"
                                           : _productOrderHistoryList[index].status == 0
-                                          ? lbl_pending
-                                          : lbl_completed,
+
+                                          ? "InActive"
+
+                                          : "Active",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white, fontSize: 12),
                                     ),
@@ -179,7 +179,7 @@ class _TransactionHistoryScreenState extends BaseState{
                                   Container(
                                     height: 20,
                                     child: Text(
-                                      '${ 'NGN  ' + _productOrderHistoryList[index].amount!}',
+                                      '${ 'NGN' + _productOrderHistoryList[index].fee!}',
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
                                         color: Theme.of(context).primaryColor,
@@ -230,13 +230,13 @@ class _TransactionHistoryScreenState extends BaseState{
           } else {
             pageNumber++;
           }
-          await apiHelper?.getMyTransaction(pageNumber, global.user.id!).then((
+          await apiHelper?.getAllReferral(pageNumber, ).then((
               result) {
             if (result != null) {
               if (result.resp_code == "00") {
                 _isDataLoaded = true;
 
-                List<Billing> _tList = result.recordList;
+                List<ReferralFee> _tList = result.recordList;
 
                 if (_tList.isEmpty) {
                   _isRecordPending = false;

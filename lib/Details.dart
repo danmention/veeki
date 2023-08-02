@@ -136,13 +136,13 @@ class _DetailsState extends BaseState{
                                           Icon(Icons.location_on_outlined,color: Colors.white,size: 12,),
                                           Row(
                                             children: [
-                                              Text("${service!.user!.first.city}",
+                                              Text("${service!.area}",
                                                 style: TextStyle(
                                                     fontSize: 10,
                                                     color: Colors.white
                                                 ),
                                               ),SizedBox(width: 5,),
-                                              Text("${service!.user!.first.state}",
+                                              Text("${service!.state}",
                                                 style: TextStyle(
                                                     fontSize: 10,
                                                     color: Colors.white

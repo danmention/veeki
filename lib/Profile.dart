@@ -42,7 +42,7 @@ class _ProfileState extends BaseState{
 
 
     return Scaffold(
-      key: _scaffoldKey,
+
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
@@ -63,7 +63,7 @@ class _ProfileState extends BaseState{
                 ),
                 Container(
                   //margin: EdgeInsets.only(bottom: 50),
-                  height: 370,
+                  height: 390,
                   child:Column(
 
                     children: [
@@ -182,13 +182,13 @@ class _ProfileState extends BaseState{
                       ),
 
                       Text(
-                        '${global.user.role}',
+                        '${global.user.role??""}',
                         style: TextStyle(
 
                           fontSize: 10,fontFamily: 'Lato',
                         ),
                       ),
-                      Row(
+                      global.user.isAdmin == "1"?     SizedBox(height: 0,):   Row(
                         children: [
                           Text('Available for work ? ',   style: TextStyle(
 
@@ -222,7 +222,7 @@ class _ProfileState extends BaseState{
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(global.user.referral_code!,
+                              Text(global.user.referral_code??"",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
@@ -253,38 +253,38 @@ class _ProfileState extends BaseState{
                 // "Add a new payment card", icon: Icons.credit_card_outlined),
 
 
-                global.user.role =="USER" ?
-
-                    Row(children: [
-                      GestureDetector(
-                          onTap: (){
-                            nextScreen(context, "viewbooking");
-                          },
-                          child: ProfileButton(text1: "Booking Management",
-                              text2: "Manage your booking system", icon: Icons.cases_outlined)),
-
-                      ProfileButton(text1: "Send Disputes", text2: "Do you have any disputes",
-                        icon: Icons.add_to_home_screen_sharp,
-                        ontap: (){
-                          nextScreen(context, "addDisputes");
-                        },
-                      ),
-
-                      // ProfileButton(text1: "SOS", text2: " For ",
-                      //   icon: Icons.add_to_home_screen_sharp,
-                      //   ontap: (){
-                      //     nextScreen(context, "addDisputes");
-                      //   },
-                      // ),
-
-                    ],)
-
-
-
-
-
-
-               : SizedBox(),
+               //  global.user.role =="USER" ?
+               //
+               //      Row(children: [
+               //        GestureDetector(
+               //            onTap: (){
+               //              nextScreen(context, "viewbooking");
+               //            },
+               //            child: ProfileButton(text1: "Booking Management",
+               //                text2: "Manage your booking system", icon: Icons.cases_outlined)),
+               //
+               //        ProfileButton(text1: "Send Disputes", text2: "Do you have any disputes",
+               //          icon: Icons.add_to_home_screen_sharp,
+               //          ontap: (){
+               //            nextScreen(context, "addDisputes");
+               //          },
+               //        ),
+               //
+               //        // ProfileButton(text1: "SOS", text2: " For ",
+               //        //   icon: Icons.add_to_home_screen_sharp,
+               //        //   ontap: (){
+               //        //     nextScreen(context, "addDisputes");
+               //        //   },
+               //        // ),
+               //
+               //      ],)
+               //
+               //
+               //
+               //
+               //
+               //
+               // : SizedBox(),
 
                  //ProfileButton(text1: "Reward points program", text2: "You've 50 reward points", icon: Icons.card_giftcard_outlined),
               //  ProfileButton(text1: "Pricing and offers", text2: "Get every week special offers and affor...", icon: Icons.local_offer_outlined),
@@ -317,9 +317,9 @@ class _ProfileState extends BaseState{
                     child: ProfileButton(text1: "Change Password", text2: "Get a new password", icon: Icons.key)),
 
 
-
-                ProfileButton(text1: "Terms and services", text2: "See our terms and services"
-                    , icon: Icons.design_services_outlined),
+                //
+                // ProfileButton(text1: "Terms and services", text2: "See our terms and services"
+                //     , icon: Icons.design_services_outlined),
 
 
 
@@ -338,6 +338,19 @@ class _ProfileState extends BaseState{
                               nextScreen(context, 'viewcategory');
                           },
                           icon: Icons.book),
+
+                      ProfileButton(text1: "Set Discount", text2: "set discount for all products",
+                          ontap: (){
+                            nextScreen(context, 'setdiscount');
+                          },
+                          icon: Icons.add_photo_alternate_outlined),
+
+
+                      ProfileButton(text1: "View All Referral", text2: "get all referrals",
+                          ontap: (){
+                            nextScreen(context, 'getallreferral');
+                          },
+                          icon: Icons.addchart_outlined),
 
                          ProfileButton(text1: "View  Booking", text2: "view  latest booking...",
                           ontap: (){
@@ -450,17 +463,17 @@ SizedBox(height: 5,),
     // TODO: implement initState
     super.initState();
 
-    if (global.user.id == null) {
-
-      Future.delayed(Duration.zero, () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => LoginScreen(
-
-              )),
-        );
-      });
-    }
+    // if (global.user.id == null) {
+    //
+    //   Future.delayed(Duration.zero, () {
+    //     Navigator.of(context).push(
+    //       MaterialPageRoute(
+    //           builder: (context) => LoginScreen(
+    //
+    //           )),
+    //     );
+    //   });
+    // }
     _init();
   }
 

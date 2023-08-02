@@ -11,6 +11,7 @@ import 'package:veeki/models/request/booking_request.dart';
 import 'package:veeki/models/response/booking_admin_response.dart';
 import 'package:veeki/models/response/booking_response.dart';
 import 'package:veeki/models/response/booknow.dart';
+import 'package:veeki/models/response/referral_fee_response.dart';
 
 
 import '../request/login_request.dart';
@@ -18,6 +19,7 @@ import '../request/signup_request.dart';
 import '../response/UserResponseModel.dart';
 
 import '../response/billing_response.dart';
+import '../response/discount_response.dart';
 import '../response/dispute_response.dart';
 import '../response/login_response.dart';
 import '../response/payment_response.dart';
@@ -231,7 +233,8 @@ class APIHelper {
 
 
   Future<dynamic> addService({int? id, File? user_image,String? title,
-    String? desc,String? amount,int? cat_id,String? amountrange,}) async {
+    String? desc,String? amount,int? cat_id,String? amountrange,int?
+    state_id,int? area_id}) async {
     try {
       Response response;
       var dio = Dio();
@@ -243,6 +246,8 @@ class APIHelper {
         "amount": amount,
         "amount_range": amountrange,
         "desc": desc,
+        "state_id": state_id,
+        "area_id": area_id,
         'image': user_image != null ? await MultipartFile.fromFile(user_image.path.toString()) : null,
       });
 
@@ -503,6 +508,34 @@ class APIHelper {
       print("Exception - getmytransaction(): " + e.toString());
     }
   }
+
+//ReferralFee
+
+  Future<dynamic> getAllReferral( int pageNumber, ) async {
+    try {
+      final response = await http.get(
+        Uri.parse("${global.baseUrl}admin/referral/fee/all?page=${pageNumber.toString()}"),
+        // Uri.parse("${global.baseUrl}services"),
+        headers: await global.getApiHeaders(true),
+
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = List<ReferralFee>.from(json.decode(response.body)["data"]["data"].map((x) => ReferralFee.fromJson(x)));
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - getallService(): " + e.toString());
+    }
+  }
+
+
+
+
+
 
 
   Future<dynamic> getAllService( int pageNumber, ) async {
@@ -795,7 +828,7 @@ class APIHelper {
       );
 
       dynamic recordList;
-      if (response.statusCode == 200 ) {
+      if (response.statusCode == 200 &&  json.decode(response.body)["resp_code"] == "00") {
         recordList = BookingResponse.fromJson(json.decode(response.body)["data"]);
       } else {
         recordList = null;
@@ -924,6 +957,42 @@ class APIHelper {
   }
 
 
+  // {
+  // "user_id" : "1",// admin id
+  // "fee" : 200, //percentage
+  // "status" : 1 // 0 Not Active, 1 Active
+  // //"referral_fee_id" : 1 // optional put refferral id to change the status to not active after u get the id from get all discount
+  // }
+
+
+  Future<dynamic> setDiscount({String? user_id, String? fee, int? status,String? referral_fee_id} ) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}admin/referral/fee"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "user_id": user_id,
+              "fee": fee,
+              "status": status,
+              "referral_fee_id": referral_fee_id
+
+            }
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = Discount.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - setDiscount(): " + e.toString());
+    }
+  }
 
 
   Future<dynamic> changePassword(String user_id, String current_password, String new_password,String confirm_new_password ) async {
@@ -1111,7 +1180,7 @@ class APIHelper {
 
 
 
-  Future<dynamic> getSearchResult({int? category_id, String? title,String? state,String? city}) async {
+  Future<dynamic> getSearchResult({int? category_id, String? title,int? state,int? city}) async {
     try {
       final response = await http.post(
         Uri.parse("${global.baseUrl}user/search"),
@@ -1119,8 +1188,8 @@ class APIHelper {
         body: json.encode({
           "category_id": category_id,
           "title": title,
-          "state": state,
-          "city": city
+          "state_id": state,
+          "area_id": city
 
         }),
       );
@@ -1129,7 +1198,7 @@ class APIHelper {
       dynamic recordList;
       if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
 
-        recordList = List<Service>.from(json.decode(response.body)["data"].map((x) => Service.fromJson(x)));
+        recordList = List<Service>.from(json.decode(response.body)["data"][0].map((x) => Service.fromJson(x)));
 
 
 
