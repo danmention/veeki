@@ -45,9 +45,9 @@ class _CategoryListState extends BaseState {
                   );
                 },
                 child:
-                Expanded(child: CardButtonCategory(text1: "${ _categoryList[index].title??""}",text2: " ",
+                CardButtonCategory(text1: "${ _categoryList[index].title??""}",text2: " ",
                    // text2: "${ _categoryList[index].createdAt ??""}",
-                    image: "${ _categoryList[index].faIcon??""}")),
+                    image: "${ _categoryList[index].faIcon??""}"),
 
                 // CardButton(text1: "${ _categoryList[index].title??""}", text2: "BarberShop (650)", image: "Images/clippers.png"),
 

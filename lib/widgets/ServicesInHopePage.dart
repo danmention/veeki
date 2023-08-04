@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -33,7 +34,7 @@ class _ServicesInHopePageState extends BaseState {
       _categoryList.length > 0
           ?
       Container(
-        //height: 100,
+       // height: 250,
         padding: EdgeInsets.all(12.0),
         child:
 
@@ -77,14 +78,22 @@ class _ServicesInHopePageState extends BaseState {
                         ],
                       ),
                       child:
-                          Text(
-                            _categoryList[index].title??"",
-                            style: TextStyle(
-                              color:  Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                            ),
-                          ),
+                      SizedBox(
+                        width: 70,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            maxLines: 1,
+                                   overflow: TextOverflow.ellipsis,
+                                _categoryList[index].title??"",
+                                style: TextStyle(
+                                  color:  Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13,
+                                ),
+                              ),
+                        ),
+                      ),
                   ),
                 ),
               );
@@ -93,10 +102,12 @@ class _ServicesInHopePageState extends BaseState {
       )
 
           :
-       Text(
-          "NO Category ",
-          style: Theme.of(context).primaryTextTheme.subtitle2,
-        )
+       Center(
+         child: Text(
+            "No Category ",
+
+          ),
+       )
 
          : _shimmer()
       ,
@@ -153,6 +164,7 @@ class _ServicesInHopePageState extends BaseState {
               } else if(result.resp_code =="01" && result.resp_message.toString().contains("Token is Invalid") )
               {
                 Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+
                 showSnack(snackBarMessage: result.resp_message.toString());
               }else {
                 _categoryList = [];

@@ -73,7 +73,7 @@ class _SearchPageState extends BaseState {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     BackButtonGlobal(widget: HomePage()),
-                    Text("Search",
+                    Text("Find a Caregiver",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -765,6 +765,7 @@ class _SearchPageState extends BaseState {
          //   hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
+                _serviceList.clear();
                 List<Service> _tList = result.recordList;
 
                 if (_tList.isEmpty) {

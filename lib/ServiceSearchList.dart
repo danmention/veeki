@@ -54,27 +54,25 @@ class _ServiceSearchListState extends BaseState {
                   ?
 
 
-              Expanded(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _serviceList.length,
-                    itemBuilder: (context, index){
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,right: 8.0),
-                        child: InkWell(
-                          onTap: (){
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) =>
-                                Details(service:_serviceList[index] )),);
-                          },
-                          child:
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _serviceList.length,
+                  itemBuilder: (context, index){
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,right: 8.0),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) =>
+                              Details(service:_serviceList[index] )),);
+                        },
+                        child:
 
-                          Expanded(child: CardButton(text1: "${ _serviceList[index].title??""}", text2: "${ _serviceList[index].amount??""}/hr", text3: "${ _serviceList[index].user![0].city??""}",text4: "${ _serviceList[index].user![0].state??""}", image: "assets/nurse.jpeg")),
+                        CardButton(text1: "${ _serviceList[index].title??""}", text2: "${ _serviceList[index].amount??""}/hr", text3: "${ _serviceList[index].user![0].city??""}",text4: "${ _serviceList[index].user![0].state??""}", image: "assets/nurse.jpeg"),
 
-                        ),
-                      );
-                    }
-                ),
+                      ),
+                    );
+                  }
               )
 
                   :

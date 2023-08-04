@@ -268,7 +268,8 @@ class _RecommendedBarbershopInHomePageState extends BaseState {
                 setState(() {
                   //  _isMoreDataLoaded = false;
                 });
-              } else if(result.resp_code =="01" && result.resp_message.toString().contains("Token is Invalid") )
+              } else if(result.resp_code =="01" && result.resp_message.toString().contains("Token is Invalid")  ||
+                  result.resp_message.toString().contains("Authorization Token not found")  )
               {
                 Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
                 print(result.resp_message);

@@ -29,13 +29,15 @@ class CardButton extends StatelessWidget{
       ),
       height: 120,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //mainAxisSize: MainAxisSize.min,
+      //  mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
          // SizedBox(width: 20,),
-          Image.asset("assets/nurse.jpeg",width: 140,)
-          // image != null?
-          // Expanded(child: Image.network(image,width: 140,)):Image.asset("assets/nurse.jpeg",width: 140,)
+        //  Image.asset("assets/nurse.jpeg",width: 140,)
+          // image.isNotEmpty?
+           Image.network(image,width: 100,)
+
+               //:Image.asset("assets/nurse.jpeg",width: 140,)
          // image == null? Image.asset("assets/nurse.jpeg",width: 140,):Image.network(image,width: 140,)
           ,
           SizedBox(width: 10,),
@@ -44,9 +46,10 @@ class CardButton extends StatelessWidget{
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                width: 200,
+                width: 150,
                 child: Text(
-                  text1, overflow: TextOverflow.ellipsis,
+                  text1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,

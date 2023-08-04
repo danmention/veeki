@@ -511,6 +511,12 @@ SizedBox(height: 5,),
 
 
 
+            }else if(result.resp_code =="01" && result.resp_message.toString().contains("Token is Invalid") )
+            {
+              Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+
+              showSnack(snackBarMessage: result.resp_message.toString());
+
             }
           }
         });

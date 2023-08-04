@@ -351,7 +351,14 @@ class _LoginScrrenState extends BaseState{
               //  showSnack( snackBarMessage: '${result.resp_description}');
 
               //  setState(() {});
-              } else {
+              } else if(result.resp_code == "01" && result.resp_message =="Authorization Token not found" ){
+
+                Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+                showSnack( snackBarMessage: 'Login');
+
+              }
+
+              else {
                // hideLoader();
                 showSnack( snackBarMessage: '${result.resp_message}');
               }

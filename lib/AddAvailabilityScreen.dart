@@ -75,7 +75,7 @@ class _AddServiceScreenState extends BaseState{
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Add in to continue',
+                    'Add in to continues',
                     style: TextStyle(
                         color: GlobalColors.textColor,
                         fontSize: 13,

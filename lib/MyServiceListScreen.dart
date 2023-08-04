@@ -61,7 +61,7 @@ class _MyServiceListScreenState extends BaseState {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) =>
                     //BarberShopDescriptionScreen(_barberShopList[index].vendor_id, a: widget.analytics, o: widget.observer)),
-                    Details(service:_serviceList[index] )),
+                    Details(service:_serviceList.isNotEmpty ?_serviceList[index]:Service() )),
                   );
                 },
                 child: Padding(
@@ -77,8 +77,8 @@ class _MyServiceListScreenState extends BaseState {
 
 
                           _serviceList[index].images![0].images!.isEmpty?
-                          Image.asset("Images/HomepageBannerImage.png",height: 100,width: 180,fit: BoxFit.cover,):
-                          Image.network(_serviceList[index].images![0].images!,width: 180,
+                          Image.asset("Images/HomepageBannerImage.png",height: 100,width: 130,fit: BoxFit.cover,):
+                          Image.network(_serviceList[index].images![0].images!,width: 130,
                             height: 100,fit: BoxFit.cover,),
 
 
@@ -91,67 +91,55 @@ class _MyServiceListScreenState extends BaseState {
                       ),
 
                       Column(children: [
-                        SizedBox(
-                          width: 180,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 7, right: 7, bottom: 5,),
-                            child: Row(
-                             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 3),
-                                      child: Text('${_serviceList[index].title}', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis, maxLines: 1),
-                                    )),
-                              ],
-                            ),
+                        Container(
+                          width: 160,
+                          child: Row(
+                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 3, bottom: 10),
+                                    child: Text('${_serviceList[index].title}',
+                                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis, maxLines: 1),
+                                  )),
+                            ],
                           ),
                         ),
 
                         SizedBox(
-                          width: 180,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 7),
-                            child:
+                          width: 150,
+                          child: _serviceList[index].area !=null?
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
 
-                            _serviceList[index].area !=null?
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.location_on_outlined,
-                                  size: 15,
-                                ),
-                                SizedBox(
-                                  width: 150,
-                                  child:
-
-                                  Row(
-                                    children: [
-                                      Text(
-                                        _serviceList[index].area! ,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(fontSize: 11),
-                                        maxLines: 1,
-                                      ),  Text(
-                                          ','
-                                      ),
-
-                                      _serviceList[index].state !=null ?
-                                      Text(
-                                        '${_serviceList[index].state}',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(fontSize: 11),
-                                        maxLines: 1,
-                                      ):Text(''),
-                                    ],
+                            children: [
+                              Icon(
+                                Icons.location_on_outlined,
+                                size: 15,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    _serviceList[index].area! ,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 11),
+                                    maxLines: 1,
+                                  ),  Text(
+                                      ','
                                   ),
-                                ),
-                              ],
-                            ):SizedBox(),
-                          ),
+
+                                  _serviceList[index].state !=null ?
+                                  Text(
+                                    '${_serviceList[index].state}',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 11),
+                                    maxLines: 1,
+                                  ):Text(''),
+                                ],
+                              ),
+                            ],
+                          ):SizedBox(),
                         ),
                       ],),
 

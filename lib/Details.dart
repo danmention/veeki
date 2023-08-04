@@ -38,212 +38,222 @@ class _DetailsState extends BaseState{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //appBar: AppBar(),
-      //resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Container(
-            width: double.infinity,
-            //padding: const EdgeInsets.only(left: 30.0,right: 30),
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 600,
-                  height: 170,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:AssetImage("assets/tera.jpg"),
-                      fit: BoxFit.cover,
-                      colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.4),
-                          BlendMode.darken
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        //appBar: AppBar(),
+        //resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Container(
+              width: double.infinity,
+              //padding: const EdgeInsets.only(left: 30.0,right: 30),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 600,
+                    height: 170,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image:AssetImage("assets/tera.jpg"),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.4),
+                            BlendMode.darken
+                        ),
+                      ),
+                    ),
+                    child:
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: IconButton(
+                              icon: Icon(Icons.arrow_back,color: Colors.white,),
+                              onPressed: (){
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+
+                          service != null?
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child:
+
+                                Container(
+                                  width: 330,
+                                  child: Column(
+
+                                    children: [
+                                     // Text("Breaking Barbershop", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                     Text("${service?.title??" "}", overflow: TextOverflow.ellipsis,style:
+                                     TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 13,top: 10),
+                                        child: Row(
+                                          children: [
+                                           Text('₦', style: TextStyle(
+                                               fontSize: 15,
+                                               color: Colors.white
+                                           ), ),
+                                            Row(
+                                              children: [
+                                                Text("${service!.amount}",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white,
+                                                    fontFamily: 'Roboto',
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),SizedBox(width: 2,),
+
+                                                Text("/ Hour",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily: 'Roboto',
+                                                      fontWeight: FontWeight.w700,
+                                                      color: Colors.white
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 13,top: 10),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.location_on_outlined,color: Colors.white,size: 12,),
+                                            Row(
+                                              children: [
+                                                Text("${service!.area}",
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.white
+                                                  ),
+                                                ),SizedBox(width: 5,),
+                                                Text("${service!.state}",
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.white
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(right: 15),
+                              //   child: Row(
+                              //
+                              //     children: [
+                              //       Text("5.00 ",
+                              //         style: TextStyle(
+                              //             color: Colors.white
+                              //         ),
+                              //       ),
+                              //       Icon(Icons.star,color: Colors.yellow,size: 13,),
+                              //       Icon(Icons.star,color: Colors.yellow,size: 13,),
+                              //       Icon(Icons.star,color: Colors.yellow,size: 13,),
+                              //       Icon(Icons.star,color: Colors.yellow,size: 13,),
+                              //       Icon(Icons.star,color: Colors.yellow,size: 13,),
+                              //     ],
+                              //   ),
+                              // )
+                            ],
+                          ):Container()
+                        ],
                       ),
                     ),
                   ),
-                  child:
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: IconButton(
-                            icon: Icon(Icons.arrow_back,color: Colors.white,),
-                            onPressed: (){
-                              Navigator.pop(context);
-                            },
+
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: GlobalColors.secondaryColor,
+                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(5),bottomLeft: Radius.circular(5)),
+                    ),
+                    child: TabBar(
+                     // isScrollable: true,
+                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      tabs: [
+                        Tab(child: Text("Services",style: TextStyle(
+                          color:activePage==0 ? GlobalColors.primaryColor:Colors.white,
+                        ),
+                        ),),
+
+
+
+                        Tab(
+                          child: Text("Gallery",style: TextStyle(
+                            color:activePage==1 ?
+                            GlobalColors.primaryColor:Colors.white,
+                          ),
                           ),
                         ),
 
-                        service != null?
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child:
-
-                              Container(
-                                width: 330,
-                                child: Column(
-
-                                  children: [
-                                   // Text("Breaking Barbershop", style: TextStyle(color: Colors.white, fontSize: 20),),
-                                   Text("${service?.title??" "}", overflow: TextOverflow.ellipsis,style:
-                                   TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 13,top: 10),
-                                      child: Row(
-                                        children: [
-                                         Text('₦', style: TextStyle(
-                                             fontSize: 15,
-                                             color: Colors.white
-                                         ), ),
-                                          Row(
-                                            children: [
-                                              Text("${service!.amount}",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    color: Colors.white,
-                                                  fontFamily: 'Roboto',
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),SizedBox(width: 2,),
-
-                                              Text("/ Hour",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily: 'Roboto',
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Colors.white
-                                                ),
-                                              ),
-
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 13,top: 10),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.location_on_outlined,color: Colors.white,size: 12,),
-                                          Row(
-                                            children: [
-                                              Text("${service!.area}",
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.white
-                                                ),
-                                              ),SizedBox(width: 5,),
-                                              Text("${service!.state}",
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.white
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(right: 15),
-                            //   child: Row(
-                            //
-                            //     children: [
-                            //       Text("5.00 ",
-                            //         style: TextStyle(
-                            //             color: Colors.white
-                            //         ),
-                            //       ),
-                            //       Icon(Icons.star,color: Colors.yellow,size: 13,),
-                            //       Icon(Icons.star,color: Colors.yellow,size: 13,),
-                            //       Icon(Icons.star,color: Colors.yellow,size: 13,),
-                            //       Icon(Icons.star,color: Colors.yellow,size: 13,),
-                            //       Icon(Icons.star,color: Colors.yellow,size: 13,),
-                            //     ],
-                            //   ),
-                            // )
-                          ],
-                        ):Container()
-                      ],
-                    ),
-                  ),
-                ),
-
-
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: GlobalColors.secondaryColor,
-                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(5),bottomLeft: Radius.circular(5)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Services",style: TextStyle(
-                          color:activePage==0 ? GlobalColors.primaryColor:Colors.white,
+                        Tab(
+                          child: Text("About",style: TextStyle(
+                            color:activePage==2 ? GlobalColors.primaryColor:Colors.white,
+                          ),
+                          ),
                         ),
-                        ),
-
-                        Text("Gallery",style: TextStyle(
-                          color:activePage==1 ? GlobalColors.primaryColor:Colors.white,
-                        ),
-                        ),
-
-                        Text("About",style: TextStyle(
-                          color:activePage==2 ? GlobalColors.primaryColor:Colors.white,
-                        ),
-                        ),
-                        Text("Review",style: TextStyle(
-                          color:activePage==3 ? GlobalColors.primaryColor:Colors.white,
-                         ),
+                        Tab(
+                          child: Text("Review",style: TextStyle(
+                            color:activePage==3 ? GlobalColors.primaryColor:Colors.white,
+                           ),
+                          ),
                         ),
 
                       ],
                     ),
                   ),
-                ),
 
-            SizedBox(
-                height: MediaQuery.of(context).size.height*0.9,
-              child: PageView(
-                controller: pageController,
-              onPageChanged: (int page) {
-                  setState(() {
-                  activePage = page;
-                  });
-                 },
-                children:  [PageOne(), PageTwo(), PageThree(),PageFour()],),
+              SizedBox(
+                  height: MediaQuery.of(context).size.height*0.9,
+                child: TabBarView(
+                //   controller: pageController,
+                // onPageChanged: (int page) {
+                //     setState(() {
+                //     activePage = page;
+                //     });
+                //    },
+                  children:  [PageOne(), PageTwo(), PageThree(),PageFour()],),
+              ),
+
+
+
+
+
+
+
+
+                ],
+              ),
             ),
 
-
-
-
-
-
-
-
-              ],
-            ),
           ),
-
         ),
-      ),
 
+      ),
     );
   }
 
@@ -343,18 +353,18 @@ getimages()async{
  }
 
   Widget PageThree() {
-    return Container(
-      child: service!.user![0].workExperience != null?
+    return service != null? Container(
+      child: service?.user != null?
 
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text('${service!.user![0].workExperience}', style: TextStyle(fontSize: 18),),
+        child: Text('${service?.user![0].workExperience}', style: TextStyle(fontSize: 18),),
       ):
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text("No result found",  style: TextStyle(fontSize: 18, fontFamily: 'Lato')),
+        child: Center(child: Text("No result found",  style: TextStyle(fontSize: 18, fontFamily: 'Lato'))),
       ),
-    );
+    ):Container();
   }
 
   Widget PageFour() {

@@ -199,10 +199,10 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Recommended Categories",style: TextStyle(fontWeight: FontWeight.bold,),),
+                          Text("Find by Categories",style: TextStyle(fontWeight: FontWeight.bold,),),
                           InkWell(
                               onTap: (){
-                              
+
                                 Navigator.of(context).push(
                                   MaterialPageRoute(builder: (context) => CategoryList()),
                                 );
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       global.user.role  != "SERVICE_PROVIDER" ?
                       Container(
-                        height: 300,
+                        height: 230,
                           child: ServicesInHopePage()
                       ): SizedBox(height: 1,),
                       Padding(
@@ -245,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Popular Therapist",style: TextStyle(fontWeight: FontWeight.bold,),),
+                            Text(" Popular Caregivers",style: TextStyle(fontWeight: FontWeight.bold,),),
                             InkWell(
                               onTap: (){
                                 Navigator.of(context).push(
@@ -319,7 +319,9 @@ Widget serviceProvider(){
           Expanded(
             child: GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>AddServiceScreen()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AddServiceScreen()),
+                );
 
               },
               child: Container(

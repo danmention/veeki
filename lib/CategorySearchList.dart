@@ -69,7 +69,7 @@ class _CategorySearchListState extends BaseState {
                           },
                           child:// SizedBox()
 
-                          Expanded(child: CardButton(text1: "${ _serviceList[index].title??""}", text2: "${ _serviceList[index].amount??""}/hr", text3: "${ _serviceList[index].user![0].city??""}",text4: "${ _serviceList[index].user![0].state??""}", image: "${ _serviceList[index].user![0].profileImage??""}")),
+                          CardButton(text1: "${ _serviceList[index].title??""}", text2: "${ _serviceList[index].amount??""}/hr", text3: "${ _serviceList[index].user![0].city??""}",text4: "${ _serviceList[index].user![0].state??""}", image: "${ _serviceList[index].user![0].profileImage??""}"),
 
                         ),
                       );

@@ -53,13 +53,21 @@ class _AddServiceScreenState extends BaseState{
   List<Category> _categoryList = [];
   List<File> images = [];
 
-
+//Drop down to select per day, per hour, per week or per month
   List<States> _stateList = [];
   List<Area> _areaList = [];
   int? selected_area;
   States? _selectedState;
   String ? _selectedStateName;
+  String ? _selectedDuration;
   Area? _selectedArea;
+  var duration = [
+    "Hour",
+    "Day",
+    "Week",
+    "Month",
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +137,20 @@ class _AddServiceScreenState extends BaseState{
                     text: 'Amount',
                     obscure: false,
                     textInputType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    width:200,
+                    child: MyDropdownFormField<String>(
+                      items: duration,
+                      displayText: (usertype) => usertype,
+                      onSelected: (usertype) {
+                        setState(() {
+                          _selectedDuration = usertype;
+                        });
+                      },
+                      labelText: 'Select Duration',
+                    ),
                   ),
                   const SizedBox(height: 15),
 
@@ -262,13 +284,13 @@ class _AddServiceScreenState extends BaseState{
                     labelText: 'Area',
                   ):SizedBox(),
                   const SizedBox(height: 20),
-                  Text('Project Description'),
-
+                  Text('Qualifications Description'),
+                  const SizedBox(height: 10),
 
                   TextFormField(
                     controller: _cdescription,
                     keyboardType: TextInputType.multiline,
-                    maxLines: 2,
+                    maxLines: 3,
                     decoration: InputDecoration(
                       // prefixIcon: prefixIcon == null ? prefixIcon : Icon(prefixIcon,
                       //   color: Color.fromRGBO(105, 108, 121, 1),
@@ -283,7 +305,7 @@ class _AddServiceScreenState extends BaseState{
                           color: Colors.black12,
                         ),
                       ),
-                      hintText: "Describe your service  ",
+                      hintText: "What qualifies you as a service provider, tell users why they should prefer your service to others  ",
                       hintStyle: TextStyle(
                         fontSize: 14.0,
                         color: Color.fromRGBO(105, 108, 121, 0.7),
