@@ -47,7 +47,7 @@ String? userId;
 
       ,
       child: Scaffold(
-        appBar: AppBar(title: Text('Booking Notifications'),),
+        appBar: AppBar(title: Text('Latest Appointments '),),
           bottomNavigationBar: Container(
               height: 60,
               child: BottomNavBar(id: "booking",)
@@ -60,7 +60,11 @@ String? userId;
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             return
-             // Buttons(text1: "Grooming hair tips", text2: "Lorem ipsum dolor int", image: "",);
+              _mybookingList[index].service!.length>0 ?  Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Buttons(text1: "${_mybookingList[index].service?[0].title??" "}",
+                  text2: "Date: ${_mybookingList[index].date!}", image: "${_mybookingList[index].service?[0].images![0].images}",),
+              ): SizedBox();
               Container(
                   height: 150,
                   decoration: BoxDecoration(
@@ -194,7 +198,7 @@ String? userId;
                             ),
 
                           ],),
-                        Text("${_mybookingList[index].caregiver![0].fullName??""}", style: TextStyle(
+                        Text("${_mybookingList[index].user![0].fullName??""}", style: TextStyle(
                           color: Colors.black,overflow: TextOverflow.ellipsis,
 
                           fontSize:15,

@@ -205,46 +205,49 @@ class Buttons extends StatelessWidget{
           )
         ],
       ),
-      height: 60,
+      height: 80,
       child: Column(
         children: [
 
-          Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
+          Expanded(
+            child: Row(
+             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
 
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child:
-                image!.isEmpty? Image.asset("assets/nurse.jpeg",width: 60,):Image.network(image!,width: 60,),
-
-              //  Image.asset("assets/nurse.jpeg",width: 60,),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    text1,
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: GlobalColors.textColor
-                    ),
+                image!.isEmpty? Expanded(child: Image.asset("assets/nurse.jpeg",width: 50,)):Expanded(child: Image.network(image!,width: 50,)),
+                Expanded(
+                  flex: 2,
+                 // padding: const EdgeInsets.only(left:10.0, right: 90),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        text1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: GlobalColors.textColor
+                        ),
+                      ),
+                      SizedBox(height: 15,),
+                      Text(
+                        text2!,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            color: GlobalColors.textColor
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 5,),
-                  Text(
-                    text2!,
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: GlobalColors.textColor
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+                Expanded(child: Icon(Icons.chevron_right))
+              ],
+            ),
           ),
         ],
       ),
