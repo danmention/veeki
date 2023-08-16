@@ -3,7 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:veeki/booking_provider.dart';
-
+import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'package:veeki/models/response/service_response.dart';
 import 'package:veeki/photo_view_page.dart';
 import 'package:veeki/utils/global.colors.dart';
@@ -116,7 +116,7 @@ class _DetailsState extends BaseState{
                                                   ),
                                                 ),SizedBox(width: 2,),
 
-                                                Text("/ Hour",
+                                                Text("/ ${service!.unit}",
                                                   style: TextStyle(
                                                       fontSize: 13,
                                                       fontFamily: 'Roboto',
@@ -230,12 +230,8 @@ class _DetailsState extends BaseState{
               SizedBox(
                   height: MediaQuery.of(context).size.height*0.9,
                 child: TabBarView(
-                //   controller: pageController,
-                // onPageChanged: (int page) {
-                //     setState(() {
-                //     activePage = page;
-                //     });
-                //    },
+
+
                   children:  [PageOne(), PageTwo(), PageThree(),PageFour()],),
               ),
 
@@ -314,12 +310,20 @@ getimages()async{
 
  Widget PageOne() {
    return Column(
-     children: [   DescriptionandInformation(service: service,),
+     children: [
+
+       DescriptionandInformation(service: service,),
        SizedBox(height: 20,),
        InkWell(
          onTap: (){
+           print(service!.user?[0].availability);
+          // if(service!.user?[0].availability == "NOT_ACTIVE"  ){
+          // showSnack(snackBarMessage: "This user is not available for business at this time");
+          // return;
+          // }
 
            ref.watch(myprovider).addService(service!) ;
+
            Navigator.of(context).push(
              MaterialPageRoute(builder: (context) => AppointmentsScreen(service: service??Service(),)),
            );
@@ -354,11 +358,11 @@ getimages()async{
 
   Widget PageThree() {
     return service != null? Container(
-      child: service?.user != null?
+      child: service?.user != null  ?
 
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text('${service?.user![0].workExperience}', style: TextStyle(fontSize: 18),),
+        child: Text('${service?.user?[0].workExperience??"No result found"}', style: TextStyle(fontSize: 18, color: Colors.black),),
       ):
       Padding(
         padding: const EdgeInsets.all(8.0),

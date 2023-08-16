@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -18,6 +19,7 @@ class DescriptionandInformation extends StatelessWidget{
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 alignment: AlignmentDirectional.topStart,

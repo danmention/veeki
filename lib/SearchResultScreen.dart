@@ -70,7 +70,7 @@ class _ServiceSearchListState extends BaseState {
                           child:
 
                           CardButton(text1: "${ _serviceList[index].title??""}",
-                              text2: "${ _serviceList[index].amount??""}/hr",
+                              text2: "${ _serviceList[index].amount??""}/${ _serviceList[index].unit??""}",
                               text3: "${ _serviceList[index].area??""}",
                               text4: _serviceList[index].state??"", image:  _serviceList[index].images?.first.images ??
       "https://img.freepik.com/premium-vector/photo-icon-picture-icon-image-sign-symbol-vector-illustration_64749-4409.jpg"),

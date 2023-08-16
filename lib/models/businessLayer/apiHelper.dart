@@ -14,6 +14,7 @@ import 'package:veeki/models/response/booknow.dart';
 import 'package:veeki/models/response/referral_fee_response.dart';
 
 
+import '../request/bookingconfirm_request.dart';
 import '../request/login_request.dart';
 import '../request/signup_request.dart';
 import '../response/UserResponseModel.dart';
@@ -234,7 +235,7 @@ class APIHelper {
 
   Future<dynamic> addService({int? id, File? user_image,String? title,
     String? desc,String? amount,int? cat_id,String? amountrange,int?
-    state_id,int? area_id}) async {
+    state_id,int? area_id, String? unit}) async {
     try {
       Response response;
       var dio = Dio();
@@ -248,6 +249,7 @@ class APIHelper {
         "desc": desc,
         "state_id": state_id,
         "area_id": area_id,
+        "unit": unit,
         'image': user_image != null ? await MultipartFile.fromFile(user_image.path.toString()) : null,
       });
 
@@ -325,6 +327,40 @@ class APIHelper {
 
 
 
+  Future<dynamic> getAllCaregivers({int? pagenumber}) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}admin/users?page=$pagenumber"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "user_type" : "SERVICE_PROVIDER"
+            }
+
+        ),
+
+      );
+
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+
+        recordList = List<CurrentUser>.from(json.decode(response.body)["data"]["data"].map((x) => CurrentUser.fromJson(x)));
+
+
+
+      } else {
+        recordList = null;
+      }
+
+      return getAPIResult(response, recordList);
+
+    } catch (e) {
+      print("Exception - getAllcareGiverUser " + e.toString());
+    }
+  }
+
+
 
 
 
@@ -379,9 +415,15 @@ class APIHelper {
 
 
   Future<dynamic> getAllMyBooking( String userid) async {
+
+
     try {
       final response = await http.get(
-        Uri.parse("${global.baseUrl}user/booking/${userid}"),
+        global.user.role  == "SERVICE_PROVIDER" ?
+        Uri.parse("${global.baseUrl}user/booking?caregiver_user_id=${userid}"):
+        Uri.parse("${global.baseUrl}user/booking?user_id=${userid}"),
+
+
         headers: await global.getApiHeaders(true),
 
       );
@@ -559,6 +601,40 @@ class APIHelper {
     }
   }
 
+//
+
+  Future<dynamic> enable_disable(int user_id, int status, ) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}admin/enable-user"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+
+            {
+              "user_id" : user_id,
+              "status" : status,
+            // 1 is enabled, 0 is disabled
+            }
+
+
+
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+
+        recordList = CurrentUserResponse.fromJson(json.decode(response.body)["data"]);
+
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - enable_disableUser(): " + e.toString());
+    }
+  }
 
   Future<dynamic> blockservice(int user_id,String reason, int service_id, bool action,) async {
     try {
@@ -934,9 +1010,9 @@ class APIHelper {
 
 
 
-  Future<dynamic> checkOut(BookNow bookNow) async {
+  Future<dynamic> checkOut(BookConfirmRequest bookNow) async {
     try {
-
+print(json.encode(bookNow));
 
       final response = await http.post(
         Uri.parse("${global.baseUrl}user/billing/create"),
@@ -1235,7 +1311,7 @@ class APIHelper {
       dynamic recordList;
       if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
 
-        recordList = List<Service>.from(json.decode(response.body)["data"].map((x) => Service.fromJson(x)));
+        recordList = List<Service>.from(json.decode(response.body)["data"][0].map((x) => Service.fromJson(x)));
 
 
 

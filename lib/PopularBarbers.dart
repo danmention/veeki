@@ -11,15 +11,15 @@ import 'package:veeki/widgets/back.button.global.dart';
 import 'models/businessLayer/base.dart';
 import 'models/userModel.dart';
 
-class PopularBarbers extends Base {
+class PopularCargivers extends Base {
   @override
   _PopularBarbersState createState() => _PopularBarbersState();
-  PopularBarbers ({Key? key,}) ;
+  PopularCargivers ({Key? key,}) ;
 }
 
 class _PopularBarbersState extends BaseState {
 
-
+// != "SERVICE_PROVIDER"
   bool _isDataLoaded = false;
   bool _isRecordPending = true;
   List<CurrentUser> _userList = [];
@@ -214,6 +214,7 @@ class _PopularBarbersState extends BaseState {
                 if (_tList.isEmpty) {
                   _isRecordPending = false;
                 }
+
 
                 _userList.addAll(_tList);
 

@@ -484,7 +484,8 @@ Widget timeslot(){
      bookingRequest.timeTo = "11:53:25";
 
      ref.watch(myprovider).bookingRequestitem = bookingRequest;
-     print("this is the cool service good ${ref.watch(myprovider).bookedService.user![0].fullName}");
+
+     print("this is the cool service good ${ref.watch(myprovider).bookedService.user?[0].fullName}");
 
 
      Navigator.of(context).push(

@@ -4,11 +4,12 @@ import 'package:shimmer/shimmer.dart';
 
 import 'package:veeki/utils/global.colors.dart';
 
+import '../UserSearchList.dart';
 import '../models/businessLayer/base.dart';
 import '../models/userModel.dart';
 
-class PopularBarbersInHomePage extends Base {
-  PopularBarbersInHomePage({Key? key}) ;
+class PopularcaregiverInHomePage extends Base {
+  PopularcaregiverInHomePage({Key? key}) ;
   _PopularBarbersInHomePageState createState() => _PopularBarbersInHomePageState();
 }
 
@@ -39,33 +40,42 @@ class _PopularBarbersInHomePageState extends BaseState{
                   onTap: (){
                    // https://api.veeki.co/profile/photo/4/1686072952.jpg
                   },
-                  child: Container(
-                    child: Column(
-                      children: [
-                       // CircleAvatar(backgroundImage: AssetImage('Images/download.png'), radius: 30),
-                        _userList[index].profileImage != null?
-                        CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage:
-                          NetworkImage(_userList[index].profileImage!),
-                          backgroundColor: Colors.transparent,
-                        )
-                        // CachedNetworkImage(
-                        //   //imageUrl: global.baseUrlForImage + _popularBarbersList[index].staff_image,
-                        //   imageUrl: "https://api.veeki.co/profile/photo/4/"+ _userList[index].profileImage!,
-                        //   imageBuilder: (context, imageProvider) => CircleAvatar(radius: 30, backgroundImage: imageProvider),
-                        //   placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                        //   errorWidget: (context, url, error) => Icon(Icons.error),
-                        // )
+                  child:
 
-                            : CircleAvatar(backgroundImage: AssetImage('Images/download.png'), radius: 30),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => UserSearchList(_userList[index].id!)),
+                      );
+                    },
+                    child: Container(
+                      child: Column(
+                        children: [
+                         // CircleAvatar(backgroundImage: AssetImage('Images/download.png'), radius: 30),
+                          _userList[index].profileImage != null?
+                          CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage:
+                            NetworkImage(_userList[index].profileImage!),
+                            backgroundColor: Colors.transparent,
+                          )
+                          // CachedNetworkImage(
+                          //   //imageUrl: global.baseUrlForImage + _popularBarbersList[index].staff_image,
+                          //   imageUrl: "https://api.veeki.co/profile/photo/4/"+ _userList[index].profileImage!,
+                          //   imageBuilder: (context, imageProvider) => CircleAvatar(radius: 30, backgroundImage: imageProvider),
+                          //   placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                          //   errorWidget: (context, url, error) => Icon(Icons.error),
+                          // )
 
-                        Text(_userList[index].fullName??"",
-                        style: TextStyle(
-                          fontSize: 10,
-                        )
-                          ,)
-                      ],
+                              : CircleAvatar(backgroundImage: AssetImage('Images/download.png'), radius: 30),
+
+                          Text(_userList[index].fullName??"",
+                          style: TextStyle(
+                            fontSize: 10,
+                          )
+                            ,)
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -89,13 +99,13 @@ class _PopularBarbersInHomePageState extends BaseState{
     super.initState();
   }
 
-  _getAllUsers() async {
+  _getAllCaregiverUsers() async {
     try {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
          //showOnlyLoaderDialog();
         if (_isRecordPending) {
-          await apiHelper?.getAllUsers().then((result) {
+          await apiHelper?.getAllCaregivers().then((result) {
            // hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
@@ -105,7 +115,20 @@ class _PopularBarbersInHomePageState extends BaseState{
                   _isRecordPending = false;
                 }
 
-                _userList.addAll(_tList);
+
+
+                // _tList.forEach((element) {
+                //   if( element.role!.contains("SERVICE_PROVIDER")){
+                //     _userList.addAll(_tList);
+                //   }
+                //
+                // });
+
+
+
+
+
+               _userList.addAll(_tList);
 
                 setState(() {
                   //  _isMoreDataLoaded = false;
@@ -139,7 +162,7 @@ class _PopularBarbersInHomePageState extends BaseState{
 
   _init() async {
     try {
-      await  _getAllUsers() ;
+      await  _getAllCaregiverUsers() ;
 
       _isDataLoaded = true;
       setState(() {});

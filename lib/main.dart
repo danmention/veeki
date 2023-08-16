@@ -263,43 +263,43 @@ Service service = new Service();
     if(message.notification != null){
        // assetsAudioPlayer.open(Audio("assets/alert.mp3"));
        // assetsAudioPlayer.play();
-          if(message.notification!.title!.contains("accepted")){
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AcceptRejectDialog(
-                  title: 'Request Accepted',
-                  message: '${ref.watch(myprovider).bookedService.user![0].fullName} accepted your  request!, proceed to make payment',
-                  onAccept: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Notifications())
-                    );
-                    //  makePayment();
-                    // Handle accept action
-                    Navigator.pop(context);
-                  },
-                  onReject: () {
-                    // Handle reject action
-                    Navigator.pop(context);
-                  },
-                );
-              },
-            );
 
-          //  showCustomDialog(context);
-            // Navigator.push(context, MaterialPageRoute(
-            //     builder: (context) => AcceptRejectScreen(status: 1)));
-
-          }else{
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) => NotificationDialog(title:   message.notification?.title
-                ,body:message.notification?.body,  userToken: message.data['usertoken'], ),
-            );
-
-
-          }
+      //after this stuff
+       //    if(message.notification!.title!.contains("accepted")){
+       //      showDialog(
+       //        context: context,
+       //        builder: (BuildContext context) {
+       //          return AcceptRejectDialog(
+       //            title: 'Request Accepted',
+       //            message: '${ref.watch(myprovider).bookedService.user![0].fullName} accepted your  request!, proceed to make payment',
+       //            onAccept: () {
+       //              Navigator.of(context).push(
+       //                  MaterialPageRoute(builder: (context) => Notifications())
+       //              );
+       //              //  makePayment();
+       //              // Handle accept action
+       //              Navigator.pop(context);
+       //            },
+       //            onReject: () {
+       //              // Handle reject action
+       //              Navigator.pop(context);
+       //            },
+       //          );
+       //        },
+       //      );
+       //
+       //
+       //
+       //    }else{
+       //      showDialog(
+       //        context: context,
+       //        barrierDismissible: false,
+       //        builder: (BuildContext context) => NotificationDialog(title:   message.notification?.title
+       //          ,body:message.notification?.body,  userToken: message.data['usertoken'], ),
+       //      );
+       //
+       //
+       //    }
 
             // Navigator.of(context).push(
             //     MaterialPageRoute(builder: (context) => Notifications())

@@ -1,79 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
+import 'package:veeki/models/userModel.dart';
 import 'package:veeki/widgets/CardButton.dart';
 
-import 'CategorySearchList.dart';
-import 'Details.dart';
-import 'ServiceSearchList.dart';
-import 'models/businessLayer/base.dart';
-import 'models/response/category_response.dart';
-import 'models/response/service_response.dart';
+import '../Details.dart';
+import '../models/businessLayer/base.dart';
 
-class ServiceList extends Base{
+
+
+class ViewCareGiverList extends Base{
   @override
-  _ServiceListState createState() => _ServiceListState();
-  ServiceList ({Key? key,});
+  _CurrentUserListState createState() => _CurrentUserListState();
+  ViewCareGiverList ({Key? key,});
 
- // List<Service>? servicelist;
+ // List<CurrentUser>? servicelist;
 }
 
-class _ServiceListState extends BaseState {
+class _CurrentUserListState extends BaseState {
   bool _isDataLoaded = false;
   bool _isRecordPending = true;
-  List<Service> _serviceList = [];
+  List<CurrentUser> _userList = [];
   bool isLoading = false;
 
   bool _isMoreDataLoaded = false;
   ScrollController _scrollController = ScrollController();
   TextEditingController messageTextCntr = TextEditingController();
- // _ServiceListState(this._serviceList);
+ // _CurrentUserListState(this._userList);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recent Services', style: AppBarTheme.of(context).titleTextStyle),
+        title: Text('Caregiver ', style: AppBarTheme.of(context).titleTextStyle),
 
       ),
       body:
       _isDataLoaded
           ?
 
-      _serviceList.length > 0
+      _userList.length > 0
           ?
 
 
       ListView.builder(
           controller: _scrollController,
           shrinkWrap: true,
-          itemCount: _serviceList.length,
+          itemCount: _userList.length,
           itemBuilder: (context, index){
             return Padding(
               padding: const EdgeInsets.only(left: 10.0,top: 8.0,bottom: 8.0,right: 8.0),
               child: InkWell(
                 onTap: (){
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => Details(service:_serviceList[index])),
-                  );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(builder: (context) => Details(service:_userList[index])),
+                  // );
                 },
                 child:
-                //Text( _serviceList[index].amount??"")
-                CardButtonAdmin(text1: "${ _serviceList[index].title??""}",text2:"${ _serviceList[index].amount??""}/hr",
+               // Text( _userList[index].fullName??"")
+                CardButtonUser(text1: "${ _userList[index].fullName??""}",
+
+                  text2:"${ _userList[index].status ==  "1"?"User Enabled": "User Disabled"}",
                    // text3: "",
-                    text3: "${ _serviceList[index].area??""}",
+                    text3: "${ _userList[index].city??""}",
 
-                   text4: "${ _serviceList[index].state??""}",
+                   text4: "${ _userList[index].state??""}",
 
-                   image: "${ _serviceList[index].images![0].images??""}",
-
-                  block: (){
+                   image: "${ _userList[index].profileImage ??""}",
 
 
-                    dialog(_serviceList[index].user![0].id,_serviceList[index].id, false, "Block");
+
+                  enable: (){
+
+
+                    dialog(_userList[index].id, true, "Enable");
                   },
 
                   delete: (){
-                    dialog(_serviceList[index].user![0].id, _serviceList[index].id, true, "Delete");
+                    dialog(_userList[index].id,  false, "Disable");
                   },
                 ),
 
@@ -85,9 +88,11 @@ class _ServiceListState extends BaseState {
       )
 
           :
-      Text(
-        "No result found ",
+      Center(
+        child: Text(
+          "No result found ",
 
+        ),
       )
 
           : _shimmer()
@@ -167,26 +172,7 @@ class _ServiceListState extends BaseState {
     );
   }
 
-  Widget _shimmer2() {
-    return Padding(
-        padding: const EdgeInsets.all(5),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: 110,
-                  height: 50,
-                  child: Card(
-                    margin: EdgeInsets.only(left: 5, right: 5),
-                  ),
-                );
-              }),
-        ));
-  }
+
   @override
   void initState() {
    _init();
@@ -196,7 +182,7 @@ class _ServiceListState extends BaseState {
 
 
 int pageNumber = 1;
-  _getAllService() async {
+  _getAllCurrentUser() async {
     try {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
@@ -208,7 +194,7 @@ int pageNumber = 1;
             _isMoreDataLoaded = true;
           });
 
-          if (_serviceList.isEmpty) {
+          if (_userList.isEmpty) {
             pageNumber = 1;
           } else {
             pageNumber++;
@@ -216,23 +202,23 @@ int pageNumber = 1;
 
 
 
-          await apiHelper?.getAllService(pageNumber).then((result) {
+          await apiHelper?.getAllCaregivers(pagenumber:  pageNumber).then((result) {
             // hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
-                List<Service> _tList = result.recordList;
+                List<CurrentUser> _tList = result.recordList;
 
                 if (_tList.isEmpty) {
                   _isRecordPending = false;
                 }
 
-                _serviceList.addAll(_tList);
+                _userList.addAll(_tList);
 
                 setState(() {
                   //  _isMoreDataLoaded = false;
                 });
               } else {
-                _serviceList = [];
+                _userList = [];
               }
             }
           });
@@ -243,21 +229,21 @@ int pageNumber = 1;
 
       }
     } catch (e) {
-      print("Exception - getserviceScreen.dart - _getAllServicelist():" +
+      print("Exception - getserviceScreen.dart - _getAllCurrentUserlist():" +
           e.toString());
     }
   }
 
   _init() async {
     try {
-      await  _getAllService() ;
+      await  _getAllCurrentUser() ;
 
       _scrollController.addListener(() async {
         if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent && !_isMoreDataLoaded) {
           setState(() {
             _isMoreDataLoaded = true;
           });
-          await _getAllService() ;
+          await _getAllCurrentUser() ;
           setState(() {
             _isMoreDataLoaded = false;
           });
@@ -270,7 +256,7 @@ int pageNumber = 1;
     }
   }
 
-  void dialog(int? userid,int? id, bool bool, String activity) {
+  void dialog(int? userid, bool bool, String activity) {
     setState(() {
       isLoading = true;
     });
@@ -278,10 +264,10 @@ int pageNumber = 1;
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('$activity Post'),
-            content:  TextField(
-              controller:messageTextCntr ,
-              decoration: InputDecoration(hintText: "Enter reason for blocking"),
+            title: Text('$activity '),
+            content:  Text(
+
+            "Are You Sure You Want To $activity This User?",
             ),
             actions: <Widget>[
               TextButton(
@@ -293,8 +279,12 @@ int pageNumber = 1;
                   child: Text('Close')),
               TextButton(
                 onPressed: () {
+                  if(bool ){
+                    enable( userid!, 1);
+                  }else{
+                    enable( userid!, 0);
+                  }
 
-                  block( userid, id,  bool);
                   Navigator.of(context).pop();
                  // _dismissDialog();
                 },
@@ -308,10 +298,10 @@ int pageNumber = 1;
   }
 
 
-  block(int? userid,int? id, bool bool)async{
+  enable(int userid,int status, )async{
     try {
 
-      await apiHelper!.blockservice(userid!,messageTextCntr.text.trim(), id!, bool).then((result) {
+      await apiHelper!.enable_disable(userid, status, ).then((result) {
     if (result != null) {
     if (result.resp_code == "00") {
 

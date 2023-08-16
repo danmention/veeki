@@ -377,7 +377,7 @@ class _ProfileState extends BaseState{
 
                       ProfileButton(text1: "Manage Users", text2: "Approve user account..",
                           ontap: (){
-
+                            nextScreen(context, 'viewuser');
                           },
                           icon: Icons.person),
 
@@ -485,7 +485,7 @@ SizedBox(height: 5,),
       if (global.user.availability != null){
         if(global.user.availability == "ACTIVE"){
           isSwitched = true;
-        }else if(global.user.availability == "INACTIVE"){
+        }else if(global.user.availability == "NOT_ACTIVE"){
           isSwitched = false;
         }
       }
@@ -503,7 +503,7 @@ SizedBox(height: 5,),
     try {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
-        await apiHelper?.setAvailability(global.user.id!, isSwitched==true?"ACTIVE":"INACTIVE").then((result) {
+        await apiHelper?.setAvailability(global.user.id!, isSwitched==true?"ACTIVE":"NOT_ACTIVE").then((result) {
           if (result != null) {
             if (result.resp_code == "00") {
 
@@ -518,7 +518,10 @@ SizedBox(height: 5,),
               showSnack(snackBarMessage: result.resp_message.toString());
 
             }
-          }
+          }else if(result.errors[0].message != null){
+              showSnack( snackBarMessage: result.errors[0].message.toString());
+            }
+
         });
       } else {
         showNetworkErrorSnackBar(_scaffoldKey);

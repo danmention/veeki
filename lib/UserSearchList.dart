@@ -13,18 +13,18 @@ import 'models/businessLayer/base.dart';
 import 'models/response/category_response.dart';
 import 'models/response/service_response.dart';
 
-class CategorySearchList extends Base{
+class UserSearchList extends Base{
   @override
-  _CategorySearchListState createState() => _CategorySearchListState(this.cat_id);
-  CategorySearchList (this.cat_id);
+  _CategorySearchListState createState() => _CategorySearchListState(this.user_id);
+  UserSearchList (this.user_id);
 
-  final int cat_id;
+  final int user_id;
 }
 
 class _CategorySearchListState extends BaseState {
-  _CategorySearchListState(this.cat_id);
+  _CategorySearchListState(this.user_id);
 
-  int cat_id;
+  int user_id;
   bool _isDataLoaded = false;
   bool _isRecordPending = true;
   List<Service> _serviceList = [];
@@ -33,7 +33,7 @@ class _CategorySearchListState extends BaseState {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(' Categories', style: AppBarTheme.of(context).titleTextStyle),
+        title: Text(' User Services', style: AppBarTheme.of(context).titleTextStyle),
 
       ),
       body: SafeArea(
@@ -165,7 +165,7 @@ class _CategorySearchListState extends BaseState {
       if (isConnected) {
         // showOnlyLoaderDialog();
         if (_isRecordPending) {
-          await apiHelper?.getCategoryResult(cat_id).then((result) {
+          await apiHelper?.getAllMySerivices(user_id.toString()).then((result) {
             //hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
@@ -192,7 +192,7 @@ class _CategorySearchListState extends BaseState {
 
       }
     } catch (e) {
-      print("Exception - getcategoryScreen.dart - _getAllCategorylist():" +
+      print("Exception - getuserScreen.dart - _getAllCategorylist():" +
           e.toString());
     }
   }

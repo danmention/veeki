@@ -54,7 +54,9 @@ class _GetReferralScreenScreenState extends BaseState{
                   //   //     )),
                   // );
                 },
-                child: Card(
+                child:
+
+                Card(
                     margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
                     child: ListTile(
                       title: Text('${_productOrderHistoryList[index].id}', ),
@@ -215,6 +217,7 @@ class _GetReferralScreenScreenState extends BaseState{
     _init();
   }
   int pageNumber = 1;
+
   _getProductOrderHistory() async {
     try {
    bool isConnected = await br!.checkConnectivity();

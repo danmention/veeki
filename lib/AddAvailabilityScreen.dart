@@ -22,7 +22,7 @@ import 'models/request/addservice_request.dart';
 
 import 'models/response/category_response.dart';
 
-class AddServiceScreen extends Base {
+class AddServiceScreen_old extends Base {
 
   @override
   _AddServiceScreenState createState() => _AddServiceScreenState();

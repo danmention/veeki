@@ -6,6 +6,7 @@ import 'package:veeki/utils/global.colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:veeki/widgets/appbar.dart';
 import '../../widgets/back.button.global.dart';
+import '../Notifications.dart';
 import '../admin/AddDisputesScreen.dart';
 import '../models/businessLayer/base.dart';
 import '../models/response/service_response.dart';
@@ -46,7 +47,7 @@ String? userId;
 
       ,
       child: Scaffold(
-        appBar: AppBar(title: Text('View Booking'),),
+        appBar: AppBar(title: Text('Booking Notifications'),),
           bottomNavigationBar: Container(
               height: 60,
               child: BottomNavBar(id: "booking",)
@@ -59,6 +60,7 @@ String? userId;
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             return
+             // Buttons(text1: "Grooming hair tips", text2: "Lorem ipsum dolor int", image: "",);
               Container(
                   height: 150,
                   decoration: BoxDecoration(
@@ -244,61 +246,15 @@ String? userId;
 
           ),
         )
-            : Center(
-          child: CircularProgressIndicator(),
-        )));}
+            :  _shimmer()
+        // Center(
+        //   child: CircularProgressIndicator(),
+        // )
+        //
+      )
 
-        // SingleChildScrollView(
-        //   child: SafeArea(
-        //     child: Container(
-        //       width: double.infinity,
-        //
-        //       padding: const EdgeInsets.all(10.0),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Row(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             children: [
-        //               Row(
-        //                 children: [
-        //                   BackButtonGlobal(
-        //                     widget: LoginScreen(),
-        //                   ),
-        //                   SizedBox(width: 10,),
-        //                   Text(
-        //                     'My Bookings',
-        //                     style: TextStyle(
-        //                       fontFamily: 'Lato',
-        //                         color: GlobalColors.textColor,
-        //                         fontSize: 20,
-        //                         fontWeight: FontWeight.bold),
-        //                   ),
-        //                 ],
-        //               ),
-        //               Row(
-        //                 mainAxisAlignment: MainAxisAlignment.end,
-        //                 children: [
-        //                   Icon(Icons.filter_alt_outlined)
-        //                 ],
-        //               )
-        //
-        //             ],
-        //           ),
-        //           SizedBox(height: 30,),
-        //           Buttons(text1: "Grooming hair tips", text2: "Lorem ipsum dolor int"),
-        //           Buttons(text1: "Get reward points", text2: "Lorem ipsum dolor int"),
-        //           Buttons(text1: "Appointment cancelled", text2: "Lorem ipsum dolor int"),
-        //           Buttons(text1: "Processing appointment", text2: "Lorem ipsum dolor int"),
-        //           Buttons(text1: "30% off cidboys salon offer", text2: "Lorem ipsum dolor int"),
-        //           Buttons(text1: "Welcome to our app", text2: "Lorem ipsum dolor int"),
-        //
-        //         ],
-        //       ),
-        //
-        //     ),
-        //   ),
-        // ),
+    );}
+
 
 
 

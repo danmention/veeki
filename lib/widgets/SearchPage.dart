@@ -57,6 +57,8 @@ class _SearchPageState extends BaseState {
   Category? _selectedCategory;
   States? _selectedState;
   Area? _selectedArea;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -722,6 +724,8 @@ class _SearchPageState extends BaseState {
 
                 _stateList.addAll(_tList);
                 print(" goit here");
+
+
                 setState(() { });
 
                 // } else {

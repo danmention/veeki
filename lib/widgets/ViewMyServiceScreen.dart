@@ -169,9 +169,10 @@ String? userId;
 
           ),
         )
-            : Center(
-          child: CircularProgressIndicator(),
-        )));}
+            : _shimmer()
+
+
+      ));}
 
 
 

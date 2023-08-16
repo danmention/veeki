@@ -6,8 +6,10 @@ import 'package:veeki/admin/AddDisputesScreen.dart';
 import 'package:veeki/admin/AddcategoryScreen.dart';
 import 'package:veeki/admin/SetDiscountScreen.dart';
 import 'package:veeki/admin/ViewBookingAdminScreen.dart';
+import 'package:veeki/admin/ViewCareGiverList.dart';
 import 'package:veeki/sendSOS.dart';
 
+import '../AddServiceScreen.dart';
 import '../HomePage.dart';
 import '../LoginScreen.dart';
 import '../Profile.dart';
@@ -40,6 +42,14 @@ class RouteGenerator{
 
       case "viewservice":
         return MaterialPageRoute(builder: (_) => ViewServiceScreen());
+
+      case "addservice":
+        return MaterialPageRoute(builder: (_) => AddServiceScreen());
+
+
+      case "viewuser":
+        return MaterialPageRoute(builder: (_) => ViewCareGiverList());
+
       case "viewallservice":
         return MaterialPageRoute(builder: (_) => ServiceList());
       case "viewdetailservice":

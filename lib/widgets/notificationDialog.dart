@@ -171,8 +171,8 @@ assetsAudioPlayer.open(Audio("assets/alert.mp3"));
                     onPressed: ()
                     {
 
-                      //Navigator.pop(context);
                       assetsAudioPlayer.stop();
+                      Navigator.pop(context);
 
                       callBookingStatus(1, context);
                     },
@@ -205,6 +205,9 @@ assetsAudioPlayer.open(Audio("assets/alert.mp3"));
 
 
   }
+
+
+
   void callBookingStatus(int status, context) async{
 
     try {

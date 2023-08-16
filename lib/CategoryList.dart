@@ -139,26 +139,7 @@ class _CategoryListState extends BaseState {
     );
   }
 
-  Widget _shimmer2() {
-    return Padding(
-        padding: const EdgeInsets.all(5),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: 110,
-                  height: 50,
-                  child: Card(
-                    margin: EdgeInsets.only(left: 5, right: 5),
-                  ),
-                );
-              }),
-        ));
-  }
+
   @override
   void initState() {
     _init();

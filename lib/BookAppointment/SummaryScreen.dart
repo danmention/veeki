@@ -14,6 +14,8 @@ import 'package:veeki/widgets/text.form.global.dart';
 import '../booking_provider.dart';
 import '../models/businessLayer/base.dart';
 import '../models/request/booking_request.dart';
+import '../models/request/bookingconfirm_request.dart';
+import '../models/response/booking_response.dart';
 import '../models/response/booknow.dart';
 import '../models/response/service_response.dart';
 import '../widgets/BookAppointmentBottomNavBar.dart';
@@ -37,6 +39,8 @@ class _SummaryScreenState extends BaseState {
   _SummaryScreenState(this.service,this.bookingRequest);
   Service? service;
   BookingRequest? bookingRequest;
+  int? booking_id;
+  BookingResponse? bookingResponse;
   final TextEditingController rewardpointController = TextEditingController();
 
   final plugin = PaystackPlugin();
@@ -255,6 +259,7 @@ class _SummaryScreenState extends BaseState {
                     SizedBox(height: 30,)
                   ],
                 )
+                ,SizedBox(height: 20,),
               ],
             ),
 
@@ -275,7 +280,7 @@ void notifyCaregiver()async{
 
 
   //₦${ref.watch(myprovider).initialAmount??"0.00"}
-  await apiHelper!.pushnotification(service!.user!.first.firebase_token!,
+  await apiHelper!.pushnotification(service!.user!.first.firebaseToken!,
      // "₦${ref.watch(myprovider).initialAmount??"0.00"}",
     // "${bookingRequest!.streetAddress!}+${global.user.instagram}",
      "${bookingRequest!.streetAddress!}",
@@ -330,6 +335,9 @@ void notifyCaregiver()async{
         await apiHelper!.bookappointment(bookingRequest! ).then((result) async {
           if (result != null) {
             if (result.resp_code == "00") {
+             BookingResponse _tList = result.recordList;
+            booking_id =  _tList.id;
+
               notifyCaregiver();
            //   hideLoader();
              // int serviceid = result.data.id;
@@ -418,30 +426,33 @@ void notifyCaregiver()async{
 
     if (response.status) {
 
-      BookNow _bookNow = new BookNow();
+      BookConfirmRequest _bookNow = new BookConfirmRequest();
       _bookNow.amount = bookingRequest!.amount;
       _bookNow.userId = int.parse("${global.user.id}");
+      _bookNow.referral_code = rewardpointController.text;
+      _bookNow.booking_id = booking_id;
       _bookNow.transactionReference = _getReference();
       _bookNow.purpose = service!.title;
       // Payment was successful
       print('Payment was successful');
-      // await apiHelper!.checkOut(_bookNow).then((result) async {
-      //   if (result != null) {
-      //     if (result.status == "1") {
-      //
-      //       Navigator.pushAndRemoveUntil(
-      //           context,
-      //           MaterialPageRoute(
-      //               builder: (context) =>
-      //                   BookingConfirmationScreen()),
-      //           ModalRoute.withName('/'));
-      //       // Navigator.of(context).push(
-      //       //   MaterialPageRoute(builder: (context) => BookingConfirmationScreen()),
-      //       // )
-      //
-      //     }
-      //   }
-      // });
+      await apiHelper!.checkOut(_bookNow).then((result) async {
+        if (result != null) {
+          if (result.resp_code == "00") {
+          //if (result.status == "1") {
+
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        BookingConfirmationScreen()),
+                ModalRoute.withName('/'));
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(builder: (context) => BookingConfirmationScreen()),
+            // )
+
+          }
+        }
+      });
 
 
     } else {

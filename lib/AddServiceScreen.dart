@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
+import 'package:veeki/sendSOS.dart';
 
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/widgets/MyDropDownForm.dart';
@@ -62,10 +63,10 @@ class _AddServiceScreenState extends BaseState{
   String ? _selectedDuration;
   Area? _selectedArea;
   var duration = [
-    "Hour",
-    "Day",
-    "Week",
-    "Month",
+    "Per Hour",
+    "Per Day",
+    "Per Week",
+    "Per Month",
   ];
 
 
@@ -347,7 +348,7 @@ class _AddServiceScreenState extends BaseState{
             InkWell(
               onTap: (){
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SignUpScreen()),
+                  MaterialPageRoute(builder: (context) => sendSOS()),
                 );
               },
               child: Text(
@@ -695,7 +696,7 @@ class _AddServiceScreenState extends BaseState{
           title: _ctitle.text.trim(), desc: _cdescription.text.trim(),amount:
               _camount.text.trim(),state_id: _selectedState!.id,
               area_id: _selectedArea!.id,
-            cat_id: _selectedCategory!.id,amountrange: ''
+            cat_id: _selectedCategory!.id,amountrange: '',unit: _selectedDuration
           ).then((result) async {
             if (result != null) {
               if (result.resp_code == "00") {

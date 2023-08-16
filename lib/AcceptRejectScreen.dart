@@ -12,6 +12,7 @@ import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'BookAppointment/bookingConfirmationScreen.dart';
 import 'booking_provider.dart';
 import 'models/businessLayer/base.dart';
+import 'models/request/bookingconfirm_request.dart';
 import 'models/response/booknow.dart';
 
 class AcceptRejectScreen  extends Base {
@@ -206,13 +207,15 @@ void book()async{
 
     //if (response.status) {
 
-  BookNow _bookNow = new BookNow();
+  BookConfirmRequest _bookNow = new BookConfirmRequest();
   _bookNow.amount = ref.watch(myprovider).bookingRequestitem.amount;
   _bookNow.userId = int.parse("${global.user.id}");
   _bookNow.transactionReference = "";
+  _bookNow.referral_code = "KIOW11110";
+  _bookNow.booking_id = 1;
   _bookNow.purpose = ref.watch(myprovider).bookedService.title;
   // Payment was successful
-  print('Payment was successful');
+  print('Payment  coming acceptrejectscreen was successful');
   await apiHelper!.checkOut(_bookNow).then((result) async {
   if (result != null) {
   if (result.resp_code == "00") {

@@ -9,7 +9,7 @@ import '../models/businessLayer/base.dart';
 import '../models/response/category_response.dart';
 import '../models/response/service_response.dart';
 
-class ServicesInHopePage extends Base {
+class DisplayCategoryPage extends Base {
 
   _ServicesInHopePageState createState() => _ServicesInHopePageState();
 }
@@ -133,6 +133,8 @@ class _ServicesInHopePageState extends BaseState {
               }),
         ));
   }
+
+
   @override
   void initState() {
    _init();
@@ -144,7 +146,7 @@ class _ServicesInHopePageState extends BaseState {
     try {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
-        // showOnlyLoaderDialog();
+       //  showOnlyLoaderDialog();
         if (_isRecordPending) {
           await apiHelper?.getAllCategory().then((result) {
             // hideLoader();
@@ -183,8 +185,24 @@ class _ServicesInHopePageState extends BaseState {
     }
   }
 
+  // showAlertDialog(BuildContext context){
+  //   AlertDialog alert=AlertDialog(
+  //     content: new Row(
+  //       children: [
+  //
+  //         Container(margin: EdgeInsets.only(left: 5),child:Text("Loading" )),
+  //       ],),
+  //   );
+  //   showDialog(barrierDismissible: false,
+  //     context:context,
+  //     builder:(BuildContext context){
+  //       return alert;
+  //     },
+  //   );
+  // }
   _init() async {
     try {
+
       await  _getAllCategory() ;
 
       _isDataLoaded = true;

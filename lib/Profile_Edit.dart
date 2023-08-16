@@ -200,7 +200,7 @@ class _EditProfileState extends BaseState{
                     controller: mobileController,
                     text: 'Phone number',
                     obscure: false,
-                    textInputType: TextInputType.streetAddress,
+                    textInputType: TextInputType.text,
                   ),
                   const SizedBox(height: 15),
                   Container(

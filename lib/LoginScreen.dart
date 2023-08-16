@@ -322,6 +322,9 @@ class _LoginScrrenState extends BaseState{
         //showSnackBar(key: _scaffoldKey, snackBarMessage: txt_please_enter_your_email);
         //ScaffoldMessenger.of(context).showSnackBar(_snackBar);
         showSnack(snackBarMessage:txt_please_enter_your_email );
+        setState(() {
+          isLoading = false;
+        });
 
       } else if (_cEmail.text.isNotEmpty && !EmailValidator.validate(_cEmail.text)) {
         showSnack(snackBarMessage:txt_please_enter_your_valid_email );
@@ -329,6 +332,9 @@ class _LoginScrrenState extends BaseState{
         // showSnackBar(key: _scaffoldKey, snackBarMessage: txt_please_enter_your_valid_email);
       } else if (_cPassword.text.isEmpty || _cPassword.text.trim().length < 5) {
         showSnack(snackBarMessage: txt_password_should_be_of_minimum_8_character);
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (e) {
       print("Exception - signInScreen.dart - _loginWithEmail():" + e.toString());
