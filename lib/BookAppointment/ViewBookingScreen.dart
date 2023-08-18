@@ -14,6 +14,7 @@ import '../models/response/view_my_booking.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
 
 import '../widgets/BottomNavBar.dart';
+import 'bookingDetailScreen.dart';
 
 
 class ViewBookingScreen extends Base {
@@ -47,7 +48,7 @@ String? userId;
 
       ,
       child: Scaffold(
-        appBar: AppBar(title: Text('Latest Appointments '),),
+        appBar: AppBar(title: Text('Appointments '),),
           bottomNavigationBar: Container(
               height: 60,
               child: BottomNavBar(id: "booking",)
@@ -55,195 +56,233 @@ String? userId;
           key:scaffoldKey ,
         body: isDataLoaded
             ? _mybookingList != null && _mybookingList.length > 0
-            ? ListView.builder(
+            ? Column(
+              children: [
+                SizedBox(height: 40,),
+                Text('View all your Appointments here ', style: TextStyle(fontSize: 20),),
+                SizedBox(height: 40,),
+
+                Expanded(
+                  child: ListView.builder(
           itemCount: _mybookingList.length,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            return
-              _mybookingList[index].service!.length>0 ?  Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Buttons(text1: "${_mybookingList[index].service?[0].title??" "}",
-                  text2: "Date: ${_mybookingList[index].date!}", image: "${_mybookingList[index].service?[0].images![0].images}",),
-              ): SizedBox();
-              Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Color(0xff0000080)),
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(
-                            5.0) //                 <--- border radius here
-                    ),
-                  ),
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 8,horizontal: 16),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 6, horizontal: 24),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _mybookingList[index].service!.length>0 ? SizedBox(
-                          width: 160,
-                          child:
-
-                          Text(  "${_mybookingList[index].service![0].title}" , style: TextStyle(
-                            color: Colors.black,overflow: TextOverflow.ellipsis,
-
-                            fontSize:15,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.bold,),),
-                        ):Text(  "Booking service" , style: TextStyle(
-                          color: Colors.black,overflow: TextOverflow.ellipsis,
-
-                          fontSize:15,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.bold,),),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment
-                              .spaceBetween,
-                          children: [
-
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
+                  return
+                    _mybookingList[index].service!.length>0 ?
 
 
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => BookingDetailScreen(booking:_mybookingList[index])),
+                        );
+                      },
+                      child: ListTile(
+                        leading: "${_mybookingList[index].service?[0].images![0].images}".isEmpty?
+                        CircleAvatar(
+                            backgroundImage:
+                            AssetImage("assets/nurse.jpeg")):
+                        CircleAvatar(
+                         // radius: 50,
+                            backgroundImage:
+                          //  borderRadius: BorderRadius.circular(300.0),child:
+                        NetworkImage("${_mybookingList[index].service?[0].images![0].images}",)),
+                        title: Text("${_mybookingList[index].service?[0].title??" "}"),
+                        subtitle: Text("Date: ${_mybookingList[index].date!}"),
+                        trailing: Icon(Icons.more_vert),
+                      ),
+                    )
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Buttons(text1: "${_mybookingList[index].service?[0].title??" "}",
+                    //     text2: "Date: ${_mybookingList[index].date!}",
+                    //     image: "${_mybookingList[index].service?[0].images![0].images}",),
+                    // )
 
-                                Text("Date: ${_mybookingList[index].date!}", style: TextStyle(
+
+                        : SizedBox();
+                    Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color(0xff0000080)),
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                  5.0) //                 <--- border radius here
+                          ),
+                        ),
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 8,horizontal: 16),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 24),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _mybookingList[index].service!.length>0 ? SizedBox(
+                                width: 160,
+                                child:
+
+                                Text(  "${_mybookingList[index].service![0].title}" , style: TextStyle(
                                   color: Colors.black,overflow: TextOverflow.ellipsis,
 
                                   fontSize:15,
                                   fontFamily: 'Lato',
-                                  fontWeight: FontWeight.w500,),),
-                                Text("Hours:${_mybookingList[index].numberOfHour!}", style: TextStyle(
-                                  color: Colors.black,overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.bold,),),
+                              ):Text(  "Booking service" , style: TextStyle(
+                                color: Colors.black,overflow: TextOverflow.ellipsis,
 
-                                  fontSize:15,
-                                  fontFamily: 'Lato',
-                                  fontWeight: FontWeight.w500,),),
-                              ],
-                            ),
+                                fontSize:15,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.bold,),),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
 
 
-                            Column(
-                              children: [
-                                Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Color(0xff0000080)),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              3.0) //                 <--- border radius here
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child:   Text("₦ ${_mybookingList[index].amount!}", style: TextStyle(
 
+                                      Text("Date: ${_mybookingList[index].date!}", style: TextStyle(
+                                        color: Colors.black,overflow: TextOverflow.ellipsis,
+
+                                        fontSize:15,
                                         fontFamily: 'Lato',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 17,),),
-                                    )),
+                                        fontWeight: FontWeight.w500,),),
+                                      Text("Hours:${_mybookingList[index].numberOfHour!}", style: TextStyle(
+                                        color: Colors.black,overflow: TextOverflow.ellipsis,
+
+                                        fontSize:15,
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w500,),),
+                                    ],
+                                  ),
+
+
+                                  Column(
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.only(top: 10),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Color(0xff0000080)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                    3.0) //                 <--- border radius here
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child:   Text("₦ ${_mybookingList[index].amount!}", style: TextStyle(
+
+                                              fontFamily: 'Lato',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 17,),),
+                                          )),
 
 
 
 
 
 
-                                Text(
-                                                  '${_mybookingList[index].area}',
-                                                  overflow: TextOverflow.ellipsis,
-                                                  //  style: Theme.of(context).primaryTextTheme.subtitle1,
-                                                ),
+                                      Text(
+                                                        '${_mybookingList[index].area}',
+                                                        overflow: TextOverflow.ellipsis,
+                                                        //  style: Theme.of(context).primaryTextTheme.subtitle1,
+                                                      ),
 
-                                Text(
-                                  'Booking Ref Id: ${_mybookingList[index].id}',
-                                  overflow: TextOverflow.ellipsis,
-                                  //  style: Theme.of(context).primaryTextTheme.subtitle1,
-                                ),
-
-
-                                // GestureDetector(
-                                //   onTap: (){
-                                //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddDisputesScreen()));
-                                //     nextScreen(context, 'addDisputes');
-                                //     //MaterialPageRoute(builder: (_) => AddDisputesScreen());
-                                //   },
-                                //   child:
-                                //
-                                //
-                                //   Container(
-                                //       margin: EdgeInsets.only(top: 10),
-                                //       decoration: BoxDecoration(
-                                //         border: Border.all(
-                                //             color: Color(0xff0000080)),
-                                //         borderRadius: BorderRadius.all(
-                                //             Radius.circular(
-                                //                 3.0) //                 <--- border radius here
-                                //         ),
-                                //       ),
-                                //       child: Padding(
-                                //         padding: const EdgeInsets.all(8.0),
-                                //         child: Text('Disputes',
-                                //             style:TextStyle(color: Colors.red)),
-                                //       )),
-                                // ),
+                                      Text(
+                                        'Booking Ref Id: ${_mybookingList[index].id}',
+                                        overflow: TextOverflow.ellipsis,
+                                        //  style: Theme.of(context).primaryTextTheme.subtitle1,
+                                      ),
 
 
-                              ],
-                            ),
+                                      // GestureDetector(
+                                      //   onTap: (){
+                                      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddDisputesScreen()));
+                                      //     nextScreen(context, 'addDisputes');
+                                      //     //MaterialPageRoute(builder: (_) => AddDisputesScreen());
+                                      //   },
+                                      //   child:
+                                      //
+                                      //
+                                      //   Container(
+                                      //       margin: EdgeInsets.only(top: 10),
+                                      //       decoration: BoxDecoration(
+                                      //         border: Border.all(
+                                      //             color: Color(0xff0000080)),
+                                      //         borderRadius: BorderRadius.all(
+                                      //             Radius.circular(
+                                      //                 3.0) //                 <--- border radius here
+                                      //         ),
+                                      //       ),
+                                      //       child: Padding(
+                                      //         padding: const EdgeInsets.all(8.0),
+                                      //         child: Text('Disputes',
+                                      //             style:TextStyle(color: Colors.red)),
+                                      //       )),
+                                      // ),
 
-                          ],),
-                        Text("${_mybookingList[index].user![0].fullName??""}", style: TextStyle(
-                          color: Colors.black,overflow: TextOverflow.ellipsis,
 
-                          fontSize:15,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.bold,),),
-                      ],
-                    ),
-                  ));
+                                    ],
+                                  ),
+
+                                ],),
+                              Text("${_mybookingList[index].user![0].fullName??""}", style: TextStyle(
+                                color: Colors.black,overflow: TextOverflow.ellipsis,
+
+                                fontSize:15,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.bold,),),
+                            ],
+                          ),
+                        ));
 
 
-            //   Container(
-            //   margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-            //   child: Card(
-            //       elevation: 5,
-            //       child: ExpansionTile(
-            //         children: [
-            //           Column(
-            //             children: [
-            //               Text(
-            //                 '${_mybookingList[index].amount}',
-            //               //  style: Theme.of(context).primaryTextTheme.subtitle1,
-            //               ),
-            //               Text(
-            //                 '${_mybookingList[index].area}',
-            //                 //  style: Theme.of(context).primaryTextTheme.subtitle1,
-            //               ),
-            //             ],
-            //           ),
-            //         ],
-            //         childrenPadding: EdgeInsets.all(10),
-            //         leading:
-            //              CircleAvatar(
-            //           radius: 20,
-            //           child: Icon(Icons.book),
-            //         ),
-            //         title: Text(
-            //           '${_mybookingList[index].streetAddress}',
-            //           style: TextStyle(fontSize: 15),
-            //           maxLines: 2,
-            //           overflow: TextOverflow.ellipsis,
-            //         ),
-            //       )),
-            // );
+                  //   Container(
+                  //   margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                  //   child: Card(
+                  //       elevation: 5,
+                  //       child: ExpansionTile(
+                  //         children: [
+                  //           Column(
+                  //             children: [
+                  //               Text(
+                  //                 '${_mybookingList[index].amount}',
+                  //               //  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  //               ),
+                  //               Text(
+                  //                 '${_mybookingList[index].area}',
+                  //                 //  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ],
+                  //         childrenPadding: EdgeInsets.all(10),
+                  //         leading:
+                  //              CircleAvatar(
+                  //           radius: 20,
+                  //           child: Icon(Icons.book),
+                  //         ),
+                  //         title: Text(
+                  //           '${_mybookingList[index].streetAddress}',
+                  //           style: TextStyle(fontSize: 15),
+                  //           maxLines: 2,
+                  //           overflow: TextOverflow.ellipsis,
+                  //         ),
+                  //       )),
+                  // );
           },
-        )
+        ),
+                ),
+              ],
+            )
             : Center(
           child: Text(
             "No result found",
@@ -300,6 +339,8 @@ String? userId;
       if (isConnected) {
         // showOnlyLoaderDialog();
         if (_isRecordPending) {
+          print( global.user.role);
+
           await apiHelper?.getAllMyBooking("${global.user.id}").then((result) {
             //hideLoader();
             if (result != null) {

@@ -215,7 +215,8 @@ class Buttons extends StatelessWidget{
               children: [
 
 
-                image!.isEmpty? Expanded(child: Image.asset("assets/nurse.jpeg",width: 50,)):Expanded(child: Image.network(image!,width: 50,)),
+                image!.isEmpty? Expanded(child: Image.asset("assets/nurse.jpeg",width: 50,)
+                ):Expanded(child: Image.network(image!,width: 50,)),
                 Expanded(
                   flex: 2,
                  // padding: const EdgeInsets.only(left:10.0, right: 90),

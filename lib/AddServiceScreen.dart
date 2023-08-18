@@ -63,10 +63,10 @@ class _AddServiceScreenState extends BaseState{
   String ? _selectedDuration;
   Area? _selectedArea;
   var duration = [
-    "Per Hour",
-    "Per Day",
-    "Per Week",
-    "Per Month",
+    "Hour",
+    "Day",
+    "Week",
+    "Month",
   ];
 
 
