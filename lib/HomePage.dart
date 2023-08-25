@@ -81,6 +81,8 @@ class _HomePageState extends BaseState {
 
   @override
   Widget build(BuildContext context) {
+
+    //calculateAge(global.user.dateOfBirth??" ");
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -789,6 +791,8 @@ Widget serviceProvider(){
       await  _getAllCategory() ;
       await  _getState();
 
+
+
       _isDataLoaded = true;
       setState(() {});
     } catch (e) {
@@ -903,7 +907,27 @@ Widget serviceProvider(){
     }
   }
 
+  String calculateAge(String birthDated) {
 
+    DateTime birthDate = DateTime.parse(birthDated);
+    print("hello birthday $birthDate"); // 2020-01-02 03:04:05.000
+
+
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age.toString();
+  }
 }
 // class BannerImages {
 //   static const String banner1 =

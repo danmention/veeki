@@ -47,12 +47,12 @@ Future<Map<String, String>> getApiHeaders(bool authorizationRequired) async {
 
       user = CurrentUser.fromJson(json.decode(sp!.getString("currentUser")??" "));
       TokenData token = TokenData.fromJson(json.decode(sp!.getString("currentToken")??" "));
-      firebaseToken = user.instagram;
+      firebaseToken = user.firebase_token;
 
 
 
 
-      print(token.token.toString());
+      print(" Authorization token ${token.token.toString()}");
 
       apiHeader.addAll({"Authorization": "Bearer" + token.token.toString()});
     }

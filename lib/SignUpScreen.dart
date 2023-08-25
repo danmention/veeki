@@ -94,7 +94,7 @@ class _SignUpState extends BaseState{
                   ),
                   const SizedBox(height: 10),
 
-                  TextFormGlobal(
+                  TextFormNumberGlobal(
                     controller: mobileController,
                     text: 'Mobile',
                     obscure: false,
@@ -118,7 +118,7 @@ class _SignUpState extends BaseState{
                   const SizedBox(height: 10),
                   TextFormGlobal(
                     controller: referralController,
-                    text: 'Referral Code',
+                    text: 'Referral Code (Optional)',
                     obscure: false,
                     textInputType: TextInputType.phone,
                   ),

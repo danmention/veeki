@@ -20,9 +20,12 @@ class _BookingDetailScreenState extends BaseState {
   MyBooking? _mybookingList;
   final oCcy = new NumberFormat("#,##0.00", "en_US");
 
-
+var age ;
   @override
   Widget build(BuildContext context) {
+    _mybookingList!.user![0].dateOfBirth != null ?
+     age = calculateAge(_mybookingList!.user![0].dateOfBirth!):"NA";
+print(_mybookingList!.user![0].dateOfBirth);
     return Scaffold(
       appBar: AppBar(title: Text('Detail Appointments '),),
       bottomNavigationBar: Container(
@@ -49,7 +52,22 @@ class _BookingDetailScreenState extends BaseState {
               ),
               SizedBox(height: 40,),
 
-              _mybookingList != null?  Card(
+              _mybookingList!.status == "2"? Text("Status :Payment Completed ", style: TextStyle(
+
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+                fontSize: 25,),): Text("Status :Payment Pending!! ", style: TextStyle(
+
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+                fontSize: 25,),),
+              SizedBox(height: 40,),
+
+              _mybookingList != null?
+
+              Card(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
@@ -85,7 +103,7 @@ class _BookingDetailScreenState extends BaseState {
                                 fontFamily: 'Lato',
                                 fontWeight: FontWeight.w500,),), SizedBox(height: 15,),
 
-                              Text("Duration :${_mybookingList?.numberOfHour??" "} ${_mybookingList!.service?[0].unit??" "} ", style: TextStyle(
+                              Text("Duration :${_mybookingList?.numberOfHour??" "} ${_mybookingList!.service?[0].unit??" "}(s) ", style: TextStyle(
                                 color: Colors.black,overflow: TextOverflow.ellipsis,
 
                                 fontSize:15,
@@ -98,6 +116,9 @@ class _BookingDetailScreenState extends BaseState {
                                   fontFamily: 'Lato',
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,),),
+
+
+
                             ],),
 
                           ),
@@ -123,6 +144,12 @@ class _BookingDetailScreenState extends BaseState {
                         fontFamily: 'Lato',
                         fontSize: 14,),),
                       Text("${_mybookingList!.date!}", style: TextStyle(
+
+                        fontFamily: 'Lato',
+
+                        fontSize: 14,),),
+
+                      Text("${_mybookingList!.user![0].dateOfBirth??""}", style: TextStyle(
 
                         fontFamily: 'Lato',
 
@@ -155,15 +182,18 @@ class _BookingDetailScreenState extends BaseState {
                       )
                         ,),
                       SizedBox(height: 10,),
-                      Row(children: [
-                        Icon(Icons.house_outlined, size: 17,),
-                        SizedBox(width: 5,),
-                        Text("${_mybookingList!.streetAddress!},",overflow: TextOverflow.ellipsis, style: TextStyle(
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(children: [
+                          Icon(Icons.house_outlined, size: 17,),
+                          SizedBox(width: 5,),
+                          Text("${_mybookingList!.streetAddress!},",overflow: TextOverflow.ellipsis, style: TextStyle(
 
-                          fontFamily: 'Lato',
+                            fontFamily: 'Lato',
 
-                          fontSize: 15,),),
-                      ],),
+                            fontSize: 15,),),
+                        ],),
+                      ),
 
                       SizedBox(height: 20,),
                       Divider(thickness: 1,color: Colors.grey,),
@@ -217,6 +247,10 @@ class _BookingDetailScreenState extends BaseState {
   }
 
   void viewprofile() {
+
+// Replace this with your date of birth.
+
+
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -274,14 +308,21 @@ class _BookingDetailScreenState extends BaseState {
                         // ),
                         SizedBox(height: 20,),
 
-                        "${_mybookingList!.service?[0].images![0].images}".isNotEmpty?    Column(
+                        "${_mybookingList!.service?[0]}".isNotEmpty?    Column(
                           children: [
-                            SizedBox(
+                            _mybookingList?.user![0].profileImage == "" ?   SizedBox(
 
                               width: 550,
                               child: ClipRRect(
                                   borderRadius: BorderRadius.only(  topLeft: Radius.circular(12), topRight: Radius.circular(12)  ),child:
-                              Image.network("${_mybookingList?.service?[0].images![0].images}",)),
+                              Image.network("${_mybookingList?.user?[0].profileImage}",)),
+                              //Image.asset("assets/nurse.jpeg"),
+                            ):SizedBox(
+
+                              width: 550,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.only(  topLeft: Radius.circular(12), topRight: Radius.circular(12)  ),child:
+                              Image.asset("assets/logo.png",)),
                               //Image.asset("assets/nurse.jpeg"),
                             ),
 
@@ -302,21 +343,36 @@ class _BookingDetailScreenState extends BaseState {
                                 child: Row(children: [
                                   Column(children: [
                                     Text('${_mybookingList!.user![0].fullName}', style:
-                                    TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+                                    TextStyle(fontSize: 26, color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
 
                                     Expanded(
                                       child: Row(children: [
                                         Text('${_mybookingList!.user![0].city??" "}, ', style:
-                                        TextStyle(fontSize: 28, color: Colors.grey, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
-                                        Text('${_mybookingList!.user![0].state??" "}', style:
-                                        TextStyle(fontSize: 28, color: Colors.grey, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+                                        TextStyle(fontSize: 15, color: Colors.grey, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+                                        Text('${_mybookingList!.user![0].state??" "}',
+                                          style:
+                                        TextStyle(fontSize: 15, color: Colors.grey, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
                                       ],),
-                                    )
+                                    ),
+
+                                    _mybookingList!.status != 0?   Expanded(
+                                      child: Text('${_mybookingList!.user![0].phone??" "}', style:
+                                      TextStyle(fontSize: 15,color:Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+                                    ):Text('Awaiting payment'),
                                   ],),
-                                  Expanded(
-                                    child: Text('${_mybookingList!.user![0].phone??" "}', style:
-                                    TextStyle(fontSize: 22, color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
-                                  ),
+
+
+                                  age !=null? Expanded(
+                                    child: Row(
+                                      children: [
+
+                                        Text("Age:", style:
+                                        TextStyle(fontSize: 22, color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+                                        Text('$age', style:
+                                        TextStyle(fontSize: 22, color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+                                      ],
+                                    ),
+                                  ):SizedBox(),
                                 ],),
                               ),
                             )
@@ -367,21 +423,40 @@ class _BookingDetailScreenState extends BaseState {
         });
   }
 
-
-  String calculateAge(DateTime birthDate) {
-    DateTime currentDate = DateTime.now();
-    int age = currentDate.year - birthDate.year;
-    int month1 = currentDate.month;
-    int month2 = birthDate.month;
-    if (month2 > month1) {
-      age--;
-    } else if (month1 == month2) {
-      int day1 = currentDate.day;
-      int day2 = birthDate.day;
-      if (day2 > day1) {
-        age--;
-      }
+  int calculateAge(String dateOfBirth) {
+    if(dateOfBirth == null){
+      return 0;
     }
-    return age.toString();
+
+
+    final dob = DateFormat('dd-MM-yyyy').parse(dateOfBirth);
+    final now = DateTime.now();
+    var age = now.year - dob.year;
+    if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
+      age--;
+    }
+    return age;
   }
+
+  // String calculateAge(String birthDated) {
+  //
+  //   DateTime birthDate = DateTime.parse(birthDated);
+  //   print(birthDate); // 2020-01-02 03:04:05.000
+  //
+  //
+  //   DateTime currentDate = DateTime.now();
+  //   int age = currentDate.year - birthDate.year;
+  //   int month1 = currentDate.month;
+  //   int month2 = birthDate.month;
+  //   if (month2 > month1) {
+  //     age--;
+  //   } else if (month1 == month2) {
+  //     int day1 = currentDate.day;
+  //     int day2 = birthDate.day;
+  //     if (day2 > day1) {
+  //       age--;
+  //     }
+  //   }
+  //   return age.toString();
+  // }
 }

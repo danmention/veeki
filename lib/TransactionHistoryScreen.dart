@@ -56,7 +56,7 @@ class _TransactionHistoryScreenState extends BaseState{
                 child: Card(
                     margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
                     child: ListTile(
-                      title: Text('${_productOrderHistoryList[index].transactionReference}', ),
+                      title: Text('${_productOrderHistoryList[index].transactionReference??" "}', ),
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: Row(
@@ -89,11 +89,33 @@ class _TransactionHistoryScreenState extends BaseState{
                             ),
                             Container(
                               height: 25,
+                              width: 100,
+                              padding: EdgeInsets.all(4),
+                              child: Center(
+                                child: Text(
+                                 // "${_productOrderHistoryList[index].name}",
+                                  "Transaction",
+
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:  new BorderRadius.only(
+                                  topRight: new Radius.circular(5.0),
+                                  bottomRight: new Radius.circular(5.0),
+                                ),
+                                border: new Border.all(
+                                  color: Colors.grey[200]!,
+                                ),
+                              ),
+                            ),
+
+                            Container(
+                              height: 25,
                               width: 40,
                               padding: EdgeInsets.all(4),
                               child: Center(
                                 child: Text(
-                                  "${_productOrderHistoryList[index].name}",
+                                  "${_productOrderHistoryList[index].referralCode??""}",
 
                                 ),
                               ),

@@ -116,7 +116,7 @@ class _DetailsState extends BaseState{
                                                   ),
                                                 ),SizedBox(width: 2,),
 
-                                                Text("/ ${service!.unit}",
+                                                Text("/ ${service!.unit??" "}",
                                                   style: TextStyle(
                                                       fontSize: 13,
                                                       fontFamily: 'Roboto',
@@ -360,9 +360,19 @@ getimages()async{
     return service != null? Container(
       child: service?.user != null  ?
 
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text('${service?.user?[0].workExperience??"No result found"}', style: TextStyle(fontSize: 18, color: Colors.black),),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('${service?.user?[0].fullName??"No result found"}', style: TextStyle(fontSize: 18, color: Colors.black),),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('${service?.user?[0].workExperience??""}', style: TextStyle(fontSize: 18, color: Colors.black),),
+          ),
+        ],
       ):
       Padding(
         padding: const EdgeInsets.all(8.0),

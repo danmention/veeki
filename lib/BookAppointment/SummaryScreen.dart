@@ -338,13 +338,14 @@ void notifyCaregiver()async{
              BookingResponse _tList = result.recordList;
             booking_id =  _tList.id;
 
-              notifyCaregiver();
+
+
            //   hideLoader();
              // int serviceid = result.data.id;
               //print(serviceid);
 
 
-              showSnack(snackBarMessage: 'You have booked successfully');
+              showSnack(snackBarMessage: 'Kindly make payment ');
              makePayment();
               //   Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);
 
@@ -426,6 +427,18 @@ void notifyCaregiver()async{
 
     if (response.status) {
 
+
+      // call booking status status
+      notifyCaregiver();
+      await apiHelper!.bookingstatus(id: booking_id, status: 2).then((result) async {
+        if (result != null) {
+          if (result.resp_code == "00") {
+
+          }
+
+        }
+      });
+
       BookConfirmRequest _bookNow = new BookConfirmRequest();
       _bookNow.amount = bookingRequest!.amount;
       _bookNow.userId = int.parse("${global.user.id}");
@@ -458,6 +471,17 @@ void notifyCaregiver()async{
     } else {
       // Payment failed
       print('Payment failed');
+      showSnack(snackBarMessage: "Payment failed");
+      await apiHelper!.bookingstatus(id: booking_id, status: 0).then((result) async {
+        if (result != null) {
+          if (result.resp_code == "00") {
+
+          }
+
+        }
+      });
+
+      nextScreen(context, 'home');
     }
   }
 }

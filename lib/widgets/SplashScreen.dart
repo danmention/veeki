@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:veeki/HomePage.dart';
 import 'package:veeki/utils/global.colors.dart';
@@ -10,16 +10,17 @@ import 'package:veeki/widgets/BottomNavBar.dart';
 import 'package:veeki/widgets/Profile.Buttons.dart';
 
 import '../LoginScreen.dart';
+import '../models/businessLayer/base.dart';
 
 
-class OnBoardingPage extends StatefulWidget {
-  const OnBoardingPage({Key? key}) : super(key: key);
+class OnBoardingPage extends Base {
+   OnBoardingPage({Key? key}) ;
 
   @override
   OnBoardingPageState createState() => OnBoardingPageState();
 }
 
-class OnBoardingPageState extends State<OnBoardingPage> {
+class OnBoardingPageState extends BaseState {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
@@ -203,6 +204,17 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         ),
       ),
     );
+  }
+
+
+  logout()async{
+    global.sp?.remove("currentUser");
+  }
+  @override
+  void initState() {
+    logout();
+    // TODO: implement initState
+    super.initState();
   }
 }
 

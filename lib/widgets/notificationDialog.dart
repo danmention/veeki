@@ -215,7 +215,7 @@ assetsAudioPlayer.open(Audio("assets/alert.mp3"));
       //ToastContext.init(context);
 
       assetsAudioPlayer.stop();
-    await apiHelper!.bookingstatus( id: "${global.user.id}",status:status).then((result) async {
+    await apiHelper!.bookingstatus( id:global.user.id,status:status).then((result) async {
       Navigator.pop(context);
     if (result != null) {
       if (result.resp_code == "00") {

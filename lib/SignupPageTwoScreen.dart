@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/widgets/MyDropDownForm.dart';
 import 'package:veeki/widgets/button.global.dart';
@@ -152,7 +153,19 @@ class SignupPageTwoScreenState extends BaseState{
                    });
                  },
                  labelText: 'Area',
-               ):SizedBox(),
+               ):
+               SpinKitThreeBounce(
+                   color: Colors.orange,
+                   size: 16.0,
+                 ),
+
+               // Row(
+               //   mainAxisAlignment: MainAxisAlignment.start,
+               //   children: [SpinKitThreeBounce(
+               //   color: Colors.orange,
+               //   size: 16.0,
+               // )],
+               // ),
                const SizedBox(height: 15),
                TextFormGlobal(
                  controller: streetController,
@@ -180,7 +193,8 @@ class SignupPageTwoScreenState extends BaseState{
                                  context: context,
                                  initialDate: new DateTime.now(),
                                  firstDate: new DateTime(1900),
-                                 lastDate: new DateTime(2100)
+                                 lastDate: new DateTime.now()
+                                // lastDate: new DateTime(2100)
                              );
                              if(datePick!=null && datePick!=birthDate){
                                setState(() {
@@ -460,8 +474,8 @@ class SignupPageTwoScreenState extends BaseState{
       signupRequest.user_type = _selectedUserType;
       signupRequest.StreetAddress = streetController.text.trim();
 
-      signupRequest.state = _selectedState?.name;
-      signupRequest.city = _selectedArea?.localName;
+      signupRequest.state_id = _selectedState?.id.toString();
+      signupRequest.area_id = _selectedArea?.id.toString();
 
 
       bool isConnected = await br!.checkConnectivity();

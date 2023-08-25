@@ -5,8 +5,8 @@ class SignupRequest {
   String? phone;
   String? email;
   String? StreetAddress;
-  String? state;
-  String? city;
+  String? state_id;
+  String? area_id;
   int? category_id;
   String? DateOfBirth;
  String? user_type;
@@ -19,8 +19,8 @@ class SignupRequest {
         this.phone,
         this.email,
         this.StreetAddress,
-        this.state,
-        this.city,
+        this.state_id,
+        this.area_id,
         this.category_id,
         this.DateOfBirth,
         this.user_type,
@@ -36,8 +36,8 @@ class SignupRequest {
     email = json['email'];
     DateOfBirth = json['DateOfBirth'];
     StreetAddress = json['StreetAddress'];
-    state = json['state'];
-    city = json['city'];
+    state_id = json['state_id'];
+    area_id = json['area_id'];
     user_type = json['user_type'];
     category_id = json['category_id'];
   }
@@ -54,8 +54,8 @@ class SignupRequest {
     data['email'] = this.email;
     data['DateOfBirth'] = this.DateOfBirth;
     data['StreetAddress'] = this.StreetAddress;
-    data['state'] = this.state;
-    data['city'] = this.city;
+    data['state_id'] = this.state_id;
+    data['area_id'] = this.area_id;
     return data;
   }
 }

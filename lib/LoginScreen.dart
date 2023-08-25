@@ -244,6 +244,7 @@ class _LoginScrrenState extends BaseState{
 
                 print("This is the key of the house >>>>>>>>>>>>>>>>>${global.firebaseToken}");
                 print("This token check  >>>>>>>>>>>>>>>>>$toke");
+                print("The Authorization token  check  >>>>>>>>>>>>>>>>>${result.recordList.tokenData}");
                 if(global.user.firebase_token!.isEmpty ){
                   sendtoken();
                 }
@@ -388,11 +389,13 @@ class _LoginScrrenState extends BaseState{
       _cEmail.text = box!.get('email');}
   }
 
-
+  logout()async{
+    global.sp?.remove("currentUser");
+  }
 
   @override
   void initState() {
-
+    logout();
     addemail();
     // TODO: implement initState
     super.initState();

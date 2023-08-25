@@ -253,13 +253,15 @@ class APIHelper {
         'image': user_image != null ? await MultipartFile.fromFile(user_image.path.toString()) : null,
       });
 
+
+
       response = await dio.post('${global.baseUrl}services/create',
           data: formData,
           options: Options(
             headers: await global.getApiHeaders(true),
           ));
       dynamic recordList;
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data["resp_code"] == "00") {
         recordList = ServiceItem.fromJson(response.data['data']);
         //  recordList.token = response.data["token"];
       } else {
@@ -870,16 +872,23 @@ class APIHelper {
 
 
 
-  Future<dynamic> bookingstatus({  String? id, int? status,}) async {
+  Future<dynamic> bookingstatus({  int? id, int? status,}) async {
     try {
-      final response = await http.get(
-        Uri.parse("${global.baseUrl}user/booking/booking-status?id=$id&&status=$status"),
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}user/booking/booking-status"),
         headers: await global.getApiHeaders(true),
+          body: json.encode({
+            "id" : id,
+            "status" : status // 0 pending, 1.Accepted,  2.Completed, 3.cancelled --where id is the booking it
+          })
+
 
       );
 
       dynamic recordList;
       if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = BookingResponse.fromJson(json.decode(response.body)["data"]);
+      } else {
         recordList = null;
       }
       return getAPIResult(response, recordList);
@@ -894,7 +903,7 @@ class APIHelper {
 
       var item =    json.encode(bookingRequest);
 
-      print(item);
+
       final response = await http.post(
         Uri.parse("${global.baseUrl}user/booking/create"),
         headers: await global.getApiHeaders(true),

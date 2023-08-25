@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -283,7 +284,10 @@ class _AddServiceScreenState extends BaseState{
                       });
                     },
                     labelText: 'Area',
-                  ):SizedBox(),
+                  ): SpinKitThreeBounce(
+                    color: Colors.orange,
+                    size: 16.0,
+                  ),
                   const SizedBox(height: 20),
                   Text('Qualifications Description'),
                   const SizedBox(height: 10),
@@ -728,6 +732,13 @@ class _AddServiceScreenState extends BaseState{
               //   nextScreen(context, 'login');
               // }
 
+
+              else if(result.resp_code =="01" && result.resp_message.toString().contains("Authorization Token not found ") )
+              {
+                hideLoader();
+                showSnack(snackBarMessage: result.resp_message.toString());
+                Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+              }
 
               else if(result.resp_code =="01")
               {
