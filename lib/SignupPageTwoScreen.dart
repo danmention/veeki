@@ -24,7 +24,7 @@ class SignupPageTwoScreen extends Base{
 class SignupPageTwoScreenState extends BaseState{
   SignupPageTwoScreenState(this.signupRequest);
   SignupRequest signupRequest = SignupRequest();
-
+  bool _isLoadingCities = false;
   String? birthDateInString;
   DateTime? birthDate;
   bool?  isDateSelected ;
@@ -134,6 +134,7 @@ class SignupPageTwoScreenState extends BaseState{
                MyDropdownFormField<States>(
                  items: _stateList,
                  displayText: (state) => state.name!,
+
                  onSelected: (state) {
                    setState(() {
                      _selectedState = state;
@@ -144,7 +145,15 @@ class SignupPageTwoScreenState extends BaseState{
                  labelText: 'State',
                ),
                const SizedBox(height: 15),
-               _areaList.length>0?MyDropdownFormField<Area>(
+
+               if (_isLoadingCities)
+                 SpinKitThreeBounce(
+                       color: Colors.orange,
+                       size: 16.0,
+                     )
+               else if (_selectedState != null)
+               _areaList.length>0?
+               MyDropdownFormField<Area>(
                  items: _areaList,
                  displayText: (area) => area.localName!,
                  onSelected: (area) {
@@ -153,19 +162,15 @@ class SignupPageTwoScreenState extends BaseState{
                    });
                  },
                  labelText: 'Area',
-               ):
-               SpinKitThreeBounce(
-                   color: Colors.orange,
-                   size: 16.0,
-                 ),
+               ):SizedBox(),
 
-               // Row(
-               //   mainAxisAlignment: MainAxisAlignment.start,
-               //   children: [SpinKitThreeBounce(
-               //   color: Colors.orange,
-               //   size: 16.0,
-               // )],
-               // ),
+               //     :
+               // SpinKitThreeBounce(
+               //     color: Colors.orange,
+               //     size: 16.0,
+               //   ),
+
+
                const SizedBox(height: 15),
                TextFormGlobal(
                  controller: streetController,
@@ -358,7 +363,11 @@ class SignupPageTwoScreenState extends BaseState{
   void getArea(int? id) async {
 
     _areaList.clear();
-    setState(() { });
+
+    setState(() {
+      _isLoadingCities = true;
+    });
+
     try {
       bool isConnected = await br!.checkConnectivity();
       if (isConnected) {
@@ -366,6 +375,10 @@ class SignupPageTwoScreenState extends BaseState{
        //   showOnlyLoaderDialog();
           await apiHelper?.getAreaList(id!).then((result) {
            // hideLoader();
+            setState(() {
+              _isLoadingCities = false;
+            });
+
             if (result != null) {
               if (result.resp_code == "00") {
                 List<Area> _tList = result.recordList;

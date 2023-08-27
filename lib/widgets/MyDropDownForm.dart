@@ -5,12 +5,14 @@ class MyDropdownFormField<T> extends StatefulWidget {
   final List<T> items;
   final String Function(T)? displayText;
   final void Function(T)? onSelected;
+  // final void Function(T)? onStateChanged;
   final String labelText;
 
   MyDropdownFormField({
     required this.items,
     this.displayText,
     this.onSelected,
+
     required this.labelText,
   });
 
@@ -31,9 +33,11 @@ class _MyDropdownFormFieldState<T> extends State<MyDropdownFormField<T>> {
       onChanged: (newValue) {
         setState(() {
           _selectedItem = newValue;
+
         });
         if (widget.onSelected != null) {
           widget.onSelected!(newValue!);
+
         }
       },
       decoration: InputDecoration(

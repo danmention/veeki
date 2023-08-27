@@ -9,6 +9,7 @@ import 'package:veeki/admin/ViewBookingAdminScreen.dart';
 import 'package:veeki/admin/ViewCareGiverList.dart';
 import 'package:veeki/sendSOS.dart';
 
+import '../AddMedicalHistoryForm1Screen.dart';
 import '../AddServiceScreen.dart';
 import '../HomePage.dart';
 import '../LoginScreen.dart';
@@ -49,6 +50,9 @@ class RouteGenerator{
 
       case "viewuser":
         return MaterialPageRoute(builder: (_) => ViewCareGiverList());
+
+      case "medicalhistory":
+        return MaterialPageRoute(builder: (_) => MedicalHistoryForm1Screen());
 
       case "viewallservice":
         return MaterialPageRoute(builder: (_) => ServiceList());

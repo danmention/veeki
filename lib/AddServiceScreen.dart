@@ -54,7 +54,7 @@ class _AddServiceScreenState extends BaseState{
   bool _isRecordPending = true;
   List<Category> _categoryList = [];
   List<File> images = [];
-
+  bool _isLoadingCities = false;
 //Drop down to select per day, per hour, per week or per month
   List<States> _stateList = [];
   List<Area> _areaList = [];
@@ -275,6 +275,13 @@ class _AddServiceScreenState extends BaseState{
                     labelText: 'State',
                   ),
                   const SizedBox(height: 15),
+                  if (_isLoadingCities)
+                    SpinKitThreeBounce(
+                      color: Colors.orange,
+                      size: 16.0,
+                    )
+                  else if (_selectedState != null)
+
                   _areaList.length>0? MyDropdownFormField<Area>(
                     items: _areaList,
                     displayText: (area) => area.localName!,
@@ -284,10 +291,7 @@ class _AddServiceScreenState extends BaseState{
                       });
                     },
                     labelText: 'Area',
-                  ): SpinKitThreeBounce(
-                    color: Colors.orange,
-                    size: 16.0,
-                  ),
+                  ):SizedBox(),
                   const SizedBox(height: 20),
                   Text('Qualifications Description'),
                   const SizedBox(height: 10),
@@ -592,7 +596,9 @@ class _AddServiceScreenState extends BaseState{
   void getArea(int? id) async {
 
     _areaList.clear();
-    setState(() { });
+    setState(() {
+      _isLoadingCities = true;
+    });
    // _areaList.add(Area(id: 1));
 
     try {
@@ -601,7 +607,9 @@ class _AddServiceScreenState extends BaseState{
         if (_isRecordPending) {
           //showOnlyLoaderDialog();
           await apiHelper?.getAreaList(id!).then((result) {
-            //  hideLoader();
+            setState(() {
+              _isLoadingCities = false;
+            });
             if (result != null) {
               if (result.resp_code == "00") {
                 List<Area> _tList = result.recordList;

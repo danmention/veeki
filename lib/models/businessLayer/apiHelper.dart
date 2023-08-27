@@ -16,6 +16,7 @@ import 'package:veeki/models/response/referral_fee_response.dart';
 
 import '../request/bookingconfirm_request.dart';
 import '../request/login_request.dart';
+import '../request/medical_history_request.dart';
 import '../request/signup_request.dart';
 import '../response/UserResponseModel.dart';
 
@@ -23,6 +24,7 @@ import '../response/billing_response.dart';
 import '../response/discount_response.dart';
 import '../response/dispute_response.dart';
 import '../response/login_response.dart';
+import '../response/medical_history_response.dart';
 import '../response/payment_response.dart';
 import '../response/push_response.dart';
 import '../response/registeration_complete_response.dart';
@@ -1213,6 +1215,38 @@ print(json.encode(bookNow));
     }
   }
 
+
+
+  Future<dynamic> sendmedicalHistory(MedicalHistoryRequest user) async {
+    try {
+
+      print(json.encode(user));
+
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}user/medical/profile/update"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(user),
+
+      );
+
+      dynamic recordList;
+
+
+      if (response.statusCode == 200 && json.decode(response.body) != null && json.decode(response.body)["data"] != null) {
+
+
+        recordList = MedicalHistoryResponse.fromJson(json.decode(response.body)["data"]);
+
+
+        // recordList.token = json.decode(response.body)['data']["token_data"]["token"];
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - medicalHistoryprofile(): " + e.toString());
+    }
+  }
 
 
   Future<dynamic> signUp(SignupRequest user) async {

@@ -252,42 +252,40 @@ class _ProfileState extends BaseState{
                 // ProfileButton(text1: "Payment Method", text2:
                 // "Add a new payment card", icon: Icons.credit_card_outlined),
 
+                // global.user.role =="USER" ?
+                //
+                // Row(children: [
+                //   GestureDetector(
+                //       onTap: (){
+                //         nextScreen(context, "viewbooking");
+                //       },
+                //       child: ProfileButton(text1: "Booking Management",
+                //           text2: "Manage your booking system", icon: Icons.cases_outlined)),
+                //
+                //   ProfileButton(text1: "Send Disputes", text2: "Do you have any disputes",
+                //     icon: Icons.add_to_home_screen_sharp,
+                //     ontap: (){
+                //       nextScreen(context, "addDisputes");
+                //     },
+                //   ),
+                //
+                //   // ProfileButton(text1: "SOS", text2: " For ",
+                //   //   icon: Icons.add_to_home_screen_sharp,
+                //   //   ontap: (){
+                //   //     nextScreen(context, "addDisputes");
+                //   //   },
+                //   // ),
+                //
+                // ],) : SizedBox(),
 
-               //  global.user.role =="USER" ?
-               //
-               //      Row(children: [
-               //        GestureDetector(
-               //            onTap: (){
-               //              nextScreen(context, "viewbooking");
-               //            },
-               //            child: ProfileButton(text1: "Booking Management",
-               //                text2: "Manage your booking system", icon: Icons.cases_outlined)),
-               //
-               //        ProfileButton(text1: "Send Disputes", text2: "Do you have any disputes",
-               //          icon: Icons.add_to_home_screen_sharp,
-               //          ontap: (){
-               //            nextScreen(context, "addDisputes");
-               //          },
-               //        ),
-               //
-               //        // ProfileButton(text1: "SOS", text2: " For ",
-               //        //   icon: Icons.add_to_home_screen_sharp,
-               //        //   ontap: (){
-               //        //     nextScreen(context, "addDisputes");
-               //        //   },
-               //        // ),
-               //
-               //      ],)
-               //
-               //
-               //
-               //
-               //
-               //
-               // : SizedBox(),
 
                  //ProfileButton(text1: "Reward points program", text2: "You've 50 reward points", icon: Icons.card_giftcard_outlined),
-              //  ProfileButton(text1: "Pricing and offers", text2: "Get every week special offers and affor...", icon: Icons.local_offer_outlined),
+             //  ProfileButton(text1: "Pricing and offers", text2: "Get every week special offers and affor...", icon: Icons.local_offer_outlined),
+                global.user.role =="USER" ?
+                ProfileButton(text1: "Update Medical History", text2: "Fill up your medical history form for optimal care ",
+                    icon: Icons.local_offer_outlined, ontap: (){
+                  nextScreen(context, 'medicalhistory');
+                  },):Container(),
 
 
 

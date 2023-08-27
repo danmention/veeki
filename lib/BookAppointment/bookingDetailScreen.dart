@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -24,7 +25,7 @@ var age ;
   @override
   Widget build(BuildContext context) {
     _mybookingList!.user![0].dateOfBirth != null ?
-     age = calculateAge(_mybookingList!.user![0].dateOfBirth!):"NA";
+     calculateAge(_mybookingList!.user![0].dateOfBirth!):"NA";
 print(_mybookingList!.user![0].dateOfBirth);
     return Scaffold(
       appBar: AppBar(title: Text('Detail Appointments '),),
@@ -149,11 +150,11 @@ print(_mybookingList!.user![0].dateOfBirth);
 
                         fontSize: 14,),),
 
-                      Text("${_mybookingList!.user![0].dateOfBirth??""}", style: TextStyle(
-
-                        fontFamily: 'Lato',
-
-                        fontSize: 14,),),
+                      // Text("${_mybookingList!.user![0].dateOfBirth??""}", style: TextStyle(
+                      //
+                      //   fontFamily: 'Lato',
+                      //
+                      //   fontSize: 14,),),
                     ],
                   ),
                 ],
@@ -341,24 +342,28 @@ print(_mybookingList!.user![0].dateOfBirth);
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 18),
                                 child: Row(children: [
-                                  Column(children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
                                     Text('${_mybookingList!.user![0].fullName}', style:
                                     TextStyle(fontSize: 26, color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
 
                                     Expanded(
-                                      child: Row(children: [
-                                        Text('${_mybookingList!.user![0].city??" "}, ', style:
-                                        TextStyle(fontSize: 15, color: Colors.grey, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
-                                        Text('${_mybookingList!.user![0].state??" "}',
-                                          style:
-                                        TextStyle(fontSize: 15, color: Colors.grey, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
-                                      ],),
+                                      child: Container(
+                                        width: 280,
+                                        child: Row(children: [
+                                          Text('${_mybookingList!.user![0].city??" "}, ',overflow: TextOverflow.ellipsis, style:
+                                          TextStyle(fontSize: 17, color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+                                          Text('${_mybookingList!.user![0].state??" "}',overflow: TextOverflow.ellipsis,
+                                            style:
+                                          TextStyle(fontSize: 17, color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+
+                                        ],),
+                                      ),
                                     ),
 
-                                    _mybookingList!.status != 0?   Expanded(
-                                      child: Text('${_mybookingList!.user![0].phone??" "}', style:
-                                      TextStyle(fontSize: 15,color:Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
-                                    ):Text('Awaiting payment'),
+                                    _mybookingList!.status != 0?   Text('${_mybookingList!.user![0].phone??" "}', style:
+                                    TextStyle(fontSize: 15,color:Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Lato',),):Text('Awaiting payment'),
                                   ],),
 
 
@@ -367,9 +372,9 @@ print(_mybookingList!.user![0].dateOfBirth);
                                       children: [
 
                                         Text("Age:", style:
-                                        TextStyle(fontSize: 22, color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+                                        TextStyle(fontSize: 20, color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
                                         Text('$age', style:
-                                        TextStyle(fontSize: 22, color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
+                                        TextStyle(fontSize: 20, color: Colors.white38, fontWeight: FontWeight.bold, fontFamily: 'Lato',),),
                                       ],
                                     ),
                                   ):SizedBox(),
@@ -431,10 +436,11 @@ print(_mybookingList!.user![0].dateOfBirth);
 
     final dob = DateFormat('dd-MM-yyyy').parse(dateOfBirth);
     final now = DateTime.now();
-    var age = now.year - dob.year;
+     age = now.year - dob.year;
     if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) {
       age--;
     }
+
     return age;
   }
 
