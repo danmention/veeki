@@ -359,8 +359,8 @@ var livewith = [
               // );
               //  ref.read(myprovider).setuserid(result.recordList.id );
 
-              showSnack( snackBarMessage: " Sign up successful, pls login");
-              nextScreen(context, 'login');
+              showSnack( snackBarMessage: " Medical health history update successful");
+              nextScreen(context, 'profile');
 
               //  await _sendOTP(_cMobile.text.trim());
             } else if (result.resp_code == "01" ) {

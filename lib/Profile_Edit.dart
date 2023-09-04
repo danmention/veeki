@@ -179,6 +179,7 @@ class _EditProfileState extends BaseState{
                   const SizedBox(height: 15),
                   _areaList.length >0?
                   MyDropdownFormFieldArea<Area>(
+
                     items: _areaList,
                     displayText: (area) => area.localName!,
                     onSelected: (area) {
@@ -316,8 +317,8 @@ class _EditProfileState extends BaseState{
          // showOnlyLoaderDialog();
           await apiHelper?.updateProfile(
               global.user.id!,mobileController.text.trim(),
-              birthDateInString!,_selectedArea!.localName!,
-              _selectedState!.name!, streetController.text.trim()
+              birthDateInString!,_selectedArea!.id.toString(),
+              _selectedState!.id.toString(), streetController.text.trim()
           ).then((result) {
             if (result != null) {
               if (result.resp_code == "00") {

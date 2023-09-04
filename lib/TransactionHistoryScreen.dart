@@ -8,7 +8,7 @@ import 'models/businessLayer/base.dart';
 import 'models/response/booking_response.dart';
 
 class TransactionHistoryScreen extends Base{
-   TransactionHistoryScreen({Key? key}) ;
+   TransactionHistoryScreen() ;
 
   @override
   _TransactionHistoryScreenState createState() => _TransactionHistoryScreenState();
@@ -22,8 +22,12 @@ class _TransactionHistoryScreenState extends BaseState{
   bool _isMoreDataLoaded = false;
   ScrollController _scrollController = ScrollController();
   bool isLoading = false;
+  int TotalTransactionAmount =0;
   @override
   Widget build(BuildContext context) {
+
+
+
     return sc(Scaffold(
         appBar: AppBar(
           title: RichText(
@@ -37,187 +41,196 @@ class _TransactionHistoryScreenState extends BaseState{
             ? _productOrderHistoryList != null && _productOrderHistoryList.length > 0
             ?
 
-        ListView.builder(
-            controller: _scrollController,
-            shrinkWrap: true,
-            itemCount: _productOrderHistoryList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(
-                onTap: () {
-                  // Navigator.of(context).push(
-                  //   // MaterialPageRoute(
-                  //   //     builder: (context) => ProductOrderHistoryDetailScreen(
-                  //   //       _productOrderHistoryList[index],
-                  //   //       a: widget.analytics,
-                  //   //       o: widget.observer,
-                  //   //     )),
-                  // );
-                },
-                child: Card(
-                    margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                    child: ListTile(
-                      title: Text('${_productOrderHistoryList[index].transactionReference??" "}', ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              child: Container(
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius:  new BorderRadius.only(
-                                    topLeft: new Radius.circular(5.0),
-                                    bottomLeft: new Radius.circular(5.0),
-                                  ),
-                                  color: Colors.grey[200],
-                                  border: new Border.all(
-                                    color: Colors.grey[200]!,
-                                  ),
-                                ),
-                                padding: EdgeInsets.all(4),
-                                height: 25,
-                                child: Center(
-                                  child: Text(
-                                    "Items",
+        Column(
+          children: [
 
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 25,
-                              width: 100,
-                              padding: EdgeInsets.all(4),
-                              child: Center(
-                                child: Text(
-                                 // "${_productOrderHistoryList[index].name}",
-                                  "Transaction",
+            Text(" ${TotalTransactionAmount}" ),
 
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius:  new BorderRadius.only(
-                                  topRight: new Radius.circular(5.0),
-                                  bottomRight: new Radius.circular(5.0),
-                                ),
-                                border: new Border.all(
-                                  color: Colors.grey[200]!,
-                                ),
-                              ),
-                            ),
+            SizedBox(height: 50,),
+            ListView.builder(
+                controller: _scrollController,
+                shrinkWrap: true,
+                itemCount: _productOrderHistoryList.length,
+                itemBuilder: (BuildContext context, int index) {
 
-                            Container(
-                              height: 25,
-                              width: 40,
-                              padding: EdgeInsets.all(4),
-                              child: Center(
-                                child: Text(
-                                  "${_productOrderHistoryList[index].referralCode??""}",
-
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius:  new BorderRadius.only(
-                                  topRight: new Radius.circular(5.0),
-                                  bottomRight: new Radius.circular(5.0),
-                                ),
-                                border: new Border.all(
-                                  color: Colors.grey[200]!,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(0),
-                            child: Column(
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigator.of(context).push(
+                      //   // MaterialPageRoute(
+                      //   //     builder: (context) => ProductOrderHistoryDetailScreen(
+                      //   //       _productOrderHistoryList[index],
+                      //   //       a: widget.analytics,
+                      //   //       o: widget.observer,
+                      //   //     )),
+                      // );
+                    },
+                    child: Card(
+                        margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                        child: ListTile(
+                          title: Text('${_productOrderHistoryList[index].transactionReference??" "}', ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 6.0),
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  height: 22,
-                                  width: 90,
-                                  decoration: BoxDecoration(
-                                    color: _productOrderHistoryList[index].status == 4
-                                        ? Colors.grey
-                                        : _productOrderHistoryList[index].status == 3
-                                        ? Colors.red
-                                        : _productOrderHistoryList[index].status == 1
-                                        ? Colors.amber
-                                        : Colors.green[600],
-                                    borderRadius: new BorderRadius.circular(7.0),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(
+                                  child: Container(
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius:  new BorderRadius.only(
+                                        topLeft: new Radius.circular(5.0),
+                                        bottomLeft: new Radius.circular(5.0),
+                                      ),
+                                      color: Colors.grey[200],
+                                      border: new Border.all(
+                                        color: Colors.grey[200]!,
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.all(4),
+                                    height: 25,
+                                    child: Center(
+                                      child: Text(
+                                        "Items",
+
+                                      ),
+                                    ),
                                   ),
-                                  padding: EdgeInsets.only(left: 5, right: 5),
+                                ),
+                                Container(
+                                  height: 25,
+                                  width: 100,
+                                  padding: EdgeInsets.all(4),
                                   child: Center(
                                     child: Text(
+                                     // "${_productOrderHistoryList[index].name}",
+                                      "Transaction",
 
-                                      _productOrderHistoryList[index].status == 3
-                                          ? lbl_cancelled
-                                          : _productOrderHistoryList[index].status == 1
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius:  new BorderRadius.only(
+                                      topRight: new Radius.circular(5.0),
+                                      bottomRight: new Radius.circular(5.0),
+                                    ),
+                                    border: new Border.all(
+                                      color: Colors.grey[200]!,
+                                    ),
+                                  ),
+                                ),
 
-                                          ? lbl_accepted
-                                          : _productOrderHistoryList[index].status == 0
-                                          ? lbl_pending
-                                          : lbl_completed,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white, fontSize: 12),
+                                Container(
+                                  height: 25,
+                                  width: 40,
+                                  padding: EdgeInsets.all(4),
+                                  child: Center(
+                                    child: Text(
+                                      "${_productOrderHistoryList[index].referralCode??"Ref Code:"}",
+
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius:  new BorderRadius.only(
+                                      topRight: new Radius.circular(5.0),
+                                      bottomRight: new Radius.circular(5.0),
+                                    ),
+                                    border: new Border.all(
+                                      color: Colors.grey[200]!,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
-                            child: Container(
-                              width: 80,
-                              child: Column(
-                                crossAxisAlignment:  CrossAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    height: 15,
-                                    child: Text(
-                                      '${DateFormat('hh:mm a').format(DateTime.parse(_productOrderHistoryList[index].createdAt!))}',
-                                      textAlign: TextAlign.right,
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      height: 22,
+                                      width: 90,
+                                      decoration: BoxDecoration(
+                                        color: _productOrderHistoryList[index].status == 4
+                                            ? Colors.grey
+                                            : _productOrderHistoryList[index].status == 3
+                                            ? Colors.red
+                                            : _productOrderHistoryList[index].status == 1
+                                            ? Colors.amber
+                                            : Colors.green[600],
+                                        borderRadius: new BorderRadius.circular(7.0),
+                                      ),
+                                      padding: EdgeInsets.only(left: 5, right: 5),
+                                      child: Center(
+                                        child: Text(
 
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 15,
-                                    child: Text(
-                                      '${DateFormat('dd/MM/yyyy').format(DateTime.parse(_productOrderHistoryList[index].createdAt!))}',
-                                      textAlign: TextAlign.right,
+                                          _productOrderHistoryList[index].status == 3
+                                              ? lbl_cancelled
+                                              : _productOrderHistoryList[index].status == 1
 
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 20,
-                                    child: Text(
-                                      '${ 'NGN  ' + _productOrderHistoryList[index].amount!}',
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w400,
+                                              ? lbl_accepted
+                                              : _productOrderHistoryList[index].status == 0
+                                              ? lbl_pending
+                                              : lbl_completed,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(color: Colors.white, fontSize: 12),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 4.0),
+                                child: Container(
+                                  width: 80,
+                                  child: Column(
+                                    crossAxisAlignment:  CrossAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: 15,
+                                        child: Text(
+                                          '${DateFormat('hh:mm a').format(DateTime.parse(_productOrderHistoryList[index].createdAt!))}',
+                                          textAlign: TextAlign.right,
+
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 15,
+                                        child: Text(
+                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(_productOrderHistoryList[index].createdAt!))}',
+                                          textAlign: TextAlign.right,
+
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 20,
+                                        child: Text(
+                                          '${ 'NGN  ' + _productOrderHistoryList[index].amount!}',
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(
+                                            color: Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    )),
-              );
-            })
+                        )),
+                  );
+                }),
+          ],
+        )
             : Center(
           child: Text(
             txt_no_order_yet,
@@ -235,7 +248,20 @@ class _TransactionHistoryScreenState extends BaseState{
   void initState() {
     super.initState();
     _init();
+    _calculateTotalAmount();
   }
+
+  // Function to calculate the total amount
+  void _calculateTotalAmount() {
+   int total = 0;
+    for (var productOrder in _productOrderHistoryList) {
+      TotalTransactionAmount += int.parse(productOrder.amount!);
+    }
+    setState(() {
+      TotalTransactionAmount = total;
+    });
+  }
+
   int pageNumber = 1;
   _getProductOrderHistory() async {
     try {

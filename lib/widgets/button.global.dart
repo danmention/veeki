@@ -59,3 +59,42 @@ class ButtonGlobal extends StatelessWidget{
     );
   }
 }
+
+
+
+class Button extends StatelessWidget {
+  const Button({Key? key, required this.buttonColor, required this.textColor, required this.text, required this.widget}) : super(key: key);
+  final Color buttonColor;
+  final Color textColor;
+  final String text;
+  final Widget widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => widget),
+        );
+      },
+      child: Container(
+        alignment: Alignment.center,
+        height: 45,
+        width: 165,
+        decoration: BoxDecoration(
+            color: buttonColor,
+            border: Border.all(color: GlobalColors.primaryColor),
+            borderRadius: BorderRadius.circular(10)
+        ),
+        child:  Text(
+          text,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: textColor,
+          ),
+        ),
+      ),
+    );
+  }
+}

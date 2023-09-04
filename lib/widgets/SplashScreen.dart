@@ -83,7 +83,7 @@ class OnBoardingPageState extends BaseState {
       pages: [
 
         PageViewModel(
-          title: "Find Caregiver Nearby",
+          title: "Find a Caregiver Nearby",
           body:
           "We help you get access to care givers closest to you",
           image: _buildFullscreenImage('1.jpg'),

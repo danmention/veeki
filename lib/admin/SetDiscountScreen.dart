@@ -68,13 +68,7 @@ class _setDiscountScreenState extends BaseState{
                 ),
 
 
-                // TextFormGlobal(
-                //   controller: setDiscountController,
-                //   text: 'Status ',
-                //
-                //   obscure: false,
-                //   textInputType: TextInputType.text,
-                // ),
+
 
                 const SizedBox(height: 40),
                 TextFormGlobal(
@@ -87,7 +81,7 @@ class _setDiscountScreenState extends BaseState{
                 const SizedBox(height: 40),
 
 
-                // Text(global.firebaseToken!),
+
 
                 ButtonGlobal(
                   isLoading:isLoading ,

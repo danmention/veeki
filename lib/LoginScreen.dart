@@ -391,6 +391,7 @@ class _LoginScrrenState extends BaseState{
 
   logout()async{
     global.sp?.remove("currentUser");
+    print('remove old user');
   }
 
   @override

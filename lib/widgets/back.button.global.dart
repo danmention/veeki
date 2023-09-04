@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:veeki/utils/global.colors.dart';
 
 class BackButtonGlobal extends StatelessWidget{
-  const BackButtonGlobal({Key? key, required this.widget}) : super(key: key);
+   BackButtonGlobal({Key? key, required this.widget}) : super(key: key);
   final Widget widget;
   @override
   Widget build(BuildContext context) {
@@ -30,6 +30,7 @@ class BackButtonGlobal extends StatelessWidget{
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
           onTap: () {
+
               Navigator.of(context).push(
                  MaterialPageRoute(builder: (context) => widget),
                  );

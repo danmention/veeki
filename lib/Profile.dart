@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:veeki/HomePage.dart';
+import 'package:veeki/MyReferralListScreen.dart';
 import 'package:veeki/models/businessLayer/global.dart' as global;
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/widgets/BottomNavBar.dart';
@@ -248,7 +249,9 @@ class _ProfileState extends BaseState{
                     onTap: (){
                       nextScreen(context, 'editprofile');
                     },
-                    child: ProfileButton(text1: "Account Settings", text2: "Name, email, address, contact number", icon: Icons.person)),
+                    child: ProfileButton(text1: "Account Settings",
+                        text2: "Name, email, address, contact number", icon: Icons.person)),
+
                 // ProfileButton(text1: "Payment Method", text2:
                 // "Add a new payment card", icon: Icons.credit_card_outlined),
 
@@ -282,22 +285,46 @@ class _ProfileState extends BaseState{
                  //ProfileButton(text1: "Reward points program", text2: "You've 50 reward points", icon: Icons.card_giftcard_outlined),
              //  ProfileButton(text1: "Pricing and offers", text2: "Get every week special offers and affor...", icon: Icons.local_offer_outlined),
                 global.user.role =="USER" ?
-                ProfileButton(text1: "Update Medical History", text2: "Fill up your medical history form for optimal care ",
-                    icon: Icons.local_offer_outlined, ontap: (){
-                  nextScreen(context, 'medicalhistory');
-                  },):Container(),
+                Column(
+                  children: [
+                    ProfileButton(text1: "Update Medical History", text2: "Fill up your medical history form for optimal care ",
+                        icon: Icons.local_offer_outlined, ontap: (){
+                      nextScreen(context, 'medicalhistory');
+                      },),
+
+                    ProfileButton(text1: "View Medical History", text2: "View your medical history ",
+                      icon: Icons.menu_book_outlined, ontap: (){
+                        nextScreen(context, 'viewmedicalhistory');
+                      },),
+                  ],
+                )
+
+
+                    :Container(),
 
 
 
                 global.user.role  == "SERVICE_PROVIDER" ?
 
-                GestureDetector(
-                    onTap: (){
+                Column(
+                  children: [
+                    GestureDetector(
+                        onTap: (){
 
-                      nextScreen(context,"viewservice");
-                    },
-                    child: ProfileButton(text1: "Manage Services", text2:
-                    "Edit and delete your services", icon: Icons.local_offer_outlined)):SizedBox(),
+                          nextScreen(context,"viewservice");
+                        },
+                        child: ProfileButton(text1: "Manage Services", text2:
+                        "Edit and delete your services", icon: Icons.local_offer_outlined)),
+
+                    ProfileButton(text1: "About Me ", text2: "Tell us more about yourself and your qualifications ",
+                      icon: Icons.local_offer_outlined, ontap: (){
+                        nextScreen(context, 'aboutme');
+                      },)
+                  ],
+                )
+
+
+                    :SizedBox(),
                 global.user.isAdmin == "1"?
                 GestureDetector(
                     onTap: (){
@@ -307,7 +334,14 @@ class _ProfileState extends BaseState{
                     child: ProfileButton(text1: "View all Services", text2:
                     "Edit and delete your services", icon: Icons.local_offer_outlined)):SizedBox(),
 
+                ProfileButton(text1: "View My Referral  ", ontap: (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) =>
 
+                    MyReferralListScreen()),
+                  );
+                },
+                    text2: "View people who registered with my code", icon: Icons.person),
                 GestureDetector(
                     onTap: (){
                       nextScreen(context, "resetpassword");
@@ -337,11 +371,11 @@ class _ProfileState extends BaseState{
                           },
                           icon: Icons.book),
 
-                      ProfileButton(text1: "Set Discount", text2: "set discount for all products",
-                          ontap: (){
-                            nextScreen(context, 'setdiscount');
-                          },
-                          icon: Icons.add_photo_alternate_outlined),
+                      // ProfileButton(text1: "Set Discount", text2: "set discount for all products",
+                      //     ontap: (){
+                      //       nextScreen(context, 'setdiscount');
+                      //     },
+                      //     icon: Icons.add_photo_alternate_outlined),
 
 
                       ProfileButton(text1: "View All Referral", text2: "get all referrals",
@@ -378,6 +412,12 @@ class _ProfileState extends BaseState{
                             nextScreen(context, 'viewuser');
                           },
                           icon: Icons.person),
+
+                      // ProfileButton(text1: "Set my Commision", text2: "Admin sets commission from every service.",
+                      //     ontap: (){
+                      //       nextScreen(context, 'viewuser');
+                      //     },
+                      //     icon: Icons.person),
 
                     ],):SizedBox(),
 

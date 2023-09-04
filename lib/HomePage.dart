@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:veeki/BookAppointment/ViewBookingScreen.dart';
 import 'package:veeki/CategoryList.dart';
+import 'package:veeki/LoginScreen.dart';
 import 'package:veeki/MyServiceListScreen.dart';
 import 'package:veeki/Notifications.dart';
 import 'package:veeki/PopularBarbers.dart';
@@ -14,6 +15,7 @@ import 'package:veeki/Products.dart';
 import 'package:veeki/Profile.dart';
 import 'package:veeki/SearchResultScreen.dart';
 import 'package:veeki/ServiceList.dart';
+import 'package:veeki/admin/AccountPayment.dart';
 import 'package:veeki/models/businessLayer/base.dart';
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/widgets/BottomNavBar.dart';
@@ -34,6 +36,7 @@ import 'models/businessLayer/global.dart';
 import 'models/response/category_response.dart';
 import 'models/response/service_response.dart';
 import 'models/response/state_response.dart';
+import 'models/response/wallet_response.dart';
 import 'widgets/ViewMyServiceScreen.dart';
 
 
@@ -91,7 +94,8 @@ class _HomePageState extends BaseState {
             width: double.infinity,
             //padding: const EdgeInsets.only(left: 30.0,right: 30),
             child:
-
+           // global.user.isAdmin  != "1" ||  global.user.role  == "SERVICE_PROVIDER"?
+            global.user.role  == "USER" ?
             Column(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -227,7 +231,7 @@ class _HomePageState extends BaseState {
                     ],
                   ),
                 ),
-                global.user.role  == "USER" ?
+
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
@@ -497,7 +501,7 @@ class _HomePageState extends BaseState {
                       ),
                     ],
                   ),
-                )
+                ),
 
                 // Padding(
                 //   padding: const EdgeInsets.all(20),
@@ -508,8 +512,8 @@ class _HomePageState extends BaseState {
                 //
                 // )
 
-                    :SizedBox(height: 0,),
-                global.user.role  == "USER" ?
+
+
                 Container(
                   padding: const EdgeInsets.all(15),
                   child: Column(
@@ -530,11 +534,11 @@ class _HomePageState extends BaseState {
                           )
                         ],
                       ),
-                      global.user.role  != "SERVICE_PROVIDER" ?
+
                       Container(
                         height: 230,
                           child: DisplayCategoryPage()
-                      ): SizedBox(height: 1,),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: Row(
@@ -612,9 +616,9 @@ class _HomePageState extends BaseState {
                       ),
                     ],
                   ),
-                ):serviceProvider()
+                )
               ],
-            ),
+            ):  DashboardContainer(),
           ),
 
         ),
@@ -688,13 +692,17 @@ Widget serviceProvider(){
           ),
         ],),
         SizedBox(height: 10,),
-        Text(" My Services", style: TextStyle(color: Colors.black38,  fontSize: 14, fontWeight: FontWeight.bold),),
-        Container(
-          height: 300,
-          child:
-          MyServiceListScreen()
-          ,),
-        SizedBox(height: 30,),
+          global.user.isAdmin  != "1" ?
+              Column(children: [
+                Text(" My Services", style: TextStyle(color: Colors.black38,  fontSize: 14, fontWeight: FontWeight.bold),),
+                Container(
+                  height: 300,
+                  child:
+                  MyServiceListScreen()
+                  ,),
+                SizedBox(height: 30,),
+              ],):Container()
+
 
       ],),
     );
@@ -706,6 +714,500 @@ Widget serviceProvider(){
     // TODO: implement initState
     super.initState();
   }
+
+String walletBalance = "0.00";
+
+  Widget adminDashboard(){
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+               Text(
+                "Hi, ${global.user.fullName}",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Row(
+                children: [
+                  Image.asset("assets/TVstatsIcon.png",width: 24,height: 24,),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) =>  Notifications()),
+                        );
+                      },
+                      child: const Icon(Icons.notifications_none_outlined)
+                  )
+                ],
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            padding: const EdgeInsets.all(15),
+            height: 190,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: GlobalColors.primaryColor),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: const [
+                        Text(
+                          "Balance",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.visibility_outlined,
+                          size: 24,
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                     Text(
+                      "₦$walletBalance",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 24,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      "Account number",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          color: Colors.white),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Text(
+                          "0123456789",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.copy,
+                          size: 16,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: const [
+                        Text(
+                          "Commission Balance",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.visibility_outlined,
+                          size: 24,
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                    const Text(
+                      "₦0.00",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 24,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Button(
+                text: "Fund",
+                textColor: Colors.white,
+                buttonColor: GlobalColors.primaryColor,
+                widget:  Container(),
+              ),
+              Button(
+                text: "Withdraw",
+                textColor: GlobalColors.primaryColor,
+                buttonColor: Colors.white,
+                widget: Container(),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Quick actions",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                 QuickActionsButton(
+                  linkPage: Placeholder(),
+                  // linkPage: Transfer(),
+                  imagePath: "assets/TransferIconColored.png",
+                  text: "Transfer",
+                  color: 0xffD0D0E3,
+                ),
+                 QuickActionsButton(
+                  linkPage: TransactionHistoryScreen(),
+                  imagePath: "assets/NQRIconColored.png",
+                  text: "Transaction",
+                  color: 0xffE9D1D8,
+                ),
+                QuickActionsButton(
+                  linkPage: Container(),
+                  imagePath: "assets/POSIconColored.png",
+                  text: "POS",
+                  color: 0x26FFA500,
+                ),
+                QuickActionsButton(
+                  linkPage: Accountpayment(),
+                  imagePath: "assets/billPaymentIconColored.png",
+                  text: "Funds",
+                  color: 0x264BB543,
+
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Transactions",
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              ),
+              Text(
+                "View all",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: GlobalColors.linkButtonColor),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const RecentTransactions(),
+          const RecentTransactions(),
+          const RecentTransactions(),
+        ],
+      ),
+    );
+  }
+
+  Widget serviceProviderDashboard(){
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+              Text(
+                "Hi, ${global.user.fullName}",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Row(
+                children: [
+                  Image.asset("assets/TVstatsIcon.png",width: 24,height: 24,),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) =>  Notifications()),
+                        );
+                      },
+                      child: const Icon(Icons.notifications_none_outlined)
+                  )
+                ],
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            padding: const EdgeInsets.all(15),
+            height: 190,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: GlobalColors.primaryColor),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: const [
+                        Text(
+                          "Balance",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.visibility_outlined,
+                          size: 24,
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                     Text(
+                      "₦$walletBalance",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 24,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      "Account number",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          color: Colors.white),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Text(
+                          "0123456789",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.copy,
+                          size: 16,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: const [
+                        Text(
+                          "Commission Balance",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.visibility_outlined,
+                          size: 24,
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                    const Text(
+                      "₦0.00",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 24,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Button(
+                text: "Fund",
+                textColor: Colors.white,
+                buttonColor: GlobalColors.primaryColor,
+                widget:  Container(),
+              ),
+              Button(
+                text: "Withdraw",
+                textColor: GlobalColors.primaryColor,
+                buttonColor: Colors.white,
+                widget: Container(),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Quick actions",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                QuickActionsButton(
+                  linkPage: AddServiceScreen(),
+                  // linkPage: Transfer(),
+                  imagePath: "assets/TransferIconColored.png",
+                  text: "Add Service",
+                  color: 0xffD0D0E3,
+                ),
+                QuickActionsButton(
+                  linkPage: TransactionHistoryScreen(),
+                  imagePath: "assets/NQRIconColored.png",
+                  text: "Transaction",
+                  color: 0xffE9D1D8,
+                ),
+                QuickActionsButton(
+                  linkPage: MyServiceListScreen(),
+                  imagePath: "assets/POSIconColored.png",
+                  text: "View Service",
+                  color: 0x26FFA500,
+                ),
+                QuickActionsButton(
+                  linkPage: Accountpayment(),
+                  imagePath: "assets/billPaymentIconColored.png",
+                  text: "Funds",
+                  color: 0x264BB543,
+
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Transactions",
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              ),
+              Text(
+                "View all",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: GlobalColors.linkButtonColor),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const RecentTransactions(),
+          const RecentTransactions(),
+          const RecentTransactions(),
+        ],
+      ),
+    );
+  }
+
 
   void getSearchArea(int? id) async {
 
@@ -788,8 +1290,11 @@ Widget serviceProvider(){
 
   _init() async {
     try {
+
+      await   _getWalletBalance();
       await  _getAllCategory() ;
       await  _getState();
+
 
 
 
@@ -839,6 +1344,49 @@ Widget serviceProvider(){
       }
     } catch (e) {
       print("Exception - signupscreen.dart - _getstate():" + e.toString());
+    }
+  }
+
+  _getWalletBalance() async {
+
+    setState(() { });
+    try {
+      bool isConnected = await br!.checkConnectivity();
+      if (isConnected) {
+        if (_isRecordPending) {
+          // showOnlyLoaderDialog();
+          await apiHelper?.getWalletBalance(global.user.id!).then((result) {
+            //  hideLoader();
+            if (result != null) {
+              if (result.resp_code == "00") {
+                WalletResponse _tList = result.recordList;
+
+                // ref.watch(myprovider).setZone(_tList);
+                walletBalance = _tList.balance!;
+
+
+                if (_tList.toString().isEmpty) {
+                  _isRecordPending = false;
+                }
+
+
+
+
+
+
+                setState(() { });
+
+                // } else {
+                //   _zoneList = [];
+              }
+            }
+          });
+        }
+      } else {
+        showNetworkErrorSnackBar(_scaffoldkey);
+      }
+    } catch (e) {
+      print("Exception - homescreen.dart - getwallet():" + e.toString());
     }
   }
 
@@ -928,6 +1476,18 @@ Widget serviceProvider(){
     }
     return age.toString();
   }
+
+  Widget DashboardContainer() {
+    if( global.user.role  == "SERVICE_PROVIDER"){
+      return serviceProviderDashboard();
+    }else if(global.user.isAdmin== "1"){
+      return adminDashboard();
+    }else{
+      return Container();
+    }
+
+
+  }
 }
 // class BannerImages {
 //   static const String banner1 =
@@ -942,3 +1502,122 @@ Widget serviceProvider(){
 //     BannerModel(imagePath: banner3, id: "3"),
 //   ];
 // }
+
+
+class QuickActionsButton extends StatelessWidget {
+   QuickActionsButton({Key? key, required this.imagePath, required this.text,required this.linkPage, required this.color})
+      : super(key: key);
+  final String imagePath;
+  final String text;
+  final Widget linkPage;
+  final int color;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => linkPage),
+            );
+          },
+          child: Container(
+              width: 50,
+              height: 50,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Color(color),
+                  borderRadius: BorderRadius.circular(50)),
+              child: Image.asset(
+                imagePath,
+                height: 26,
+                width: 26,
+              )
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          text,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class RecentTransactions extends StatelessWidget {
+  const RecentTransactions({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return
+
+
+      Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 35,
+                  height: 35,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: GlobalColors.primaryColor,
+                      borderRadius: BorderRadius.circular(50)),
+                  child:  Image.asset(
+                    "assets/airtimeIcon.png",
+                    color: Colors.white,
+                    height: 18.67,
+                    width: 18.67,
+                  ),
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Airtime",
+                      style:
+                      TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "June 26,2023,06:12pm",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: GlobalColors.primaryColor.withOpacity(0.5)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const Text(
+              "+ ₦50,000.00",
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        const Divider(
+          thickness: 1,
+        ),
+      ],
+    );
+  }
+}

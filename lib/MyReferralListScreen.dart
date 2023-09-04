@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'package:shimmer/shimmer.dart';
 import 'package:veeki/Details.dart';
+import 'package:veeki/models/userModel.dart';
 import 'package:veeki/utils/global.colors.dart';
 import 'package:veeki/widgets/back.button.global.dart';
 import '../models/response/service_response.dart';
@@ -12,18 +13,18 @@ import 'HomePage.dart';
 import 'models/businessLayer/base.dart';
 import 'models/response/service_response.dart';
 
-class MyServiceListScreen extends Base {
+class MyReferralListScreen extends Base {
 
-  _MyServiceListScreenState createState() => _MyServiceListScreenState();
+  _MyReferralListScreenState createState() => _MyReferralListScreenState();
 }
 
-class _MyServiceListScreenState extends BaseState {
+class _MyReferralListScreenState extends BaseState {
 
   bool isDataLoaded = false;
 
 
   bool _isRecordPending = true;
-  List<Service> _serviceList = [];
+  List<CurrentUser> _serviceList = [];
 
 
 
@@ -52,14 +53,13 @@ class _MyServiceListScreenState extends BaseState {
                 widget: HomePage(),
                 // widget: bottomNav(index: 0,),
               ),
-              Center(child: Text("My Services", style: TextStyle(fontSize: 20),)),
+              Center(child: Text("My Referrals", style: TextStyle(fontSize: 20),)),
               SizedBox(height: 20,),
               isDataLoaded
                   ?
 
               _serviceList.length > 0
                   ?
-
               ListView.builder(
                   itemCount: _serviceList.length,
                   shrinkWrap: true,
@@ -78,11 +78,11 @@ class _MyServiceListScreenState extends BaseState {
                       highlightColor: Colors.transparent,
                       overlayColor: MaterialStateProperty.all(Colors.transparent),
                       onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) =>
-                          //BarberShopDescriptionScreen(_barberShopList[index].vendor_id, a: widget.analytics, o: widget.observer)),
-                          Details(service:_serviceList.isNotEmpty ?_serviceList[index]:Service() )),
-                        );
+                        // Navigator.of(context).push(
+                        //   MaterialPageRoute(builder: (context) =>
+                        //   //BarberShopDescriptionScreen(_barberShopList[index].vendor_id, a: widget.analytics, o: widget.observer)),
+                        //   Details(service:_serviceList.isNotEmpty ?_serviceList[index]:Service() )),
+                        // );
                       },
                       child:
 
@@ -95,7 +95,7 @@ class _MyServiceListScreenState extends BaseState {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                      _serviceList[index].images![0].images == null?
+                      _serviceList[index].profileImage == null?
                                   CircleAvatar(
                                       radius: 30,
                                     backgroundImage: AssetImage("Images/HomepageBannerImage.png",)
@@ -104,7 +104,7 @@ class _MyServiceListScreenState extends BaseState {
                                       radius: 30,
                                     backgroundImage:
 
-                                    NetworkImage(_serviceList[index].images![0].images!,
+                                    NetworkImage(_serviceList[index].profileImage!,
 
                                                             ),
 
@@ -121,7 +121,7 @@ class _MyServiceListScreenState extends BaseState {
                                          Container(
 
                                            child: Text(
-                                            "${_serviceList[index].title}",
+                                            "${_serviceList[index].fullName}",
                                             style:
                                             TextStyle(fontWeight: FontWeight.w500, fontSize: 14),overflow: TextOverflow.ellipsis,
                                         ),
@@ -143,7 +143,7 @@ class _MyServiceListScreenState extends BaseState {
                                 ],
                               ),
                                Text(
-                                "+ ₦${_serviceList[index].amount}",
+                                "+ ${_serviceList[index].city}",
                                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                               ),
                             ],
@@ -160,22 +160,108 @@ class _MyServiceListScreenState extends BaseState {
 
 
 
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 7, right: 7, bottom: 22, top: 5),
+                      //   child: Card(
+                      //     child:
+                      //     Row(children: [
+                      //
+                      //       Column(
+                      //         mainAxisAlignment: MainAxisAlignment.start,
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //
+                      //
+                      //           _serviceList[index].images![0].images!.isEmpty?
+                      //           Image.asset("Images/HomepageBannerImage.png",height: 100,width: 130,fit: BoxFit.cover,):
+                      //           Image.network(_serviceList[index].images![0].images!,width: 130,
+                      //             height: 100,fit: BoxFit.cover,),
+                      //
+                      //
+                      //
+                      //
+                      //
+                      //
+                      //
+                      //         ],
+                      //       ),
+                      //
+                      //       Column(children: [
+                      //         Container(
+                      //           width: 160,
+                      //           child: Row(
+                      //            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Expanded(
+                      //                   child: Padding(
+                      //                     padding: const EdgeInsets.only(left: 3, bottom: 10),
+                      //                     child: Text('${_serviceList[index].title}',
+                      //                         style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis, maxLines: 1),
+                      //                   )),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //
+                      //         SizedBox(
+                      //           width: 150,
+                      //           child: _serviceList[index].area !=null?
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //
+                      //             children: [
+                      //               Icon(
+                      //                 Icons.location_on_outlined,
+                      //                 size: 15,
+                      //               ),
+                      //               Row(
+                      //                 children: [
+                      //                   Text(
+                      //                     _serviceList[index].area! ,
+                      //                     overflow: TextOverflow.ellipsis,
+                      //                     style: TextStyle(fontSize: 11),
+                      //                     maxLines: 1,
+                      //                   ),  Text(
+                      //                       ','
+                      //                   ),
+                      //
+                      //                   _serviceList[index].state !=null ?
+                      //                   Text(
+                      //                     '${_serviceList[index].state}',
+                      //                     overflow: TextOverflow.ellipsis,
+                      //                     style: TextStyle(fontSize: 11),
+                      //                     maxLines: 1,
+                      //                   ):Text(''),
+                      //                 ],
+                      //               ),
+                      //             ],
+                      //           ):SizedBox(),
+                      //         ),
+                      //       ],),
+                      //
+                      //
+                      //
+                      //
+                      //     ],),
+                      //
+                      //   ),
+                      // ),
                     );
                   })    :
 
 
               Text(
-                "NO SERVICES ",
+                "NO Referrals ",
 
               )
 
-                  : _shimmer()
+                  : _shimmer(),
             ],
           ),
         ),
-      );
+      )
 
-
+       ;
 
 
   }
@@ -221,11 +307,11 @@ class _MyServiceListScreenState extends BaseState {
       if (isConnected) {
         // showOnlyLoaderDialog();
         if (_isRecordPending) {
-          await apiHelper?.getAllMySerivices("${global.user.id}").then((result) {
+          await apiHelper?.getAllMyReferrals("${global.user.id}").then((result) {
             //hideLoader();
             if (result != null) {
               if (result.resp_code == "00") {
-                List<Service> _tList = result.recordList;
+                List<CurrentUser> _tList = result.recordList;
 
                 if (_tList.isEmpty) {
                   _isRecordPending = false;

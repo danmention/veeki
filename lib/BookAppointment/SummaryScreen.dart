@@ -346,7 +346,9 @@ void notifyCaregiver()async{
 
 
               showSnack(snackBarMessage: 'Kindly make payment ');
-             makePayment();
+             notifyCaregiver();
+          //former
+             //makePayment();
               //   Navigator.of(context).pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);
 
 
@@ -429,7 +431,11 @@ void notifyCaregiver()async{
 
 
       // call booking status status
-      notifyCaregiver();
+
+      //take off
+      //notifyCaregiver();
+
+
       await apiHelper!.bookingstatus(id: booking_id, status: 2).then((result) async {
         if (result != null) {
           if (result.resp_code == "00") {

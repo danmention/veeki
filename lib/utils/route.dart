@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:veeki/AboutMe.dart';
 import 'package:veeki/GetReferralScreen.dart';
 import 'package:veeki/Profile_Edit.dart';
 import 'package:veeki/BookAppointment/ViewBookingScreen.dart';
+import 'package:veeki/ViewMedicalHistoryScreen.dart';
 import 'package:veeki/admin/AddDisputesScreen.dart';
 import 'package:veeki/admin/AddcategoryScreen.dart';
 import 'package:veeki/admin/SetDiscountScreen.dart';
@@ -38,6 +40,9 @@ class RouteGenerator{
       case "editprofile":
         return MaterialPageRoute(builder: (_) => EditProfile());
 
+
+      case "viewmedicalhistory":
+        return MaterialPageRoute(builder: (_) => ViewMedicalHistoryScreen());
       case "profile":
         return MaterialPageRoute(builder: (_) => Profile());
 
@@ -46,7 +51,8 @@ class RouteGenerator{
 
       case "addservice":
         return MaterialPageRoute(builder: (_) => AddServiceScreen());
-
+      case "aboutme":
+        return MaterialPageRoute(builder: (_) => AboutMe());
 
       case "viewuser":
         return MaterialPageRoute(builder: (_) => ViewCareGiverList());

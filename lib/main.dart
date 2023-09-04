@@ -339,7 +339,10 @@ Service service = new Service();
             },
             onReject: () {
               // Handle reject action
-              Navigator.pop(context);
+
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => AcceptRejectScreen(status: 0)));
+            //  Navigator.pop(context);
             },
           );
         },

@@ -330,16 +330,19 @@ class _MedicalHistoryForm1ScreenState extends BaseState{
 
 
       //
-      // if (medicalHistoryRequest.nextOfKinEmail!.isEmpty) {
-      //   showSnack( snackBarMessage: txt_please_enter_your_name);
-      //   return;
-      // } else if (emailController.text.isEmpty) {
+      if (medicalHistoryRequest.nextOfKinEmail!.isEmpty) {
+        showSnack( snackBarMessage: txt_please_enter_your_name);
+        return;
+      }
+      //else if (emailController.text.isEmpty) {
       //   showSnack( snackBarMessage: txt_please_enter_your_email);
       //   return;
-      // } else if (medicalHistoryRequest.nextOfKinEmail!.isNotEmpty && !EmailValidator.validate(medicalHistoryRequest.nextOfKinEmail!)) {
-      //   showSnack( snackBarMessage: txt_please_enter_your_valid_email);
-      //   return;
-      // } else if (mobileController.text.isEmpty || (mobileController.text.isNotEmpty && mobileController.text.trim().length < 10)) {
+      // }
+      else if (medicalHistoryRequest.nextOfKinEmail!.isNotEmpty && !EmailValidator.validate(medicalHistoryRequest.nextOfKinEmail!)) {
+        showSnack( snackBarMessage: txt_please_enter_your_valid_email);
+        return;
+      }
+      // else if (mobileController.text.isEmpty || (mobileController.text.isNotEmpty && mobileController.text.trim().length < 10)) {
       //   showSnack( snackBarMessage: txt_please_enter_valid_mobile_number);
       //   return;
       // } else if (passwordController.text.isEmpty) {

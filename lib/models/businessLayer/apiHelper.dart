@@ -21,6 +21,7 @@ import '../request/signup_request.dart';
 import '../response/UserResponseModel.dart';
 
 import '../response/billing_response.dart';
+import '../response/commission_response.dart';
 import '../response/discount_response.dart';
 import '../response/dispute_response.dart';
 import '../response/login_response.dart';
@@ -35,6 +36,7 @@ import '../response/testimony_response.dart';
 
 import '../response/category_response.dart';
 import '../response/view_my_booking.dart';
+import '../response/wallet_response.dart';
 import '../termsAndConditionModel.dart';
 
 import '../userModel.dart';
@@ -367,7 +369,32 @@ class APIHelper {
 
 
 
+  Future<dynamic> getAllMyReferrals(String userid) async {
+    try {
+      final response = await http.get(
+        Uri.parse("${global.baseUrl}user/referral/$userid"),
+        headers: await global.getApiHeaders(true),
 
+      );
+
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+
+        recordList = List<CurrentUser>.from(json.decode(response.body)["data"].map((x) => CurrentUser.fromJson(x)));
+
+
+
+      } else {
+        recordList = null;
+      }
+
+      return getAPIResult(response, recordList);
+
+    } catch (e) {
+      print("Exception - getAllUser " + e.toString());
+    }
+  }
   Future<dynamic> getAllUsers() async {
     try {
       final response = await http.post(
@@ -773,6 +800,99 @@ class APIHelper {
   }
 
 
+
+  Future<dynamic> aboutmeProfile(int user_id, String dob,
+      String area, String state,String street, String aboutme ) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}profile/edit"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "user_id": user_id,
+
+              "DateOfBirth": dob,
+              "StreetAddress": street,
+              "state_id": state,
+              "area_id":area,
+              "about_me":aboutme,
+
+
+            }
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = CurrentUser.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - aboutmeupdateProfile(): " + e.toString());
+    }
+  }
+
+
+
+  Future<dynamic> setcommision( String amount ) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}admin/commission"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "amount":amount,
+
+
+            }
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = CommissionResponse.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - commission(): " + e.toString());
+    }
+  }
+
+
+
+  Future<dynamic> setregistrationcommision( String amount ) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}admin/sign-up-commission"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+            {
+              "amount":amount,
+
+
+            }
+
+        ),
+      );
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+        recordList = CommissionResponse.fromJson(json.decode(response.body)["data"]);
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - regcommission(): " + e.toString());
+    }
+  }
+
   Future<dynamic> updateProfile(int user_id, String phone, String dob,
       String area, String state,String street ) async {
     try {
@@ -785,8 +905,8 @@ class APIHelper {
               "phone": phone,
               "DateOfBirth": dob,
               "StreetAddress": street,
-              "state": state,
-              "city":area,
+              "state_id": state,
+              "area_id":area,
 
 
             }
@@ -1245,6 +1365,74 @@ print(json.encode(bookNow));
       return getAPIResult(response, recordList);
     } catch (e) {
       print("Exception - medicalHistoryprofile(): " + e.toString());
+    }
+  }
+
+
+  Future<dynamic> getWalletBalance(int user_id) async {
+    try {
+
+
+
+      final response = await http.post(
+        Uri.parse("${global.baseUrl}user/wallet/balance"),
+        headers: await global.getApiHeaders(true),
+        body: json.encode(
+          {
+          "user_id": user_id,
+          }
+
+      ),
+
+      );
+
+      dynamic recordList;
+
+
+      if (response.statusCode == 200 && json.decode(response.body) != null && json.decode(response.body)["data"] != null) {
+
+
+        recordList = WalletResponse.fromJson(json.decode(response.body)["data"]);
+
+
+        // recordList.token = json.decode(response.body)['data']["token_data"]["token"];
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      print("Exception - walletBalance(): " + e.toString());
+    }
+  }
+
+
+
+  Future<dynamic> getMedicalHistory({int? user_id, }) async {
+    try {
+      final response = await http.get(
+        Uri.parse("${global.baseUrl}user/medical/profile/$user_id"),
+        headers: await global.getApiHeaders(true),
+
+      );
+
+
+      dynamic recordList;
+      if (response.statusCode == 200 && json.decode(response.body)["resp_code"] == "00") {
+
+        recordList = MedicalHistoryResponse.fromJson(json.decode(response.body)["data"][0]);
+
+
+
+      } else {
+        recordList = null;
+      }
+
+      return getAPIResult(response, recordList);
+
+
+
+    } catch (e) {
+      print("Exception - gethealthHistory(): " + e.toString());
     }
   }
 
